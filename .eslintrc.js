@@ -43,6 +43,15 @@ module.exports = {
           ['index', 'sibling']
         ]
       }
+    ],
+    '@typescript-eslint/ban-types': [
+      'error',
+      {
+        extendDefaults: true,
+        types: {
+          '{}': false
+        }
+      }
     ]
   }
 };

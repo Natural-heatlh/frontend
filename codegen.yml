@@ -1,0 +1,22 @@
+overwrite: true
+schema: https://polar-plateau-93142.herokuapp.com/graphql
+documents: src/**/*.graphql
+generates:
+  ./src/graphql.d.ts:
+    plugins:
+      - typescript
+      - typescript-resolvers
+    config:
+      enumsAsTypes: true
+      namingConvention:
+        enumValues: change-case#upperCase
+  ./src/:
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.ts
+      baseTypesPath: graphql.d.ts
+      importTypesNamespace: SchemaTypes
+    plugins:
+      - typescript-operations
+    config:
+      onlyOperationTypes: true
