@@ -1,0 +1,6 @@
+query Course {
+  courses {
+    title
+    description
+  }
+}
