@@ -1,47 +1,23 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu } from 'antd';
 import {
   UserOutlined,
   LaptopOutlined,
   NotificationOutlined
 } from '@ant-design/icons';
-import styled from 'styled-components';
-import {useQuery} from '@apollo/client';
-import {CourseQuery, CourseQueryVariables} from './query.generated';
-import query from './query.graphql';
+import AdminHeader from '../../components/Admin/Header';
+import Wrapper from '../../components/Admin/Wrapper';
+import Breadcrumbs from '../../components/Admin/Breadcrumbs';
 
 const { SubMenu } = Menu;
-const { Header, Content, Footer, Sider } = Layout;
-
-const Breadcrumbs = styled(Breadcrumb)`
-  display: flex;
-  justify-content: flex-start;
-`;
-
-const StyledContent = styled(Content)`
-  padding: 0 50px;
-`;
+const { Content, Sider } = Layout;
 
 const Admin = () => {
-  const { data, loading, error } = useQuery<CourseQuery, CourseQueryVariables>(query.Courses);
-  console.log(data, loading, error);
   return (
     <Layout>
-      <Header className="header">
-        <div className="logo" />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-          <Menu.Item key="1">nav 1</Menu.Item>
-          <Menu.Item key="2">nav 2</Menu.Item>
-          <Menu.Item key="3">nav 3</Menu.Item>
-        </Menu>
-      </Header>
-      <StyledContent>
-        <Breadcrumbs style={{ margin: '16px 0' }}>
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>List</Breadcrumb.Item>
-          <Breadcrumb.Item>App</Breadcrumb.Item>
-        </Breadcrumbs>
+      <AdminHeader />
+      <Wrapper>
+        <Breadcrumbs />
         <Layout
           className="site-layout-background"
           style={{ padding: '24px 0' }}
@@ -81,7 +57,7 @@ const Admin = () => {
             Content
           </Content>
         </Layout>
-      </StyledContent>
+      </Wrapper>
     </Layout>
   );
 };
