@@ -1,6 +1,47 @@
 query Courses {
   courses {
+    id
     title
     description
+  }
+}
+
+query Course($id: ID!) {
+  course(id: $id) {
+    title
+    description
+    sections {
+      id
+      title
+      children {
+        __typename
+        ... on Video {
+          title
+          url
+        }
+        ... on Theory {
+          title
+          content
+        }
+        ... on Test {
+          title
+          description
+          items {
+            question
+            correctAnswerNumber
+            answers {
+              title
+              number
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+mutation DeleteCourse($id: ID!) {
+  deleteCourse(id: $id) {
+    id
   }
 }

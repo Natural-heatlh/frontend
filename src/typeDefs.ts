@@ -1,52 +1,50 @@
 import { gql } from '@apollo/client';
 
 export const typeDefs = gql`
-  directive @cacheControl(
-    maxAge: Int
-    scope: CacheControlScope
-  ) on FIELD_DEFINITION | OBJECT | INTERFACE
-  directive @specifiedBy(url: String!) on SCALAR
-  enum CacheControlScope {
-    PUBLIC
-    PRIVATE
-  }
-
   type Answer {
-    id: ID!
     title: String
+    number: Int
   }
 
   type TestItem {
     question: String
     answers: [Answer]
-    correctAnswer: String
+    correctAnswerNumber: Int
     isCompleted: Boolean
   }
 
   type Test {
-    title: String!
+    title: String
     description: String
-    type: String!
+    type: String
     items: [TestItem]
   }
 
   type Theory {
     title: String
-    type: String!
+    type: String
     content: String
   }
 
   type Video {
     title: String
-    type: String!
+    type: String
     url: String
   }
 
   union SectionChildren = Theory | Video | Test
 
   type Section {
+    id: ID!
     title: String
     children: [SectionChildren]
+  }
+
+  type Course {
+    id: ID!
+    title: String!
+    description: String
+    sections: [Section]
   }
 
   input SectionInput {
@@ -54,16 +52,10 @@ export const typeDefs = gql`
     children: [SectionChildrenInput]
   }
 
-  type Course {
-    title: String
-    description: String
-    sections: [Section]
-  }
-
   input TestItemInput {
     question: String
     answers: [AnswerInput]
-    correctAnswer: String
+    correctAnswerNumber: Int
     isCompleted: Boolean
   }
 
@@ -77,7 +69,7 @@ export const typeDefs = gql`
     title: String
     content: String
     url: String
-    type: String
+    type: String!
     description: String
     items: [TestItemInput]
   }
@@ -94,10 +86,11 @@ export const typeDefs = gql`
 
   input AnswerInput {
     title: String
+    number: Int
   }
 
   input CreateCourseInput {
-    title: String
+    title: String!
     description: String
     sections: [SectionInput]
   }
@@ -109,8 +102,8 @@ export const typeDefs = gql`
   }
 
   type Query {
-    courses: [Course]
-    course(id: String!): Course
+    courses: [Course]!
+    course(id: ID!): Course
   }
 
   type Mutation {
