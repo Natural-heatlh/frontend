@@ -6,8 +6,8 @@ import Admin from './pages/Admin';
 import { typeDefs } from './typeDefs';
 
 const client = new ApolloClient({
-  uri: 'https://polar-plateau-93142.herokuapp.com/graphql',
-  cache: new InMemoryCache({}),
+  uri: 'http://localhost:3000/graphql',
+  cache: new InMemoryCache(),
   typeDefs
 });
 
