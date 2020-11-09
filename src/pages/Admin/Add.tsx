@@ -1,8 +1,13 @@
 import React from 'react';
+import AddForm from '../../components/Admin/AddForm';
 import AdminContainer from './Container';
 
 const Add = () => {
-  return <AdminContainer><div>children</div></AdminContainer>;
+  return (
+    <AdminContainer>
+      <AddForm />
+    </AdminContainer>
+  );
 };
 
 export default Add;

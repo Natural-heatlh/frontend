@@ -12,7 +12,7 @@ const Admin = (props: any) => {
       <Switch>
         <Route path="/admin/courses" component={Courses} exact />
         <Route path="/admin/courses/:id" component={Course} exact />
-        <Route path="/admin/courses/add/" component={Add} exact />
+        <Route path="/admin/add-course" component={Add} exact />
       </Switch>
     </React.Fragment>
   );
