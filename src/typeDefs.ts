@@ -20,10 +20,17 @@ export const typeDefs = gql`
     items: [TestItem]
   }
 
+  type Slide {
+    id: ID
+    url: String
+  }
+
   type Theory {
     title: String
     type: String
     content: String
+    slides: [Slide]
+    audio: String
   }
 
   type Video {
@@ -65,12 +72,18 @@ export const typeDefs = gql`
     items: [TestItemInput]
   }
 
+  input SlideInput {
+    url: String
+  }
+
   input SectionChildrenInput {
     title: String
     content: String
     url: String
     type: String!
     description: String
+    slides: [SlideInput]
+    audio: String
     items: [TestItemInput]
   }
 

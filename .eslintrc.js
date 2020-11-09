@@ -23,7 +23,6 @@ module.exports = {
   ],
   rules: {
     'import-quotes/import-quotes': [1, 'single'],
-    'no-shadow': 'error',
     '@typescript-eslint/explicit-function-return-type': 0,
     '@typescript-eslint/no-use-before-define': 0,
     '@typescript-eslint/no-empty-interface': 0,

@@ -70,7 +70,7 @@ const Courses = () => {
     <AdminContainer
       actions={
         <Button>
-          <Link to={`${location.pathname}/add`}>Добавить курс</Link>
+          <Link to={`/admin/add-course`}>Добавить курс</Link>
         </Button>
       }
     >

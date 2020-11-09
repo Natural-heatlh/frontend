@@ -5,6 +5,10 @@ import Wrapper from '../../components/Admin/Wrapper';
 
 const { Content, Sider } = Layout;
 
+const StyledContent = styled(Content)`
+  min-height: 100vh;
+`;
+
 const StyledSidebar = styled(Sider)`
   background: transparent;
   display: flex;
@@ -26,9 +30,9 @@ const AdminContainer = (props: Props) => {
           className="site-layout-background"
           style={{ padding: '24px 0' }}
         >
-          <Content style={{ padding: '0 24px', minHeight: 280 }}>
+          <StyledContent style={{ padding: '0 24px' }}>
             {props.children}
-          </Content>
+          </StyledContent>
           <StyledSidebar width={200}>
             {props.actions}
           </StyledSidebar>
