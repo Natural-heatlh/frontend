@@ -24,7 +24,7 @@ const Courses = () => {
 
   useEffect(() => {
     dispatch(setCourses(data?.courses as Course[]));
-  }, [data]);
+  }, [data, dispatch]);
 
   const [deleteOneCourse] = useMutation<
     DeleteCourseMutation,
@@ -92,7 +92,7 @@ const Courses = () => {
                 <Link to={`${location.pathname}/edit/${item?.id}`}>
                   Редактировать
                 </Link>,
-                <a onClick={() => item?.id && handleRemove(item.id)}>Удалить</a>
+                <span onClick={() => item?.id && handleRemove(item.id)}>Удалить</span>
               ]}
             >
               <List.Item.Meta

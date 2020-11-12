@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { Form, Input, Tabs } from 'antd';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCourse } from '../../slices/admin/course';
 import { State } from '../../types/state';
-import { Course } from '../../graphql';
+import { Course as CourseType } from '../../graphql';
 import AdminContainer from './Container';
 import query from './query.graphql';
 
@@ -24,15 +24,15 @@ const Course = (props: any) => {
       id
     }
   });
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   useEffect(() => {
     if (data && data.course) {
       dispatch(setCourse(data?.course));
     }
-  }, [data, loading]);
+  }, [data, loading, dispatch]);
 
-  const course = useSelector<State, Course>((state) => state.course);
+  const course = useSelector<State, CourseType>((state) => state.course);
 
   if (loading) return <div>Loading ....</div>;
   if (error) return <div>Error</div>;
