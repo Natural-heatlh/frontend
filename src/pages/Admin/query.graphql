@@ -1,42 +1,45 @@
+fragment CoursesFragment on Course {
+  title
+  description
+  sections {
+    id
+    title
+    children {
+      __typename
+      ... on Video {
+        title
+        url
+      }
+      ... on Theory {
+        title
+        content
+      }
+      ... on Test {
+        title
+        description
+        items {
+          question
+          correctAnswerNumber
+          answers {
+            title
+            number
+          }
+        }
+      }
+    }
+  }
+}
+
 query Courses {
   courses {
     id
-    title
-    description
+    ...CoursesFragment
   }
 }
 
 query Course($id: ID!) {
   course(id: $id) {
-    title
-    description
-    sections {
-      id
-      title
-      children {
-        __typename
-        ... on Video {
-          title
-          url
-        }
-        ... on Theory {
-          title
-          content
-        }
-        ... on Test {
-          title
-          description
-          items {
-            question
-            correctAnswerNumber
-            answers {
-              title
-              number
-            }
-          }
-        }
-      }
-    }
+    ...CoursesFragment
   }
 }
 

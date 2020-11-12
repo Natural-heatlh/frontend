@@ -1,7 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useMutation, useQuery } from '@apollo/client';
 import { Button, List } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
+import { setCourses } from '../../slices/admin/courses';
+import { Course } from '../../graphql';
 import AdminContainer from './Container';
 import query from './query.graphql';
 import {
@@ -11,13 +14,17 @@ import {
   DeleteCourseMutationVariables
 } from './query.generated';
 
-
 const Courses = () => {
   const location = useLocation();
   const { data, loading, error } = useQuery<
     CoursesQuery,
     CoursesQueryVariables
   >(query.Courses);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setCourses(data?.courses as Course[]));
+  }, [data]);
 
   const [deleteOneCourse] = useMutation<
     DeleteCourseMutation,

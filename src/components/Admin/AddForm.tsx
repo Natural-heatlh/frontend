@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Tabs } from 'antd';
-import { Course } from '../../graphql';
+import { CreateCourseInput } from '../../graphql';
 import AddSection from './Add/AddSection';
 import AddChild from './Add/AddChild';
 
@@ -16,8 +16,7 @@ const layout = {
 };
 
 const AddForm = () => {
-  const [state, setState] = useState<Course>({
-    id: 'new-course',
+  const [state, setState] = useState<CreateCourseInput>({
     title: '',
     description: '',
     sections: []
