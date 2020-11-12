@@ -5,11 +5,12 @@ import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
 import coursesReducer from './slices/admin/courses';
+import courseReducer from './slices/admin/course';
 
 const rootReducer = combineReducers({
-  courses: coursesReducer
+  courses: coursesReducer,
+  course: courseReducer
 });
 
 const store = configureStore({
