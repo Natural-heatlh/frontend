@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { Form, Input, Tabs } from 'antd';
 import styled from 'styled-components';
-import { Course as CourseState } from '../../graphql';
-import query from './query.graphql';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCourse } from '../../slices/admin/course';
+import { State } from '../../types/state';
+import { Course as CourseType } from '../../graphql';
 import AdminContainer from './Container';
+import query from './query.graphql';
 
 const { TabPane } = Tabs;
 
@@ -16,18 +19,20 @@ const Wrapper = styled.div`
 
 const Course = (props: any) => {
   const { id } = props.match.params;
-  const [state, setState] = useState<CourseState>();
   const { data, loading, error } = useQuery(query.Course, {
     variables: {
       id
     }
   });
 
+  const dispatch = useDispatch();
   useEffect(() => {
     if (data && data.course) {
-      setState(data?.course);
+      dispatch(setCourse(data?.course));
     }
-  }, [data, loading]);
+  }, [data, loading, dispatch]);
+
+  const course = useSelector<State, CourseType>((state) => state.course);
 
   if (loading) return <div>Loading ....</div>;
   if (error) return <div>Error</div>;
@@ -44,7 +49,7 @@ const Course = (props: any) => {
                 message: 'Please input your username!'
               }
             ]}
-            initialValue={state?.title}
+            initialValue={course?.title}
           >
             <Input />
           </Form.Item>
@@ -57,14 +62,14 @@ const Course = (props: any) => {
                 message: 'Please input your username!'
               }
             ]}
-            initialValue={state?.description || ''}
+            initialValue={course?.description || ''}
           >
             <Input />
           </Form.Item>
 
-          {state?.sections ? (
+          {course?.sections ? (
             <Tabs tabPosition="left">
-              {state?.sections?.map((item) => (
+              {course?.sections?.map((item) => (
                 <TabPane tab={item?.title} key={item?.id}>
                   {item?.children?.map((child) => (
                     <div>{child?.title}</div>

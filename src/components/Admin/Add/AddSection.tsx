@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Button, Input } from 'antd';
 import styled from 'styled-components';
-import { Course } from '../../../graphql';
+import { CreateCourseInput } from '../../../graphql';
 
 const SectionNameInput = styled(Input)`
   max-width: 680px;
@@ -18,14 +18,13 @@ const AddButton = styled(Button)`
 `;
 
 type Props = {
-  setCourse: (course: Course) => void;
-  course: Course;
+  setCourse: (course: CreateCourseInput) => void;
+  course: CreateCourseInput;
 };
 
 const AddSection = (props: Props) => {
   const [isAddingMode, setAddingMode] = useState(false);
   const [value, updateValue] = useState('');
-
   const { course, setCourse } = props;
 
   const handleAddSection = useCallback(() => {
@@ -35,12 +34,10 @@ const AddSection = (props: Props) => {
         sections: [
           ...course.sections,
           {
-            id: 'new-section',
             title: value
           }
         ]
       });
-
     }
     updateValue('');
     setAddingMode(false);
