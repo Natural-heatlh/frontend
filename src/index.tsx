@@ -1,10 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import coursesReducer from './slices/admin/courses';
+
+const rootReducer = combineReducers({
+  courses: coursesReducer
+});
+
+const store = configureStore({
+  reducer: rootReducer,
+  devTools: true
+});
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
