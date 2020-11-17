@@ -1,13 +1,9 @@
 import React, { useCallback, useState } from 'react';
-import { Button, Input } from 'antd';
+import { Button, Alert } from 'antd';
 import styled from 'styled-components';
 import { CreateCourseInput } from '../../../graphql';
 
-const SectionNameInput = styled(Input)`
-  max-width: 680px;
-  width: 100%;
-  margin-right: 10px;
-`;
+import AddModal from './AddModal';
 
 const Wrapper = styled.div`
   margin-bottom: 40px;
@@ -23,12 +19,16 @@ type Props = {
 };
 
 const AddSection = (props: Props) => {
-  const [isAddingMode, setAddingMode] = useState(false);
-  const [value, updateValue] = useState('');
+  const [isAddingMode, setAddingMode] = useState<boolean>(false);
+  const [isExists, setIsExists] = useState<boolean>(false);
   const { course, setCourse } = props;
 
-  const handleAddSection = useCallback(() => {
-    if (value && value.length > 0) {
+  const handleAddSection = useCallback((value) => {
+    const exists = course?.sections?.find(item => item?.title === value);
+    if (exists) {
+      setIsExists(!!exists);
+      setTimeout(() => setIsExists(false), 1000);
+    } else if (value && value.length > 0) {
       setCourse({
         ...course,
         sections: [
@@ -38,34 +38,24 @@ const AddSection = (props: Props) => {
           }
         ]
       });
+      setAddingMode(false);
+      setIsExists(false);
     }
-    updateValue('');
-    setAddingMode(false);
-  }, [course, setCourse, value]);
+  }, [course, setCourse]);
 
   return (
     <Wrapper>
       <AddButton onClick={() => setAddingMode(true)}>Добавить раздел</AddButton>
-      {isAddingMode && (
-        <div>
-          <SectionNameInput
-            placeholder="Название раздела"
-            value={value}
-            onChange={(e) => updateValue(e.target.value)}
-          />
-          <Button onClick={handleAddSection} shape="round" type="primary">
-            Добавить
-          </Button>
-          <Button
-            onClick={() => setAddingMode(false)}
-            shape="round"
-            type="primary"
-            danger
-          >
-            Отменить добавлние
-          </Button>
-        </div>
-      )}
+        <AddModal
+          title="Добавление"
+          visible={isAddingMode}
+          onOk={value => handleAddSection(value)}
+          setMode={setAddingMode}
+          okText="Добавить"
+          cancelText="Отменить добавление"
+          error={isExists ? 'Раздел с таким именем существует!' : ''}
+          onErrorClose={() => setIsExists(false)}
+        />
     </Wrapper>
   );
 };

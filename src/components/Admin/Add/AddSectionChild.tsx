@@ -2,7 +2,9 @@ import React, { useCallback, useState } from 'react';
 import { Button, Drawer, Select } from 'antd';
 import styled from 'styled-components';
 import { SectionChildren } from '../../../types';
-import Theory from '../Theory';
+import Theory from './Theory';
+import Video from './Video';
+import Test from './Test';
 
 const { Option } = Select;
 
@@ -11,7 +13,7 @@ const StyledSelect = styled(Select)`
   margin-right: 10px;
 `;
 
-const AddChild = () => {
+const AddSectionChild = () => {
   const [selected, setSelected] = useState<SectionChildren>(
     SectionChildren.THEORY
   );
@@ -52,9 +54,11 @@ const AddChild = () => {
         visible={drawerIsOpened}
       >
         {selected === SectionChildren.THEORY && <Theory />}
+        {selected === SectionChildren.VIDEO && <Video />}
+        {selected === SectionChildren.TEST && <Test />}
       </Drawer>
     </React.Fragment>
   );
 };
 
-export default AddChild;
+export default AddSectionChild;

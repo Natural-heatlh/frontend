@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout } from 'antd';
 import styled from 'styled-components';
-import Wrapper from '../../components/Admin/Wrapper';
+import Wrapper from '../../components/Admin/Components/Wrapper';
 
 const { Content, Sider } = Layout;
 
