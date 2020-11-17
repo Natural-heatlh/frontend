@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Input, Form } from 'antd';
+import { Input, Form, Button } from 'antd';
 import { Editor } from '@tinymce/tinymce-react';
 
 const Theory = () => {
@@ -17,7 +17,7 @@ const Theory = () => {
     <React.Fragment>
       <Form>
         <Form.Item
-          label="Заговок теории"
+          label="Заголовок теории"
           name="theoryTitle"
           rules={[
             {
