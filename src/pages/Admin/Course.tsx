@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client';
 import { Form, Input, Tabs } from 'antd';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCourse } from '../../slices/admin/course';
+import { setCourse } from '../../slices/actions';
 import { State } from '../../types/state';
 import { Course as CourseType } from '../../graphql';
 import AdminContainer from './Container';

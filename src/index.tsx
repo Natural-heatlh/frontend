@@ -5,15 +5,15 @@ import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import coursesReducer from './slices/admin/courses';
-import courseReducer from './slices/admin/course';
+import { courseReducer, coursesReducer, authReducer } from './slices/reducers';
 
 const rootReducer = combineReducers({
   courses: coursesReducer,
-  course: courseReducer
+  course: courseReducer,
+  auth: authReducer
 });
 
-const store = configureStore({
+export const store = configureStore({
   reducer: rootReducer,
   devTools: true
 });
