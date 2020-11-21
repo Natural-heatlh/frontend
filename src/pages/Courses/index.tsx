@@ -1,6 +1,4 @@
-import React, { Fragment } from 'react';
-import Header from '../../components/Header';
-import PageHead from '../../components/PageHead';
+import React from 'react';
 import CourseList from '../../components/CourseList';
 import PageContainer from '../../components/PageContainer';
 

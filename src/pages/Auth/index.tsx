@@ -1,11 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { Fragment, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
-import axios from 'axios';
-
-import { Route } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
+import axios from '../../helpers/axios';
 import PageContainer from '../../components/PageContainer';
 import SignUpForm from '../../components/Auth/SignUpForm';
 import SignInForm from '../../components/Auth/SignInForm';
+import { setIsAuth } from '../../slices/actions';
 
 const LOGIN_PATH = '/auth/login';
 const SIGN_UP_PATH = '/auth/signup';
@@ -23,28 +24,53 @@ const getAuthPageTitle = (path: string) => {
 const Auth = () => {
   const location = useLocation();
   const pageTitle = getAuthPageTitle(location.pathname);
+  const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
+  const dispatch = useDispatch();
 
-  const handleSignUp = useCallback((values) => {
-    axios
-      .post('http://localhost:3000/auth/signup', {
-        ...values
-      })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  const handleSignUp = useCallback(
+    (values) => {
+      axios
+        .post('/auth/signup', {
+          ...values
+        })
+        .then(() => {
+          dispatch(setIsAuth(true));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    [dispatch]
+  );
+
+  const handleSignIn = useCallback(
+    (values) => {
+      axios
+        .post('/auth/login', {
+          ...values
+        })
+        .then(() => {
+          dispatch(setIsAuth(true));
+        })
+        .catch((error) => console.log(error));
+    },
+    [dispatch]
+  );
 
   return (
     <PageContainer pageTitle={pageTitle}>
-      <Route path={LOGIN_PATH}>
-        <SignInForm />
-      </Route>
-      <Route path={SIGN_UP_PATH}>
-        <SignUpForm signUp={handleSignUp} />
-      </Route>
+      {!isLoggedIn ? (
+        <Fragment>
+          <Route path={LOGIN_PATH}>
+            <SignInForm signIn={handleSignIn} />
+          </Route>
+          <Route path={SIGN_UP_PATH}>
+            <SignUpForm signUp={handleSignUp} />
+          </Route>
+        </Fragment>
+      ) : (
+        <Redirect to="/courses" />
+      )}
     </PageContainer>
   );
 };

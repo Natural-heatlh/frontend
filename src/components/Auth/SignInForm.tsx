@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import React from 'react';
+import { Form, Input, Button } from 'antd';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ReactComponent as AuthLogo } from '../../static/authLogo.svg';
@@ -40,20 +40,18 @@ const SubmitFormItem = styled(FormItem)`
   margin-bottom: 0;
 `;
 
-const SignInForm = () => {
-  const [checked, setChecked] = useState(false);
-  const [password, setPassword] = useState('');
-  const [secondPassword, setSecondPassword] = useState('');
+interface Props {
+  signIn: ({ email, password }: { email: string; password: string }) => void;
+}
 
+const SignInForm = ({ signIn }: Props) => {
   const onFinish = (values: any) => {
-    console.log('Success:', values);
+    signIn(values);
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
-
-  console.log('checked', checked);
 
   return (
     <StyledForm
@@ -103,7 +101,7 @@ const SignInForm = () => {
 
       <SubmitFormItem>
         <Button style={{ width: '100%' }} type="primary" htmlType="submit">
-          Зарегистрироваться
+          Войти
         </Button>
       </SubmitFormItem>
     </StyledForm>

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Layout } from 'antd';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { ReactComponent as LogoImg } from '../../static/logo.svg';
 import Container from '../Container';
 import Navigation from './Navigation';
@@ -35,11 +35,9 @@ const HeaderLeft = styled.div`
   height: 100%;
 `;
 
-interface Props {
-  isAuth?: boolean;
-}
+const Header = () => {
+  const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
 
-const Header = ({ isAuth }: Props) => {
   return (
     <HeaderWrapper>
       <StyledContend>
@@ -47,10 +45,9 @@ const Header = ({ isAuth }: Props) => {
           <Logo to="/courses">
             <LogoImg />
           </Logo>
-          {isAuth ? <Navigation /> : null}
+          {isLoggedIn ? <Navigation /> : null}
         </HeaderLeft>
-
-        <HeaderRight />
+        <HeaderRight isLoggedIn={isLoggedIn} />
       </StyledContend>
     </HeaderWrapper>
   );

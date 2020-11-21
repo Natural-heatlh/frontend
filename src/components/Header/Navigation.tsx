@@ -12,6 +12,7 @@ const LinkText = styled.span`
 
 type NavItemProps = LinkProps & {
   active?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 };
 
 export const NavItem = styled(Link)<NavItemProps>`
