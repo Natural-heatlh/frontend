@@ -43,13 +43,12 @@ const SubmitFormItem = styled(FormItem)`
 const PWD_ERROR_MESSAGE = 'Пароли не совпадают! Пожалуйста введите еще раз!';
 
 interface Props {
-  signUp: (options: any) => void,
+  signUp: (options: any) => void;
 }
 
 const SignUpForm = ({ signUp }: Props) => {
   const [checked, setChecked] = useState(false);
   const [firstPassword, setFirstPassword] = useState('');
-  const [secondPassword, setSecondPassword] = useState('');
 
   const checkSecondPassword = (rule: any, value: string) => {
     if (
@@ -158,10 +157,7 @@ const SignUpForm = ({ signUp }: Props) => {
           }
         ]}
       >
-        <Input.Password
-          onChange={(e) => setSecondPassword(e.target.value)}
-          placeholder="Подтверждение пароля"
-        />
+        <Input.Password placeholder="Подтверждение пароля" />
       </FormItem>
 
       <FormItem name="isPartner">
