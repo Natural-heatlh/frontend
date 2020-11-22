@@ -1,0 +1,15 @@
+query CurrentUser {
+  currentUser {
+    id
+    email
+    firstName
+    lastName
+    country
+    courses {
+      id
+      progress {
+        id
+      }
+    }
+  }
+}

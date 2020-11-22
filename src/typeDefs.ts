@@ -54,6 +54,26 @@ export const typeDefs = gql`
     sections: [Section]
   }
 
+  type Progress {
+    id: ID!
+  }
+
+  type UserCourse {
+    id: ID!
+    progress: [Progress]
+  }
+
+  type User {
+    id: ID!
+    firstName: String
+    lastName: String
+    email: String
+    city: String
+    country: String
+    partnerID: String
+    courses: [UserCourse]
+  }
+
   input SectionInput {
     title: String
     children: [SectionChildrenInput]
@@ -117,6 +137,8 @@ export const typeDefs = gql`
   type Query {
     courses: [Course]!
     course(id: ID!): Course
+    user(id: ID!): User
+    currentUser: User
   }
 
   type Mutation {
