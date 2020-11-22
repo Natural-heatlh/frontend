@@ -15,7 +15,7 @@ import Courses from './pages/Courses';
 import MyCourses from './pages/MyCourses';
 import Auth from './pages/Auth';
 import { store } from './index';
-import { setIsAuth } from './slices/actions';
+import { setIsAuth } from './slices/auth';
 import './App.less';
 
 const link = createHttpLink({
