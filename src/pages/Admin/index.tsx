@@ -5,7 +5,7 @@ import Courses from './Courses';
 import Course from './Course';
 import Add from './Add';
 
-const Admin = (props: any) => {
+const Admin = () => {
   return (
     <React.Fragment>
       <AdminHeader />

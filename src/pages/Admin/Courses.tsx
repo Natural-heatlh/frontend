@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 import { useMutation, useQuery } from '@apollo/client';
 import { Button, List } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
-import { setCourses } from '../../slices/admin/courses';
+import { setCourses } from '../../slices/actions';
+import Preloader from '../../components/Preloader';
 import { Course } from '../../graphql';
 import AdminContainer from './Container';
 import query from './query.graphql';
@@ -67,7 +68,7 @@ const Courses = () => {
     [deleteOneCourse]
   );
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Preloader />;
 
   if (error) {
     return null;
@@ -92,7 +93,9 @@ const Courses = () => {
                 <Link to={`${location.pathname}/edit/${item?.id}`}>
                   Редактировать
                 </Link>,
-                <span onClick={() => item?.id && handleRemove(item.id)}>Удалить</span>
+                <span onClick={() => item?.id && handleRemove(item.id)}>
+                  Удалить
+                </span>
               ]}
             >
               <List.Item.Meta
