@@ -25,6 +25,7 @@ const Course = (props: any) => {
     }
   });
 
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (data && data.course) {
