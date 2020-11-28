@@ -3,6 +3,7 @@ import Carousel, { Dots } from '@brainhubeu/react-carousel';
 import styled from 'styled-components';
 import { ReactComponent as ArrowIcon } from '../../static/up.svg';
 import { Slide } from '../../graphql';
+import { RoundButton } from '../Buttons';
 
 type Props = {
   slides?: Slide[];
@@ -56,23 +57,6 @@ const ArrowLRight = styled(ArrowIcon)`
   margin-right: -2px;
 `;
 
-const Button = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  outline: none;
-  padding: 8px;
-  width: 34px;
-  height: 34px;
-  cursor: pointer;
-  background: ${(props) => (!props.disabled ? '#007D75' : 'transparent')};
-  margin-right: 8px;
-  border-radius: 50%;
-
-  ${(props) => props.disabled && `border: 1px solid rgba(38, 38, 38, 0.5);`}
-`;
-
 const slidess = [
   {
     id: '1',
@@ -121,10 +105,12 @@ const Slider = ({ slides }: Props) => {
           ))}
         </ProgressBar>
         <Toolbox>
-          <Button onClick={() => (value > 0 ? setValue(value - 1) : undefined)}>
+          <RoundButton
+            onClick={() => (value > 0 ? setValue(value - 1) : undefined)}
+          >
             <ArrowLeft />
-          </Button>
-          <Button
+          </RoundButton>
+          <RoundButton
             onClick={() =>
               slides && value < slides?.length - 1
                 ? setValue(value + 1)
@@ -132,7 +118,7 @@ const Slider = ({ slides }: Props) => {
             }
           >
             <ArrowLRight />
-          </Button>
+          </RoundButton>
           <span>
             {value + 1} из {slides.length} слайдов
           </span>

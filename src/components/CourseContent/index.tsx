@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Course } from '../../graphql';
 import Slider from '../Slider';
+import AudioPlayer from '../Audio';
 import AboutCourse from './AboutCourse';
 
 const Wrapper = styled.div`
@@ -13,6 +14,7 @@ const CourseContent = () => {
   return (
     <Wrapper>
       <Slider />
+      <AudioPlayer />
       <AboutCourse />
     </Wrapper>
   );
