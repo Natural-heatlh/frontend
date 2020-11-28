@@ -17,6 +17,7 @@ import Auth from './pages/Auth';
 import { store } from './index';
 import { setIsAuth } from './slices/actions';
 import './App.less';
+import Course from './pages/Course';
 
 const link = createHttpLink({
   uri: 'http://localhost:3000/graphql',
@@ -68,6 +69,15 @@ function App() {
                 <MyCourses />
               </AuthCheck>
             </Route>
+            <Route
+              path="/course/:id"
+              component={(props: any) => (
+                <AuthCheck {...props}>
+                  <Course {...props} />
+                </AuthCheck>
+              )}
+              exact
+            />
             <Route path="/auth">
               <Auth />
             </Route>

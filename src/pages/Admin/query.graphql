@@ -1,45 +1,15 @@
-fragment CoursesFragment on Course {
-  title
-  description
-  sections {
-    id
-    title
-    children {
-      __typename
-      ... on Video {
-        title
-        url
-      }
-      ... on Theory {
-        title
-        content
-      }
-      ... on Test {
-        title
-        description
-        items {
-          question
-          correctAnswerNumber
-          answers {
-            title
-            number
-          }
-        }
-      }
-    }
-  }
-}
+#import '../Course/fragment.graphql'
 
 query Courses {
   courses {
     id
-    ...CoursesFragment
+    ...CourseFragment
   }
 }
 
 query Course($id: ID!) {
   course(id: $id) {
-    ...CoursesFragment
+    ...CourseFragment
   }
 }
 
