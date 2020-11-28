@@ -1,5 +1,5 @@
 overwrite: true
-schema: https://polar-plateau-93142.herokuapp.com/graphql
+schema: http://localhost:3000/graphql
 documents: src/**/*.graphql
 generates:
   ./src/graphql.d.ts:

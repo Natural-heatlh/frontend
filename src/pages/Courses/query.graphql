@@ -1,0 +1,8 @@
+#import '../Course/fragment.graphql'
+
+query CoursesQuery {
+  courses {
+    id
+    ...CourseFragment
+  }
+}
