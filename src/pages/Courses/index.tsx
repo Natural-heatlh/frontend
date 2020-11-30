@@ -9,11 +9,9 @@ const Courses = () => {
   const { data, loading, error } = useQuery(query.CoursesQuery);
   if (loading) return <Preloader />;
 
-  console.log(error);
-
   return (
     <PageContainer pageTitle="Курсы">
-      {data.courses && data.courses.length > 0 ? (
+      {data?.courses && data?.courses.length > 0 ? (
         <CourseList courses={data?.courses} />
       ) : (
         'No data'

@@ -5,12 +5,13 @@ import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { courseReducer, coursesReducer, authReducer } from './slices/reducers';
+import { courseReducer, coursesReducer, authReducer, testReducer } from './slices/reducers';
 
 const rootReducer = combineReducers({
   courses: coursesReducer,
   course: courseReducer,
-  auth: authReducer
+  auth: authReducer,
+  test: testReducer
 });
 
 export const store = configureStore({

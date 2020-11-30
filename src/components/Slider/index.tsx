@@ -22,13 +22,13 @@ const SlideImg = styled.img`
   height: 100%;
 `;
 
-const ProgressBar = styled.div`
+export const ProgressBar = styled.div`
   height: 7px;
   display: flex;
   min-width: 0;
 `;
 
-const ProgressItem = styled.div<{ active?: boolean }>`
+export const ProgressItem = styled.div<{ active?: boolean }>`
   width: 100%;
   background: ${(props) => (props.active ? '#007D75' : '#E8E9EB')};
   margin-right: 2px;
@@ -39,7 +39,7 @@ const ProgressItem = styled.div<{ active?: boolean }>`
   }
 `;
 
-const Toolbox = styled.div`
+export const Toolbox = styled.div`
   height: 48px;
   width: 100%;
   background: #f2f3f5;
