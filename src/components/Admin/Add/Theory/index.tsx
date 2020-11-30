@@ -1,51 +1,76 @@
 import React, { useCallback, useState } from 'react';
-import { Input, Form, Button } from 'antd';
-import { Editor } from '@tinymce/tinymce-react';
+import {Input, Form, Button, Alert} from 'antd';
+
+interface State {
+  visible: boolean,
+  type?: 'success' | 'error' | 'info' | 'warning' | undefined,
+  message?: string,
+}
 
 const Theory = () => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [alert, setAlert] = useState<State>({ visible: false } as State);
 
-  const editContent = useCallback(
-    (content) => {
-      setContent(content);
+  const onFinish = useCallback(
+    (values) => {
+      // redux action
+      console.log(values)
+      setAlert({
+        visible: true,
+        type: 'success',
+        message: 'Успех!',
+      });
     },
-    [setContent]
+    []
+  );
+
+  const onFinishFailed = useCallback(
+    () => {
+      setAlert({
+        visible: true,
+        type: 'error',
+        message: 'Ошибка!',
+      });
+    },
+    []
   );
 
   return (
     <React.Fragment>
-      <Form>
+      <Form
+        layout="vertical"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+      >
         <Form.Item
           label="Заголовок теории"
           name="theoryTitle"
           rules={[
             {
+              required: true,
               message: 'Пожалуйста введите заголовок теории!'
             }
           ]}
         >
-          <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+          <Input />
         </Form.Item>
-        <Form.Item label="Контент" name="Content">
-          <Editor
-            initialValue={content}
-            init={{
-              height: 250,
-              menubar: false,
-              plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste code help wordcount'
-              ],
-              toolbar:
-                'undo redo | formatselect | bold italic backcolor | \
-                alignleft aligncenter alignright alignjustify | \
-                bullist numlist outdent indent | removeformat | help'
-            }}
-            onEditorChange={editContent}
-          />
+        <Form.Item
+          label="Теория"
+          name="theoryContent"
+          rules={[
+            {
+              required: true,
+              message: 'Пожалуйста введите текст теории!'
+            }
+          ]}
+        >
+          <Input.TextArea rows={5} />
         </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Принять
+          </Button>
+        </Form.Item>
+        { alert?.visible && <Alert message={alert?.message} type={alert?.type} /> }
       </Form>
     </React.Fragment>
   );

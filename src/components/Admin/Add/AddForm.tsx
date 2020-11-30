@@ -1,10 +1,14 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import { Form, Input, Tabs } from 'antd';
 import styled from 'styled-components';
+import {useDispatch, useSelector} from 'react-redux';
+import { setCourse } from '../../../slices/admin/course';
+import { id } from '../../../utils';
 
 import { CreateCourseInput } from '../../../graphql';
 import EditIcon from '../Icons/EditIcon';
 
+import {State} from '../../../types/state';
 import AddModal from './AddModal';
 import AddSection from './AddSection';
 import AddSectionChild from './AddSectionChild';
@@ -24,14 +28,6 @@ const EditIconWrapper = styled.a`
   }
 `;
 
-const layout = {
-  labelCol: {
-    span: 8
-  },
-  wrapperCol: {
-    span: 16
-  }
-};
 
 const AddForm = () => {
   const [state, setState] = useState<CreateCourseInput>({
@@ -42,6 +38,14 @@ const AddForm = () => {
   const [isEditing, setEditingMode] = useState(false);
   const [editableSectionIndex, setIndex] = useState<number | null>(null);
   const [isExists, setIsExists] = useState<boolean>(false);
+
+  // const course = useSelector<State, CourseType>((state) => state.course);
+  // const dispatch = useDispatch();
+
+
+  // useEffect(() => {
+  //   dispatch(setCourse(state))
+  // }, [dispatch, state]);
 
   const onRemove = useCallback((targetKey, action) => {
     if (action === 'remove') {
@@ -83,10 +87,10 @@ const AddForm = () => {
         onErrorClose={() => setIsExists(false)}
       />
       <Form
-        {...layout}
         onFinish={() => {
           console.log('finish');
         }}
+        layout="vertical"
       >
         <Form.Item
           label="Заголовок курса"
