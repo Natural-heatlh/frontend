@@ -2,14 +2,15 @@ import { gql } from '@apollo/client';
 
 export const typeDefs = gql`
   type Answer {
+    id: String
     title: String
-    number: Int
+    isCorrect: Boolean
   }
 
   type TestItem {
+    id: String
     question: String
     answers: [Answer]
-    correctAnswerNumber: Int
     isCompleted: Boolean
   }
 
@@ -26,6 +27,7 @@ export const typeDefs = gql`
   }
 
   type Theory {
+    id: String
     title: String
     type: String
     content: String
@@ -34,6 +36,7 @@ export const typeDefs = gql`
   }
 
   type Video {
+    id: String
     title: String
     type: String
     url: String
@@ -82,7 +85,6 @@ export const typeDefs = gql`
   input TestItemInput {
     question: String
     answers: [AnswerInput]
-    correctAnswerNumber: Int
     isCompleted: Boolean
   }
 
@@ -119,7 +121,7 @@ export const typeDefs = gql`
 
   input AnswerInput {
     title: String
-    number: Int
+    isCorrect: Boolean
   }
 
   input CreateCourseInput {

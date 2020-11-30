@@ -19,10 +19,9 @@ fragment CourseFragment on Course {
         description
         items {
           question
-          correctAnswerNumber
           answers {
             title
-            number
+            isCorrect
           }
         }
       }

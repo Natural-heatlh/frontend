@@ -17,10 +17,10 @@ export type CourseFragmentFragment = (
       & Pick<SchemaTypes.Test, 'title' | 'description'>
       & { items?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
         { __typename?: 'TestItem' }
-        & Pick<SchemaTypes.TestItem, 'question' | 'correctAnswerNumber'>
+        & Pick<SchemaTypes.TestItem, 'question'>
         & { answers?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
           { __typename?: 'Answer' }
-          & Pick<SchemaTypes.Answer, 'title' | 'number'>
+          & Pick<SchemaTypes.Answer, 'title' | 'isCorrect'>
         )>>> }
       )>>> }
     )>>> }
