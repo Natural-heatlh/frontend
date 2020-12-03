@@ -7,19 +7,32 @@ fragment CourseFragment on Course {
     children {
       __typename
       ... on Video {
+        id
+        type
         title
         url
       }
       ... on Theory {
+        id
+        type
         title
         content
+        audio
+        slides {
+          id
+          url
+        }
       }
       ... on Test {
+        id
+        type
         title
         description
         items {
+          id
           question
           answers {
+            id
             title
             isCorrect
           }

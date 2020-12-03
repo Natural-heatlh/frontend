@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import Carousel, { Dots } from '@brainhubeu/react-carousel';
+import Carousel from '@brainhubeu/react-carousel';
 import styled from 'styled-components';
 import { ReactComponent as ArrowIcon } from '../../static/up.svg';
 import { Slide } from '../../graphql';
@@ -57,47 +57,25 @@ const ArrowLRight = styled(ArrowIcon)`
   margin-right: -2px;
 `;
 
-const slidess = [
-  {
-    id: '1',
-    url:
-      'https://oecdenvironmentfocusblog.files.wordpress.com/2020/06/wed-blog-shutterstock_1703194387_low_nwm.jpg'
-  },
-  {
-    id: '2',
-    url: 'https://www.meissl.com/media/images/8f24db1f/schweiz.jpg'
-  },
-  {
-    id: '3',
-    url: 'https://www.meissl.com/media/images/8f24db1f/schweiz.jpg'
-  },
-  {
-    id: '4',
-    url: 'https://www.meissl.com/media/images/8f24db1f/schweiz.jpg'
-  }
-];
-
 const Slider = ({ slides }: Props) => {
   const [value, setValue] = useState(0);
 
-  slides = slidess;
-
   const items = useMemo(
     () =>
-      slides?.map((item) => (
-        <div>
+      slides?.map((item, index) => (
+        <div key={item.id}>
           <SlideImg src={item.url as string} />
         </div>
       )),
     [slides]
   );
 
-  return (
+  return items ? (
     <SliderWrapper>
       <Carousel value={value} slides={items} onChange={setValue} />
       <div>
         <ProgressBar>
-          {slides.map((item, index) => (
+          {slides?.map((item, index) => (
             <ProgressItem
               onClick={() => setValue(index)}
               active={index <= value}
@@ -120,12 +98,12 @@ const Slider = ({ slides }: Props) => {
             <ArrowLRight />
           </RoundButton>
           <span>
-            {value + 1} из {slides.length} слайдов
+            {value + 1} из {slides?.length} слайдов
           </span>
         </Toolbox>
       </div>
     </SliderWrapper>
-  );
+  ) : null;
 };
 
 export default Slider;
