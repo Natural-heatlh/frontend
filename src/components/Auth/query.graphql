@@ -6,10 +6,9 @@ query CurrentUser {
     lastName
     country
     courses {
-      id
-      progress {
-        id
-      }
+      courseId
+      progress
+      isCompleted
     }
   }
 }

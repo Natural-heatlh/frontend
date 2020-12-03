@@ -39,23 +39,22 @@ const HeaderLeft = styled.div`
 
 const Header = () => {
   const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
-  const { data, loading, error } = useQuery(query.CoursesQuery);
+  const courses = useSelector((state: any) => state.courses);
 
   return (
-    !loading &&
-    data && (
-      <HeaderWrapper>
-        <StyledContend>
-          <HeaderLeft>
-            <Logo to="/courses">
-              <LogoImg />
-            </Logo>
-            {isLoggedIn ? <Navigation courses={data.courses} /> : null}
-          </HeaderLeft>
-          <HeaderRight isLoggedIn={isLoggedIn} />
-        </StyledContend>
-      </HeaderWrapper>
-    )
+    <HeaderWrapper>
+      <StyledContend>
+        <HeaderLeft>
+          <Logo to="/courses">
+            <LogoImg />
+          </Logo>
+          {isLoggedIn && courses && courses.length > 0 ? (
+            <Navigation courses={courses} />
+          ) : null}
+        </HeaderLeft>
+        <HeaderRight isLoggedIn={isLoggedIn} />
+      </StyledContend>
+    </HeaderWrapper>
   );
 };
 

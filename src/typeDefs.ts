@@ -15,6 +15,7 @@ export const typeDefs = gql`
   }
 
   type Test {
+    id: String
     title: String
     description: String
     type: String
@@ -57,13 +58,10 @@ export const typeDefs = gql`
     sections: [Section]
   }
 
-  type Progress {
-    id: ID!
-  }
-
   type UserCourse {
-    id: ID!
-    progress: [Progress]
+    courseId: ID!
+    progress: [String]
+    isCompleted: Boolean
   }
 
   type User {
@@ -147,5 +145,7 @@ export const typeDefs = gql`
     createCourse(input: CreateCourseInput): Course
     updateCourse(id: ID!, input: updateCourseInput): Course
     deleteCourse(id: ID!): Course
+    buyCourse(id: ID!): User
+    addToProgress(id: ID!, courseId: ID!): User
   }
 `;

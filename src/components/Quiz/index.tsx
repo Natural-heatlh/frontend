@@ -8,8 +8,9 @@ import React, {
 import Carousel from '@brainhubeu/react-carousel';
 import styled from 'styled-components';
 import { Button } from 'antd';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Toolbox } from '../Slider';
+import { Test, TestItem } from '../../graphql';
 import QuizItem from './QuizItem';
 
 const items = [
@@ -73,18 +74,23 @@ type SelectedAnswerType = {
   value: string;
 };
 
-const Quiz = () => {
+type Props = {
+  lecture?: Test;
+};
+
+const Quiz = ({ lecture }: Props) => {
+  const items = lecture?.items;
   const [quizIndex, setIndex] = useState(0);
   const test = useSelector((state: any) => state.test);
-
 
   const quizItems = useMemo(
     () =>
       items?.map((item) => (
         <QuizItem
-          id={item.id}
-          question={item.question}
-          answers={item.answers}
+          id={item?.id}
+          key={item?.id}
+          question={item?.question}
+          answers={item?.answers}
         />
       )),
     [items]
@@ -103,7 +109,7 @@ const Quiz = () => {
             Предыдущий вопрос
           </StyledButton>
           <StyledButton
-            disabled={quizIndex === quizItems.length - 1}
+            disabled={items ? quizIndex === items.length - 1 : true}
             type="primary"
             onClick={() => setIndex(quizIndex + 1)}
           >

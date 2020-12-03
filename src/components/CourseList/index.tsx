@@ -10,13 +10,21 @@ const Wrapper = styled.div`
 
 type Props = {
   courses?: Course[];
+  isAvailable?: boolean;
+  onClick?: (id: string) => void;
 };
 
-const CourseList = ({ courses }: Props) => {
+const CourseList = ({ courses, isAvailable, onClick }: Props) => {
+
   return (
     <Wrapper>
       {courses?.map((item) => (
-        <CourseItem key={item.id} {...item} />
+        <CourseItem
+          onClick={onClick}
+          isAvailable={isAvailable}
+          key={item.id}
+          {...item}
+        />
       ))}
     </Wrapper>
   );
