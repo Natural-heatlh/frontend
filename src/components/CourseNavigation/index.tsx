@@ -7,6 +7,7 @@ import ChildItem from './ChildrenItem';
 
 type Props = {
   sections: Section[];
+  courseUrl: string;
 };
 
 const SectionsWrapper = styled.div`
@@ -42,38 +43,7 @@ const ChildrenWrapper = styled.div`
   flex-direction: column;
 `;
 
-const sections = [
-  {
-    id: '1',
-    title: 'Раздел 1'
-  },
-  {
-    id: '2',
-    title: 'Раздел 2'
-  },
-  {
-    id: '3',
-    title: 'Раздел 3'
-  },
-  {
-    id: '4',
-    title: 'Раздел 4'
-  },
-  {
-    id: '5',
-    title: 'Раздел 5'
-  }
-];
-
-const childrenSome = [
-  { id: '1', title: 'Ввведение', slidesCount: 23, audioDuration: 5 },
-  { id: '2', title: 'Чайлд 2', slidesCount: 23, audioDuration: 5 },
-  { id: '2', title: 'Чайлд 3', slidesCount: 23, audioDuration: 25 },
-  { id: '2', title: 'Чайлд 4', slidesCount: 13, audioDuration: 9 },
-  { id: '2', title: 'Чайлд 5', slidesCount: 3, audioDuration: 15 }
-];
-
-const CourseNavigation = ({ sections }: Props) => {
+const CourseNavigation = ({ sections, courseUrl }: Props) => {
   return (
     <SectionsWrapper>
       <StyledCollapse accordion expandIconPosition="right">
@@ -90,11 +60,8 @@ const CourseNavigation = ({ sections }: Props) => {
                 }
               >
                 <ChildrenWrapper>
-                  {childrenSome?.map((child, index) => (
-                    <ChildItem
-                      index={index}
-                      item={child}
-                    />
+                  {item.children?.map((child, index) => (
+                    <ChildItem courseUrl={courseUrl} index={index} item={child} />
                   ))}
                 </ChildrenWrapper>
               </StyledPanel>

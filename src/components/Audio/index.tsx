@@ -10,7 +10,7 @@ import { RoundButton } from '../Buttons';
 import './range.less';
 
 type Props = {
-  url?: string;
+  url?: string | null;
 };
 
 const PlayerWrapper = styled.div`
@@ -166,7 +166,7 @@ const AudioPlayer = ({ url }: Props) => {
   return (
     <div>
       <ReactPlayer
-        url="https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3"
+        url={url as string}
         width="400px"
         height="50px"
         ref={ref}

@@ -1,14 +1,22 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import {NavLink, NavLinkProps} from 'react-router-dom';
 import styled from 'styled-components';
 import { Checkbox } from 'antd';
 import { ReactComponent as PapersIcon } from '../../static/papers.svg';
 import { ReactComponent as PlayIcon } from '../../static/play.svg';
 
-const LinkWrapper = styled(NavLink)`
+const LinkWrapper = styled(NavLink)<NavLinkProps>`
   //fix
   color: rgba(38, 38, 38, 1);
   padding: 12px 15px;
+
+  &.${props => props.activeClassName} {
+    background: #EBF5F4;
+
+    &:hover {
+      background: #EBF5F4;
+    }
+  }
 
   &:hover {
     color: rgba(38, 38, 38, 1);
@@ -48,11 +56,12 @@ const AdditionalContent = styled.span`
 type Props = {
   index: number;
   item?: any;
+  courseUrl: string;
 };
 
-const ChildrenItem = ({ index, item }: Props) => {
+const ChildrenItem = ({ index, item, courseUrl }: Props) => {
   return (
-    <LinkWrapper to="/#">
+    <LinkWrapper activeClassName="active" to={`${courseUrl}/lecture/${item.id}`}>
       <TitleWrapper>
         <Checkbox />
         <Title>
@@ -60,11 +69,15 @@ const ChildrenItem = ({ index, item }: Props) => {
         </Title>
       </TitleWrapper>
       <Additional>
-        <AdditionalItem>
-          <PapersIcon />
-          <AdditionalContent>22 стр.</AdditionalContent>
-        </AdditionalItem>
-        <span> | </span>
+        {item.slides && (
+          <>
+            <AdditionalItem>
+              <PapersIcon />
+              <AdditionalContent>{item.slides.length} стр.</AdditionalContent>
+            </AdditionalItem>
+            <span> | </span>
+          </>
+        )}
         <AdditionalItem>
           <PlayIcon />
           <AdditionalContent>3 мин.</AdditionalContent>

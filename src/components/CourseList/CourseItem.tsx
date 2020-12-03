@@ -67,7 +67,18 @@ const CourseDescription = styled.p`
   line-height: 24px;
 `;
 
-const CourseItem = ({ id, title, description }: Course) => {
+interface CourseItemProps extends Course {
+  isAvailable?: boolean;
+  onClick?: (id: string) => void;
+}
+
+const CourseItem = ({
+  id,
+  title,
+  description,
+  isAvailable,
+  onClick
+}: CourseItemProps) => {
   return (
     <WithPadding>
       <Wrapper>
@@ -79,12 +90,28 @@ const CourseItem = ({ id, title, description }: Course) => {
         <CourseContent>
           <CourseTitle>{title}</CourseTitle>
           <CourseDescription>{description}</CourseDescription>
-          <ProgressBar>
-            <Bar />
-            <ProgressBarText>Завершено на 0%</ProgressBarText>
-          </ProgressBar>
+
+          {isAvailable ? (
+            <ProgressBar>
+              <Bar />
+              <ProgressBarText>Завершено на 0%</ProgressBarText>
+            </ProgressBar>
+          ) : null}
+
           <Button type="primary">
-            <Link to={`/course/${id}`}>Начать курс</Link>
+            <Link
+              onClick={
+                !isAvailable && onClick
+                  ? (e: React.MouseEvent) => {
+                      e.preventDefault();
+                      onClick(id);
+                    }
+                  : undefined
+              }
+              to={isAvailable ? `/course/${id}` : ''}
+            >
+              {isAvailable ? 'Начать курс' : 'Купить курс'}
+            </Link>
           </Button>
         </CourseContent>
       </Wrapper>
