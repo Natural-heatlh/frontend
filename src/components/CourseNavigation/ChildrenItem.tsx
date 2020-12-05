@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavLink, NavLinkProps} from 'react-router-dom';
+import { NavLink, NavLinkProps } from 'react-router-dom';
 import styled from 'styled-components';
 import { Checkbox } from 'antd';
 import { ReactComponent as PapersIcon } from '../../static/papers.svg';
@@ -10,11 +10,11 @@ const LinkWrapper = styled(NavLink)<NavLinkProps>`
   color: rgba(38, 38, 38, 1);
   padding: 12px 15px;
 
-  &.${props => props.activeClassName} {
-    background: #EBF5F4;
+  &.${(props) => props.activeClassName} {
+    background: #ebf5f4;
 
     &:hover {
-      background: #EBF5F4;
+      background: #ebf5f4;
     }
   }
 
@@ -57,13 +57,18 @@ type Props = {
   index: number;
   item?: any;
   courseUrl: string;
+  isPassed?: boolean;
 };
 
-const ChildrenItem = ({ index, item, courseUrl }: Props) => {
+const ChildrenItem = ({ index, item, courseUrl, isPassed }: Props) => {
+  console.log('isPassed', isPassed);
   return (
-    <LinkWrapper activeClassName="active" to={`${courseUrl}/lecture/${item.id}`}>
+    <LinkWrapper
+      activeClassName="active"
+      to={`${courseUrl}/lecture/${item.id}`}
+    >
       <TitleWrapper>
-        <Checkbox />
+        <Checkbox checked={isPassed} />
         <Title>
           {index + 1}. {item.title}
         </Title>

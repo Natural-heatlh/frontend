@@ -7,6 +7,7 @@ import query from '../Courses/query.graphql';
 import Preloader from '../../components/Preloader';
 import { CoursesQueryQuery } from '../Courses/query.generated';
 import { Course } from '../../graphql';
+import UserCourseList from '../../components/UserCourseList';
 
 const MyCourses = () => {
   const userContext = useContext(AuthContext);
@@ -26,7 +27,7 @@ const MyCourses = () => {
 
   return (
     <PageContainer pageTitle="Мои курсы">
-      <CourseList courses={availableCourses as Course[]} isAvailable />
+      <UserCourseList courses={availableCourses as Course[]} />
     </PageContainer>
   );
 };
