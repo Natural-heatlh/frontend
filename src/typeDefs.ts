@@ -2,18 +2,20 @@ import { gql } from '@apollo/client';
 
 export const typeDefs = gql`
   type Answer {
+    id: String
     title: String
-    number: Int
+    isCorrect: Boolean
   }
 
   type TestItem {
+    id: String
     question: String
     answers: [Answer]
-    correctAnswerNumber: Int
     isCompleted: Boolean
   }
 
   type Test {
+    id: String
     title: String
     description: String
     type: String
@@ -26,6 +28,7 @@ export const typeDefs = gql`
   }
 
   type Theory {
+    id: String
     title: String
     type: String
     content: String
@@ -34,6 +37,7 @@ export const typeDefs = gql`
   }
 
   type Video {
+    id: String
     title: String
     type: String
     url: String
@@ -54,13 +58,10 @@ export const typeDefs = gql`
     sections: [Section]
   }
 
-  type Progress {
-    id: ID!
-  }
-
   type UserCourse {
-    id: ID!
-    progress: [Progress]
+    courseId: ID!
+    progress: [String]
+    isCompleted: Boolean
   }
 
   type User {
@@ -82,7 +83,6 @@ export const typeDefs = gql`
   input TestItemInput {
     question: String
     answers: [AnswerInput]
-    correctAnswerNumber: Int
     isCompleted: Boolean
   }
 
@@ -119,7 +119,7 @@ export const typeDefs = gql`
 
   input AnswerInput {
     title: String
-    number: Int
+    isCorrect: Boolean
   }
 
   input CreateCourseInput {
@@ -145,5 +145,7 @@ export const typeDefs = gql`
     createCourse(input: CreateCourseInput): Course
     updateCourse(id: ID!, input: updateCourseInput): Course
     deleteCourse(id: ID!): Course
+    buyCourse(id: ID!): User
+    addToProgress(id: ID!, courseId: ID!): User
   }
 `;

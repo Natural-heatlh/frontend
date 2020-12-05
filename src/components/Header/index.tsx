@@ -2,8 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useQuery } from '@apollo/client';
 import { ReactComponent as LogoImg } from '../../static/logo.svg';
 import Container from '../Container';
+import query from '../../pages/Courses/query.graphql';
 import Navigation from './Navigation';
 import HeaderRight from './HeaderRight';
 
@@ -37,6 +39,7 @@ const HeaderLeft = styled.div`
 
 const Header = () => {
   const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
+  const courses = useSelector((state: any) => state.courses);
 
   return (
     <HeaderWrapper>
@@ -45,7 +48,9 @@ const Header = () => {
           <Logo to="/courses">
             <LogoImg />
           </Logo>
-          {isLoggedIn ? <Navigation /> : null}
+          {isLoggedIn && courses && courses.length > 0 ? (
+            <Navigation courses={courses} />
+          ) : null}
         </HeaderLeft>
         <HeaderRight isLoggedIn={isLoggedIn} />
       </StyledContend>
