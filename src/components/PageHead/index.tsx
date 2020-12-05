@@ -2,14 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 import Container from '../Container';
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ withTitleMargin?: boolean }>`
   height: 90px;
   background: #ebf5f4;
   width: 100%;
   display: flex;
   align-items: center;
-  border-bottom: 3px solid #e8e8e8;
-  margin-bottom: 30px;
+
+  ${(props) =>
+    props.withTitleMargin &&
+    `margin-bottom: 30px;
+    border-bottom: 3px solid #e8e8e8;
+    `}
 `;
 
 const StyledContainer = styled(Container)`
@@ -20,11 +24,12 @@ const StyledContainer = styled(Container)`
 
 type Props = {
   children: React.ReactNode;
+  withTitleMargin?: boolean;
 };
 
-const PageHead = ({ children }: Props) => {
+const PageHead = ({ children, withTitleMargin }: Props) => {
   return (
-    <Wrapper>
+    <Wrapper withTitleMargin={withTitleMargin}>
       <StyledContainer>{children}</StyledContainer>
     </Wrapper>
   );

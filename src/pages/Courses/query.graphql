@@ -1,0 +1,20 @@
+#import '../Course/fragment.graphql'
+
+query CoursesQuery {
+  courses {
+    id
+    ...CourseFragment
+  }
+}
+
+mutation BuyCourse($id: ID!) {
+  buyCourse(id: $id) {
+    email
+    id
+    courses {
+      courseId
+      progress
+      isCompleted
+    }
+  }
+}
