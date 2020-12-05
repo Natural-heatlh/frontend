@@ -45,7 +45,7 @@ const HeaderRight = ({ isLoggedIn }: Props) => {
           logout();
         }
       }}
-      to="/"
+      to="/logout"
     >
       Выход
     </NavItem>

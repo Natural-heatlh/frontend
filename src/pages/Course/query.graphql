@@ -1,0 +1,18 @@
+#import './fragment.graphql'
+
+query CourseQuery($id: ID!) {
+  course(id: $id) {
+    ...CourseFragment
+  }
+}
+
+mutation AddToProgress($id: ID!, $courseId: ID!) {
+  addToProgress(id: $id, courseId: $courseId) {
+    id
+    courses {
+      courseId
+      progress
+      isCompleted
+    }
+  }
+}

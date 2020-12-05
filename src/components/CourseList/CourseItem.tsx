@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
+import { Link } from 'react-router-dom';
+import { Course } from '../../graphql';
 
 const CourseHead = styled.div`
   height: 250px;
@@ -18,6 +20,7 @@ const CourseTitle = styled.h3`
 `;
 
 const WithPadding = styled.div`
+  width: calc(100% / 3);
   padding: 12px;
   &:first-child {
     padding-left: 0;
@@ -46,16 +49,11 @@ const ProgressBarText = styled.span`
 `;
 
 const Wrapper = styled.div`
-  width: calc(100% / 3);
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   background: #ffffff;
   border-radius: 5px;
-
-  &:first-child {
-    width: calc(100% / 3 - 12px);
-  }
 `;
 
 const CourseContent = styled.div`
@@ -69,7 +67,18 @@ const CourseDescription = styled.p`
   line-height: 24px;
 `;
 
-const CourseItem = () => {
+interface CourseItemProps extends Course {
+  isAvailable?: boolean;
+  onClick?: (id: string) => void;
+}
+
+const CourseItem = ({
+  id,
+  title,
+  description,
+  isAvailable,
+  onClick
+}: CourseItemProps) => {
   return (
     <WithPadding>
       <Wrapper>
@@ -78,18 +87,32 @@ const CourseItem = () => {
             background: `url(https://i.pinimg.com/originals/b9/17/1b/b9171b877a6721ffc9db17bfe2d6a482.png)`
           }}
         />
-
         <CourseContent>
-          <CourseTitle>Бизнес лидер</CourseTitle>
-          <CourseDescription>
-            Вы получите всё, что хотите, если поможете достаточному количеству
-            других людей получить то, что они хотят.
-          </CourseDescription>
-          <ProgressBar>
-            <Bar />
-            <ProgressBarText>Завершено на 0%</ProgressBarText>
-          </ProgressBar>
-          <Button type="primary">Начать курс</Button>
+          <CourseTitle>{title}</CourseTitle>
+          <CourseDescription>{description}</CourseDescription>
+
+          {isAvailable ? (
+            <ProgressBar>
+              <Bar />
+              <ProgressBarText>Завершено на 0%</ProgressBarText>
+            </ProgressBar>
+          ) : null}
+
+          <Button type="primary">
+            <Link
+              onClick={
+                !isAvailable && onClick
+                  ? (e: React.MouseEvent) => {
+                      e.preventDefault();
+                      onClick(id);
+                    }
+                  : undefined
+              }
+              to={isAvailable ? `/course/${id}` : ''}
+            >
+              {isAvailable ? 'Начать курс' : 'Купить курс'}
+            </Link>
+          </Button>
         </CourseContent>
       </Wrapper>
     </WithPadding>
