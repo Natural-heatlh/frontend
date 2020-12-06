@@ -1,5 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import {Input, Form, Button, Alert} from 'antd';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
+
+const SliderWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
 interface State {
   visible: boolean,
@@ -65,6 +72,41 @@ const Theory = () => {
         >
           <Input.TextArea rows={5} />
         </Form.Item>
+        <Form.List name="slides">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map((field, i) => (
+                <SliderWrapper key={i}>
+                  <Form.Item
+                    label={`${i+1}. Ссылка на слайд`}
+                    key={i}
+                    // name={`${i+1}_testTitle`}
+                    name={[field.name, `url`]}
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Пожалуйста введите ссылку на слайд!'
+                      }
+                    ]}
+                    style={{ width: '100%', marginBottom: '50px' }}
+                  >
+                    <Input
+                      placeholder={'Введите ссылку на слайд'}
+                      key={`${i+1}_key`}
+                      style={{ width: '100%' }}
+                    />
+                  </Form.Item>
+                  <MinusCircleOutlined onClick={() => remove(field.name)} />
+              </SliderWrapper>
+              ))}
+              <Form.Item>
+                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                  Добавить слайд
+                </Button>
+              </Form.Item>
+            </>
+          )}
+          </Form.List>
         <Form.Item>
           <Button type="primary" htmlType="submit">
             Принять
