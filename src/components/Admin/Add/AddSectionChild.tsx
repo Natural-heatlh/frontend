@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { SectionChildren } from '../../../types';
 import Theory from './Theory';
 import Video from './Video';
-import Test from './Test';
+import TestComponent from './Test';
 
 const { Option } = Select;
 
@@ -55,7 +55,7 @@ const AddSectionChild = () => {
       >
         {selected === SectionChildren.THEORY && <Theory />}
         {selected === SectionChildren.VIDEO && <Video />}
-        {selected === SectionChildren.TEST && <Test />}
+        {selected === SectionChildren.TEST && <TestComponent />}
       </Drawer>
     </React.Fragment>
   );

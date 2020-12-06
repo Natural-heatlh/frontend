@@ -1,12 +1,12 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import { Form, Input, Tabs } from 'antd';
 import styled from 'styled-components';
+import { EditOutlined } from '@ant-design/icons';
 import {useDispatch, useSelector} from 'react-redux';
 import { setCourse } from '../../../slices/admin/course';
 import { id } from '../../../utils';
 
 import { CreateCourseInput } from '../../../graphql';
-import EditIcon from '../Icons/EditIcon';
 
 import {State} from '../../../types/state';
 import AddModal from './AddModal';
@@ -73,19 +73,6 @@ const AddForm = () => {
 
   return (
     <>
-      <AddModal
-        title="Редактирование"
-        visible={isEditing}
-        setMode={setEditingMode}
-        onOk={handleEditSection}
-        okText="Изменить"
-        cancelText="Отменить изменение"
-        propsValue={
-          state.sections?.find((_, index) => index === editableSectionIndex)?.title as string
-        }
-        error={isExists ? 'Раздел с таким именем существует!' : ''}
-        onErrorClose={() => setIsExists(false)}
-      />
       <Form
         onFinish={() => {
           console.log('finish');
@@ -97,6 +84,7 @@ const AddForm = () => {
           name="courseTitle"
           rules={[
             {
+              required: true,
               message: 'Пожалуйста введите назавание курса!'
             }
           ]}
@@ -125,7 +113,7 @@ const AddForm = () => {
                         setIndex(i);
                       }}
                     >
-                      <EditIcon />
+                      <EditOutlined />
                     </EditIconWrapper>
                   </TabTitleWrapper>
                 }
@@ -137,6 +125,19 @@ const AddForm = () => {
           </Tabs>
         </div>
       </Form>
+      <AddModal
+        title="Редактирование"
+        visible={isEditing}
+        setMode={setEditingMode}
+        onOk={handleEditSection}
+        okText="Изменить"
+        cancelText="Отменить изменение"
+        propsValue={
+          state.sections?.find((_, index) => index === editableSectionIndex)?.title as string
+        }
+        error={isExists ? 'Раздел с таким именем существует!' : ''}
+        onErrorClose={() => setIsExists(false)}
+      />
     </>
   )
 };
