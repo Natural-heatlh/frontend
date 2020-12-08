@@ -35,10 +35,11 @@ const testSlice = createSlice({
   name: 'testResult',
   initialState: [] as TestItem[],
   reducers: {
-    setTest: setTestReducer
+    setTest: setTestReducer,
+    resetTest: (state: State, action) => (state = [])
   }
 });
 
-export const { setTest } = testSlice.actions;
+export const { setTest, resetTest } = testSlice.actions;
 
 export default testSlice.reducer;

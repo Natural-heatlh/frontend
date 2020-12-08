@@ -2,8 +2,9 @@ import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { Radio } from 'antd';
 import { useDispatch } from 'react-redux';
-import { Test, TestItem } from '../../graphql';
+import { TestItem } from '../../graphql';
 import { setTest } from '../../slices/actions';
+import { Item } from './index';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -31,10 +32,12 @@ const Answer = styled(Radio)`
   justify-content: flex-start;
 `;
 
-interface QuizItemProps extends TestItem {}
+interface QuizItemProps extends TestItem {
+  currentAnswer: Item;
+}
 
-const QuizItem = ({ id, question, answers }: QuizItemProps) => {
-  const [value, setValue] = useState(null);
+const QuizItem = ({ id, question, answers, currentAnswer }: QuizItemProps) => {
+  const [value, setValue] = useState(currentAnswer?.value || null);
   const dispatch = useDispatch();
 
   const handleChange = useCallback(
@@ -47,13 +50,16 @@ const QuizItem = ({ id, question, answers }: QuizItemProps) => {
         })
       );
     },
-    [setValue]
+    [setValue, dispatch, id]
   );
 
   return (
     <Wrapper key={id}>
       <Question>{question}</Question>
-      <AnswersWrapper value={value} onChange={handleChange}>
+      <AnswersWrapper
+        value={currentAnswer ? value : null}
+        onChange={handleChange}
+      >
         {answers?.map((answ) => (
           <Answer value={answ?.id} key={answ?.id}>
             {answ?.title}

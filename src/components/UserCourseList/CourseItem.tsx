@@ -63,9 +63,11 @@ export const UserCourseItem = ({
   const userContext = useContext(AuthContext);
   const flattenCourse = useMemo(() => {
     // TODO fix type
-    return sections?.reduce((acc: Array<any>, item) => {
-      return [...acc, ...item?.children];
-    }, []);
+    return (
+      sections?.reduce((acc: Array<any>, item) => {
+        return [...acc, ...item?.children];
+      }, []) || []
+    );
   }, [sections]);
 
   const userCourse = useMemo(() => {
@@ -96,7 +98,19 @@ export const UserCourseItem = ({
             <ProgressBarText>Завершено на {percent}%</ProgressBarText>
           </ProgressBar>
           <Button type="primary">
-            <Link to={`/course/${id}`}>Начать курс</Link>
+            <Link
+              to={
+                percent === 0
+                  ? `/course/${id}/lecture/${flattenCourse[0].id}`
+                  : `/course/${id}/lecture/${
+                      userCourse?.progress && userCourse.progress.length > 0
+                        ? userCourse.progress[userCourse.progress.length - 1]
+                        : flattenCourse[0].id
+                    }`
+              }
+            >
+              {percent === 0 ? 'Начать курс' : 'Продолжить курс'}
+            </Link>
           </Button>
         </CourseContent>
       </Wrapper>

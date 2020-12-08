@@ -6,9 +6,8 @@ import Preloader from '../../components/Preloader';
 import PageContainer from '../../components/PageContainer';
 import CourseContent from '../../components/CourseContent';
 import { AuthContext } from '../../components/Auth/AuthCheck';
-import { Course } from '../../graphql';
+import { Course, Section } from '../../graphql';
 import query from './query.graphql';
-
 
 const CourseWrapper = styled.div`
   display: flex;
@@ -35,7 +34,7 @@ const CoursePage = (props: any) => {
   const { id, lectureId } = props.match.params;
   const userContext = useContext(AuthContext);
 
-  const { data, loading, error } = useQuery(query.CourseQuery, {
+  const { data, loading } = useQuery(query.CourseQuery, {
     variables: {
       id
     }
@@ -50,7 +49,7 @@ const CoursePage = (props: any) => {
       );
       return currentUserCourse?.progress || [];
     }
-  }, [data, id, lectureId, userContext]);
+  }, [data, id, userContext, loading]);
 
   useEffect(() => {
     if (!loading && data?.course) {
@@ -65,17 +64,28 @@ const CoursePage = (props: any) => {
         });
       }
     }
-  }, [lectureId, id, data, loading]);
+  }, [lectureId, id, data, loading, addToProgress]);
+
+  const activeSectionKey = useMemo(() => {
+    if (!loading && data.course) {
+      const activeSection = data.course?.sections?.find((item: Section) =>
+        item?.children?.find((child) => child?.id === lectureId)
+      );
+
+      return activeSection?.id || '';
+    }
+  }, [data, lectureId, loading]);
 
   if (loading) return <Preloader />;
 
   return (
-    <StyledPageContainer pageTitle={data.course.title} withTitleMargin={false}>
+    <StyledPageContainer pageTitle={data.course?.title} withTitleMargin={false}>
       <CourseWrapper>
         <CourseContent lectureId={lectureId} course={data.course} />
         <CourseNavigation
           courseUrl={!lectureId ? props.match.url : `/course/${id}`}
           sections={data.course?.sections}
+          activeSectionKey={activeSectionKey}
           // TODO fix ts
           progress={progress as string[]}
         />

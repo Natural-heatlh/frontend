@@ -33,7 +33,9 @@ const CourseContent = ({ course, lectureId }: Props) => {
       {currentLecture.type === ContentType.THEORY && (
         <Theory lecture={currentLecture as TheoryType} />
       )}
-      {currentLecture.type === ContentType.TEST && <Quiz lecture={currentLecture as Test} />}
+      {currentLecture.type === ContentType.TEST && (
+        <Quiz courseId={course?.id} lecture={currentLecture as Test} />
+      )}
       <AboutCourse />
     </Wrapper>
   );
