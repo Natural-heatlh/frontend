@@ -14,6 +14,24 @@ export const typeDefs = gql`
     isCompleted: Boolean
   }
 
+  input TestResultItemInput {
+    id: String
+    value: String
+  }
+
+  input TestResultInput {
+    courseId: String
+    id: String
+    results: [TestResultItemInput]
+  }
+
+  type TestResult {
+    id: String
+    correct: Int
+    wrong: Int
+    isCompleted: Boolean
+  }
+
   type Test {
     id: String
     title: String
@@ -147,5 +165,6 @@ export const typeDefs = gql`
     deleteCourse(id: ID!): Course
     buyCourse(id: ID!): User
     addToProgress(id: ID!, courseId: ID!): User
+    checkTestResult(input: TestResultInput): TestResult
   }
 `;

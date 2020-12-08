@@ -1,20 +1,18 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import CourseList from '../../components/CourseList';
 import PageContainer from '../../components/PageContainer';
 import Preloader from '../../components/Preloader';
-import { AuthContext } from '../../components/Auth/AuthCheck';
 import query from './query.graphql';
 
 const Courses = () => {
-  const userContext = useContext(AuthContext);
-  const { data, loading, error } = useQuery(query.CoursesQuery);
+  const { data, loading } = useQuery(query.CoursesQuery);
   const [buyCourse] = useMutation(query.BuyCourse);
   const handleBuyCourse = useCallback(
     async (id: string) => {
       return await buyCourse({ variables: { id } });
     },
-    [data, loading]
+    [buyCourse]
   );
 
   if (loading) return <Preloader />;

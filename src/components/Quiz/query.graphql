@@ -1,0 +1,8 @@
+mutation CheckTestResult($input: TestResultInput) {
+  checkTestResult(input: $input) {
+    id
+    wrong
+    correct
+    isCompleted
+  }
+}

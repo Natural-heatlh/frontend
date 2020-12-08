@@ -1,4 +1,4 @@
-export { setIsAuth } from './auth'
-export { setCourse } from './admin/course'
+export { setIsAuth } from './auth';
+export { setCourse } from './admin/course';
 export { setCourses } from './admin/courses';
-export { setTest } from './test';
+export { setTest, resetTest } from './test';

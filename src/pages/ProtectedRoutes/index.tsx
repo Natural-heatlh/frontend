@@ -19,7 +19,7 @@ const Protected = () => {
     if (!loading && !error) {
       dispatch(setCourses(data.courses));
     }
-  }, [data]);
+  }, [data, dispatch, loading, error]);
 
   if (loading) return <Preloader />;
 
