@@ -1,4 +1,5 @@
 fragment CourseFragment on Course {
+  id
   title
   description
   sections {

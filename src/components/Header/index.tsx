@@ -2,10 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useQuery } from '@apollo/client';
 import { ReactComponent as LogoImg } from '../../static/logo.svg';
 import Container from '../Container';
-import query from '../../pages/Courses/query.graphql';
 import Navigation from './Navigation';
 import HeaderRight from './HeaderRight';
 

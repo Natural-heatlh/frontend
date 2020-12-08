@@ -1,4 +1,4 @@
-import React, { createContext, Fragment } from 'react';
+import React, { createContext } from 'react';
 import { useQuery } from '@apollo/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -14,7 +14,7 @@ type Props = {
 export const AuthContext = createContext<User | null>(null);
 
 const AuthCheck = ({ children }: Props) => {
-  const { data, loading, error } = useQuery(query.CurrentUser, {
+  const { data, loading } = useQuery(query.CurrentUser, {
     fetchPolicy: 'network-only'
   });
 
