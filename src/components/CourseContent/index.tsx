@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Course, Test, Theory as TheoryType } from '../../graphql';
 import Quiz from '../Quiz';
 import { ContentType } from '../../types';
+import { usePageTitle } from '../../hooks/usePageTitle';
 import AboutCourse from './AboutCourse';
 import Theory from './Theory';
 
@@ -18,6 +19,8 @@ type Props = {
 
 const CourseContent = ({ course, lectureId }: Props) => {
   const [currentLecture, setCurrentLecture] = useState<TheoryType | Test>({});
+
+  usePageTitle(`${currentLecture.title} - ${course?.title}`);
 
   useEffect(() => {
     course?.sections?.forEach((item) => {
