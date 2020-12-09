@@ -7,8 +7,10 @@ import Preloader from '../../components/Preloader';
 import { CoursesQueryQuery } from '../Courses/query.generated';
 import { Course } from '../../graphql';
 import UserCourseList from '../../components/UserCourseList';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 const MyCourses = () => {
+  usePageTitle('Мои курсы');
   const userContext = useContext(AuthContext);
   const { data, loading } = useQuery<CoursesQueryQuery>(query.CoursesQuery);
 
