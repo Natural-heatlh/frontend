@@ -3,9 +3,11 @@ import { useMutation, useQuery } from '@apollo/client';
 import CourseList from '../../components/CourseList';
 import PageContainer from '../../components/PageContainer';
 import Preloader from '../../components/Preloader';
+import {usePageTitle} from '../../hooks/usePageTitle';
 import query from './query.graphql';
 
 const Courses = () => {
+  usePageTitle('Список курсов');
   const { data, loading } = useQuery(query.CoursesQuery);
   const [buyCourse] = useMutation(query.BuyCourse);
   const handleBuyCourse = useCallback(
