@@ -7,7 +7,6 @@ import PageContainer from '../../components/PageContainer';
 import CourseContent from '../../components/CourseContent';
 import { AuthContext } from '../../components/Auth/AuthCheck';
 import { Course, Section } from '../../graphql';
-import { usePageTitle } from '../../hooks/usePageTitle';
 import query from './query.graphql';
 
 const CourseWrapper = styled.div`
