@@ -72,6 +72,7 @@ export const typeDefs = gql`
   type Course {
     id: ID!
     title: String!
+    image: String
     description: String
     sections: [Section]
   }
