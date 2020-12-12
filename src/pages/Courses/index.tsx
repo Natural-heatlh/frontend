@@ -3,16 +3,18 @@ import { useMutation, useQuery } from '@apollo/client';
 import CourseList from '../../components/CourseList';
 import PageContainer from '../../components/PageContainer';
 import Preloader from '../../components/Preloader';
+import {usePageTitle} from '../../hooks/usePageTitle';
 import query from './query.graphql';
 
 const Courses = () => {
-  const { data, loading, error } = useQuery(query.CoursesQuery);
+  usePageTitle('Список курсов');
+  const { data, loading } = useQuery(query.CoursesQuery);
   const [buyCourse] = useMutation(query.BuyCourse);
   const handleBuyCourse = useCallback(
     async (id: string) => {
       return await buyCourse({ variables: { id } });
     },
-    [data, loading]
+    [buyCourse]
   );
 
   if (loading) return <Preloader />;

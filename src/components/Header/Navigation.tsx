@@ -1,13 +1,12 @@
 import React, {
   Fragment,
-  ReactComponentElement,
   useCallback,
   useMemo,
   useState
 } from 'react';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-import { useLocation, LinkProps, NavLink } from 'react-router-dom';
+import { LinkProps, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as KnowledgeIcon } from '../../static/knowledge.svg';
 import { ReactComponent as GroupIcon } from '../../static/group.svg';
