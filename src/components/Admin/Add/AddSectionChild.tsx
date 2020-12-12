@@ -2,9 +2,9 @@ import React, { useCallback, useState } from 'react';
 import { Button, Drawer, Select } from 'antd';
 import styled from 'styled-components';
 import { SectionChildren } from '../../../types';
-import Theory from './Theory';
 import Video from './Video';
 import TestComponent from './Test';
+import TheoryComponent from './Theory';
 
 const { Option } = Select;
 
@@ -53,7 +53,7 @@ const AddSectionChild = () => {
         onClose={() => setIsOpened(false)}
         visible={drawerIsOpened}
       >
-        {selected === SectionChildren.THEORY && <Theory />}
+        {selected === SectionChildren.THEORY && <TheoryComponent />}
         {selected === SectionChildren.VIDEO && <Video />}
         {selected === SectionChildren.TEST && <TestComponent />}
       </Drawer>

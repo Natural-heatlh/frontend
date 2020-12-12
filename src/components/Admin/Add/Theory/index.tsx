@@ -1,42 +1,49 @@
-import React, { useCallback, useState } from 'react';
-import {Input, Form, Button, Alert} from 'antd';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Input, Form, Button } from 'antd';
+import { useDispatch } from 'react-redux';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+
+import { setTheory } from '../../../../slices/actions';
+import { Theory } from '../../../../graphql';
 
 const SliderWrapper = styled.div`
   display: flex;
   flex-direction: row;
 `;
 
-interface State {
-  visible: boolean,
-  type?: 'success' | 'error' | 'info' | 'warning' | undefined,
-  message?: string,
-}
+const TheoryComponent = () => {
+  const [state, setState] = useState<Theory>({
+   title: "", content: '', slides: [], audio: '',
+  });
 
-const Theory = () => {
-  const [alert, setAlert] = useState<State>({ visible: false } as State);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setTheory(state as Theory))
+  }, [dispatch, state]);
 
   const onFinish = useCallback(
     (values) => {
+      setState(values);
       // redux action
       console.log(values)
-      setAlert({
-        visible: true,
-        type: 'success',
-        message: 'Успех!',
-      });
+      // setAlert({
+      //   visible: true,
+      //   type: 'success',
+      //   message: 'Успех!',
+      // });
     },
     []
   );
 
   const onFinishFailed = useCallback(
     () => {
-      setAlert({
-        visible: true,
-        type: 'error',
-        message: 'Ошибка!',
-      });
+      // setAlert({
+      //   visible: true,
+      //   type: 'error',
+      //   message: 'Ошибка!',
+      // });
     },
     []
   );
@@ -50,7 +57,7 @@ const Theory = () => {
       >
         <Form.Item
           label="Заголовок теории"
-          name="theoryTitle"
+          name="title"
           rules={[
             {
               required: true,
@@ -62,7 +69,7 @@ const Theory = () => {
         </Form.Item>
         <Form.Item
           label="Теория"
-          name="theoryContent"
+          name="content"
           rules={[
             {
               required: true,
@@ -71,6 +78,12 @@ const Theory = () => {
           ]}
         >
           <Input.TextArea rows={5} />
+        </Form.Item>
+        <Form.Item
+          label="Ссылка на аудио"
+          name="audio"
+        >
+          <Input />
         </Form.Item>
         <Form.List name="slides">
           {(fields, { add, remove }) => (
@@ -112,10 +125,10 @@ const Theory = () => {
             Принять
           </Button>
         </Form.Item>
-        { alert?.visible && <Alert message={alert?.message} type={alert?.type} /> }
+        {/*{ alert?.visible && <Alert message={alert?.message} type={alert?.type} /> }*/}
       </Form>
     </React.Fragment>
   );
 };
 
-export default Theory;
+export default TheoryComponent;

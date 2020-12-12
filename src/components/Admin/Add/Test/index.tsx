@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import {Answer, Maybe, Scalars, Test, TestItem} from '../../../../graphql';
 import { ContentType } from '../../../../types';
-import { CustomForm } from './CustomForm';
+import { TestForm } from './TestForm';
 
 const answerIndexes = [1, 2, 3, 4];
 
@@ -47,10 +47,10 @@ const TestComponent = () => {
       items: mapItems(value.items)
     }
     console.log('val >', result);
-  }, []);
+  }, [mapItems]);
 
   return (
-    <CustomForm
+    <TestForm
       onChange={onChange}
       onFinish={onFinish}
       fields={fields}
