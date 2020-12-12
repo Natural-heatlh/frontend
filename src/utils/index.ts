@@ -6,7 +6,7 @@ export const id = () => {
   // after the decimal.
   return (
     '_' +
-    new Date()
+    Date.now()
       .toString()
       .substr(5) +
     Math.random()

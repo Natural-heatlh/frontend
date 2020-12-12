@@ -45,7 +45,7 @@ interface Props {
   onFinish: (any?: any) => void,
 }
 
-export const CustomForm = ({ onChange, fields, onFinish } : Props) => {
+export const TestForm = ({ onChange, fields, onFinish } : Props) => {
   return (
     <>
       <Form
