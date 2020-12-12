@@ -3,12 +3,11 @@ import { Form, Input, Tabs } from 'antd';
 import styled from 'styled-components';
 import { EditOutlined } from '@ant-design/icons';
 import {useDispatch, useSelector} from 'react-redux';
+
 import { setCourse } from '../../../slices/admin/course';
 import { id } from '../../../utils';
+import {Course} from '../../../graphql';
 
-import { CreateCourseInput } from '../../../graphql';
-
-import {State} from '../../../types/state';
 import AddModal from './AddModal';
 import AddSection from './AddSection';
 import AddSectionChild from './AddSectionChild';
@@ -28,24 +27,24 @@ const EditIconWrapper = styled.a`
   }
 `;
 
-
 const AddForm = () => {
-  const [state, setState] = useState<CreateCourseInput>({
-    title: '',
-    description: '',
-    sections: []
+  const [state, setState] = useState<Course>({
+    __typename: "Course", id: id(), description: undefined, sections: [], title: ""
   });
   const [isEditing, setEditingMode] = useState(false);
   const [editableSectionIndex, setIndex] = useState<number | null>(null);
   const [isExists, setIsExists] = useState<boolean>(false);
 
   // const course = useSelector<State, CourseType>((state) => state.course);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(setCourse(state));
+  }, [dispatch, state])
 
-  // useEffect(() => {
-  //   dispatch(setCourse(state))
-  // }, [dispatch, state]);
+  const changeString = useCallback((e, mode) => {
+    setState({ ...state, [mode]: e.target.value })
+  }, [state]);
 
   const onRemove = useCallback((targetKey, action) => {
     if (action === 'remove') {
@@ -65,7 +64,7 @@ const AddForm = () => {
       setState({
         ...state,
         sections: state.sections?.map((item, index) =>
-          index === editableSectionIndex ? { ...item, title: value } : item),
+          index === editableSectionIndex ? { id: id(), ...item, title: value } : item),
       });
     }
     setEditingMode(false);
@@ -81,7 +80,7 @@ const AddForm = () => {
       >
         <Form.Item
           label="Заголовок курса"
-          name="courseTitle"
+          name="title"
           rules={[
             {
               required: true,
@@ -89,10 +88,10 @@ const AddForm = () => {
             }
           ]}
         >
-          <Input />
+          <Input onBlur={e => changeString(e, 'title')} />
         </Form.Item>
         <Form.Item label="Описание курса" name="courseDescription">
-          <Input />
+          <Input.TextArea onBlur={e => changeString(e, 'description')} rows={3} />
         </Form.Item>
         <div>
           <h2>Разделы курса</h2>
