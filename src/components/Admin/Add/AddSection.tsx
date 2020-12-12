@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react';
-import { Button, Alert } from 'antd';
+import { Button } from 'antd';
 import styled from 'styled-components';
-import { CreateCourseInput } from '../../../graphql';
+import { Course } from '../../../graphql';
+import { id } from '../../../utils';
 
 import AddModal from './AddModal';
 
@@ -14,8 +15,8 @@ const AddButton = styled(Button)`
 `;
 
 type Props = {
-  setCourse: (course: CreateCourseInput) => void;
-  course: CreateCourseInput;
+  setCourse: (course: Course) => void;
+  course: Course;
 };
 
 const AddSection = (props: Props) => {
@@ -34,6 +35,7 @@ const AddSection = (props: Props) => {
         sections: [
           ...course.sections,
           {
+            id: id(),
             title: value
           }
         ]
