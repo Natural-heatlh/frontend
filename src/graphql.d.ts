@@ -29,6 +29,25 @@ export type TestItem = {
   isCompleted?: Maybe<Scalars['Boolean']>;
 };
 
+export type TestResultItemInput = {
+  id?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type TestResultInput = {
+  courseId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  results?: Maybe<Array<Maybe<TestResultItemInput>>>;
+};
+
+export type TestResult = {
+  __typename?: 'TestResult';
+  id?: Maybe<Scalars['String']>;
+  correct?: Maybe<Scalars['Int']>;
+  wrong?: Maybe<Scalars['Int']>;
+  isCompleted?: Maybe<Scalars['Boolean']>;
+};
+
 export type Test = {
   __typename?: 'Test';
   id?: Maybe<Scalars['String']>;
@@ -75,6 +94,7 @@ export type Course = {
   __typename?: 'Course';
   id: Scalars['ID'];
   title: Scalars['String'];
+  image?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   sections?: Maybe<Array<Maybe<Section>>>;
 };
@@ -182,6 +202,7 @@ export type Mutation = {
   deleteCourse?: Maybe<Course>;
   buyCourse?: Maybe<User>;
   addToProgress?: Maybe<User>;
+  checkTestResult?: Maybe<TestResult>;
 };
 
 
@@ -209,6 +230,11 @@ export type MutationBuyCourseArgs = {
 export type MutationAddToProgressArgs = {
   id: Scalars['ID'];
   courseId: Scalars['ID'];
+};
+
+
+export type MutationCheckTestResultArgs = {
+  input?: Maybe<TestResultInput>;
 };
 
 export type CacheControlScope = 
@@ -298,6 +324,10 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   TestItem: ResolverTypeWrapper<TestItem>;
+  TestResultItemInput: TestResultItemInput;
+  TestResultInput: TestResultInput;
+  TestResult: ResolverTypeWrapper<TestResult>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Test: ResolverTypeWrapper<Test>;
   Slide: ResolverTypeWrapper<Slide>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
@@ -330,6 +360,10 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   Boolean: Scalars['Boolean'];
   TestItem: TestItem;
+  TestResultItemInput: TestResultItemInput;
+  TestResultInput: TestResultInput;
+  TestResult: TestResult;
+  Int: Scalars['Int'];
   Test: Test;
   Slide: Slide;
   ID: Scalars['ID'];
@@ -366,6 +400,14 @@ export type TestItemResolvers<ContextType = any, ParentType extends ResolversPar
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   question?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   answers?: Resolver<Maybe<Array<Maybe<ResolversTypes['Answer']>>>, ParentType, ContextType>;
+  isCompleted?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type TestResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['TestResult'] = ResolversParentTypes['TestResult']> = {
+  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  correct?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  wrong?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   isCompleted?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -417,6 +459,7 @@ export type SectionResolvers<ContextType = any, ParentType extends ResolversPare
 export type CourseResolvers<ContextType = any, ParentType extends ResolversParentTypes['Course'] = ResolversParentTypes['Course']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   sections?: Resolver<Maybe<Array<Maybe<ResolversTypes['Section']>>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -454,6 +497,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteCourse?: Resolver<Maybe<ResolversTypes['Course']>, ParentType, ContextType, RequireFields<MutationDeleteCourseArgs, 'id'>>;
   buyCourse?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationBuyCourseArgs, 'id'>>;
   addToProgress?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationAddToProgressArgs, 'id' | 'courseId'>>;
+  checkTestResult?: Resolver<Maybe<ResolversTypes['TestResult']>, ParentType, ContextType, RequireFields<MutationCheckTestResultArgs, never>>;
 };
 
 export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
@@ -463,6 +507,7 @@ export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
 export type Resolvers<ContextType = any> = {
   Answer?: AnswerResolvers<ContextType>;
   TestItem?: TestItemResolvers<ContextType>;
+  TestResult?: TestResultResolvers<ContextType>;
   Test?: TestResolvers<ContextType>;
   Slide?: SlideResolvers<ContextType>;
   Theory?: TheoryResolvers<ContextType>;

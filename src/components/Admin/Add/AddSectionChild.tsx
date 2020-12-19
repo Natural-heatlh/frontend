@@ -1,7 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import { Button, Drawer, Select } from 'antd';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 import { SectionChildren } from '../../../types';
+import { setSectionChild } from '../../../slices/actions';
 import Video from './Video';
 import TestComponent from './Test';
 import TheoryComponent from './Theory';
@@ -13,10 +15,16 @@ const StyledSelect = styled(Select)`
   margin-right: 10px;
 `;
 
-const AddSectionChild = () => {
+type Props = {
+  activeSection?: string;
+};
+
+const AddSectionChild = ({ activeSection }: Props) => {
   const [selected, setSelected] = useState<SectionChildren>(
     SectionChildren.THEORY
   );
+
+  const dispatch = useDispatch();
 
   const [drawerIsOpened, setIsOpened] = useState(false);
 
@@ -25,6 +33,18 @@ const AddSectionChild = () => {
       setSelected(value);
     },
     [setSelected]
+  );
+
+  const handleAddChild = useCallback(
+    (child) => {
+      const payload = {
+        child,
+        activeSection
+      };
+      dispatch(setSectionChild(payload));
+      setIsOpened(false);
+    },
+    [dispatch, activeSection]
   );
 
   return (
@@ -53,9 +73,15 @@ const AddSectionChild = () => {
         onClose={() => setIsOpened(false)}
         visible={drawerIsOpened}
       >
-        {selected === SectionChildren.THEORY && <TheoryComponent />}
-        {selected === SectionChildren.VIDEO && <Video />}
-        {selected === SectionChildren.TEST && <TestComponent />}
+        {selected === SectionChildren.THEORY && (
+          <TheoryComponent handleAddChild={handleAddChild} />
+        )}
+        {selected === SectionChildren.VIDEO && (
+          <Video handleAddChild={handleAddChild} />
+        )}
+        {selected === SectionChildren.TEST && (
+          <TestComponent handleAddChild={handleAddChild} />
+        )}
       </Drawer>
     </React.Fragment>
   );

@@ -1,61 +1,44 @@
-import React, { useCallback, useState } from 'react';
-import {Answer, Maybe, Scalars, Test, TestItem} from '../../../../graphql';
-import { ContentType } from '../../../../types';
+import React, { useCallback } from 'react';
+import { Form } from 'antd';
+import { Test } from '../../../../graphql';
 import { TestForm } from './TestForm';
 
 const answerIndexes = [1, 2, 3, 4];
 
-interface State {
-  __typename?: 'Test';
-  id?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-  items?: Maybe<Array<Maybe<TestItem>>>;
+type Props = {
+  handleAddChild: (child: Test) => void;
+};
 
-  // __typename?: 'TestItem';
-  // id?: Maybe<Scalars['String']>;
-  question?: Maybe<Scalars['String']>;
-  answers?: Maybe<Array<Maybe<Answer>>>;
-  isCompleted?: Maybe<Scalars['Boolean']>;
+const TestComponent = ({ handleAddChild }: Props) => {
+  const [form] = Form.useForm();
 
-  // id?: Maybe<Scalars['String']>;
-  // title?: Maybe<Scalars['String']>;
-  // isCorrect?: Maybe<Scalars['Boolean']>;
-}
-
-const TestComponent = () => {
-  const [fields, setFields] = useState<any>({});
-  const onChange = useCallback((value) => {
-    setFields(fields);
-  }, [fields]);
-
-  const mapItems = useCallback(items => {
+  const mapItems = useCallback((items) => {
     return items.map((item: Record<any, any>) => ({
-        question: item.question,
-        answers: answerIndexes.map(index => ({
-            title: item[index],
-            isCorrect: item.answer === index,
-        }))
-      }));
-  }, [])
+      question: item.question,
+      answers: answerIndexes.map((index) => ({
+        title: item[index],
+        isCorrect: item.answer === index
+      }))
+    }));
+  }, []);
 
-  const onFinish = useCallback(value => {
-    const result = {
-      title: value.title,
-      description: value.description,
-      items: mapItems(value.items)
-    }
-    console.log('val >', result);
-  }, [mapItems]);
+  const onFinish = useCallback(
+    (value) => {
+      const result = {
+        title: value.title,
+        description: value.description,
+        type: 'Test',
+        items: mapItems(value.items)
+      };
 
-  return (
-    <TestForm
-      onChange={onChange}
-      onFinish={onFinish}
-      fields={fields}
-    />
-  )
+      handleAddChild(result);
+
+      form.resetFields();
+    },
+    [mapItems]
+  );
+
+  return <TestForm form={form} onFinish={onFinish} />;
 };
 
 export default TestComponent;
