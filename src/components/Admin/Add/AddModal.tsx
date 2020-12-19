@@ -1,6 +1,6 @@
-import React, {useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import {Input, Alert} from 'antd';
+import { Input, Alert } from 'antd';
 import { usePrevious } from '../../../utils';
 
 import AdminModal from '../Components/AdminModal';
@@ -18,15 +18,15 @@ const AddingWrapper = styled.div`
 `;
 
 type Props = {
-  visible: boolean,
-  setMode: (bool: boolean) => void,
-  onOk: (value: any) => void,
-  okText: string,
-  cancelText: string,
-  propsValue?: string,
-  title: string,
-  error?: string,
-  onErrorClose?: () => void,
+  visible: boolean;
+  setMode: (bool: boolean) => void;
+  onOk: (value: any) => void;
+  okText: string;
+  cancelText: string;
+  propsValue?: string;
+  title: string;
+  error?: string;
+  onErrorClose?: () => void;
 };
 
 const AddModal = ({
@@ -39,7 +39,7 @@ const AddModal = ({
   title,
   error,
   onErrorClose
-  } : Props ) => {
+}: Props) => {
   const [value, updateValue] = useState<string>(propsValue || '');
 
   const prev = usePrevious(propsValue);
@@ -67,7 +67,7 @@ const AddModal = ({
       okText={okText}
       cancelText={cancelText}
       bodyStyle={{
-        'paddingTop': '56px',
+        paddingTop: '56px'
       }}
     >
       <AddingWrapper>
@@ -76,19 +76,12 @@ const AddModal = ({
           value={value}
           onChange={(e) => updateValue(e.target.value)}
         />
-        {error ?
-          <Alert
-            type="error"
-            message={error}
-            onClose={onErrorClose}
-            closable
-          />
-        : null}
+        {error ? (
+          <Alert type="error" message={error} onClose={onErrorClose} closable />
+        ) : null}
       </AddingWrapper>
     </AdminModal>
-  )
-}
+  );
+};
 
 export default AddModal;
-
-

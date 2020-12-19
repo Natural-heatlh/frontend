@@ -1,13 +1,10 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Form, Input, Tabs } from 'antd';
 import styled from 'styled-components';
 import { EditOutlined } from '@ant-design/icons';
-import {useDispatch, useSelector} from 'react-redux';
-
+import { useDispatch } from 'react-redux';
 import { setCourse } from '../../../slices/admin/course';
-import { id } from '../../../utils';
-import {Course} from '../../../graphql';
-
+import { AdminCourse } from '../../../types';
 import AddModal from './AddModal';
 import AddSection from './AddSection';
 import AddSectionChild from './AddSectionChild';
@@ -28,47 +25,69 @@ const EditIconWrapper = styled.a`
 `;
 
 const AddForm = () => {
-  const [state, setState] = useState<Course>({
-    __typename: "Course", id: id(), description: undefined, sections: [], title: ""
+  const [state, setState] = useState<AdminCourse>({
+    description: '',
+    image: '',
+    sections: [],
+    title: ''
   });
+
   const [isEditing, setEditingMode] = useState(false);
   const [editableSectionIndex, setIndex] = useState<number | null>(null);
   const [isExists, setIsExists] = useState<boolean>(false);
+  const [activeTabKey, setActiveTabKey] = useState<string>('');
 
-  // const course = useSelector<State, CourseType>((state) => state.course);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(setCourse(state));
-  }, [dispatch, state])
+  }, [dispatch, state]);
 
-  const changeString = useCallback((e, mode) => {
-    setState({ ...state, [mode]: e.target.value })
-  }, [state]);
+  const changeString = useCallback(
+    (e, mode) => {
+      setState({ ...state, [mode]: e.target.value });
+    },
+    [state]
+  );
 
-  const onRemove = useCallback((targetKey, action) => {
-    if (action === 'remove') {
-      setState({
-        ...state,
-        sections: state.sections?.filter(item => item?.title !== targetKey),
-      });
-    }
-  }, [state]);
+  const handleChangeActiveTab = useCallback(
+    (key: string) => {
+      setActiveTabKey(key);
+    },
+    [setActiveTabKey]
+  );
 
-  const handleEditSection = useCallback((value) => {
-    const exists = state?.sections?.find(item => item?.title === value);
-    if (exists) {
-      setIsExists(!!exists);
-      setTimeout(() => setIsExists(false), 1000);
-    } else if (value) {
-      setState({
-        ...state,
-        sections: state.sections?.map((item, index) =>
-          index === editableSectionIndex ? { id: id(), ...item, title: value } : item),
-      });
-    }
-    setEditingMode(false);
-  }, [editableSectionIndex, state]);
+  const onRemove = useCallback(
+    (targetKey, action) => {
+      if (action === 'remove') {
+        setState({
+          ...state,
+          sections: state.sections?.filter((item) => item?.title !== targetKey)
+        });
+      }
+    },
+    [state]
+  );
+
+  const handleEditSection = useCallback(
+    (value) => {
+      const exists = state?.sections?.find((item) => item?.title === value);
+      if (exists) {
+        setIsExists(!!exists);
+        setTimeout(() => setIsExists(false), 1000);
+      } else if (value) {
+        setState({
+          ...state,
+          sections: state.sections?.map((item, index) =>
+            index === editableSectionIndex ? { ...item, title: value } : item
+          )
+        });
+        handleChangeActiveTab(value);
+      }
+      setEditingMode(false);
+    },
+    [editableSectionIndex, state]
+  );
 
   return (
     <>
@@ -88,17 +107,26 @@ const AddForm = () => {
             }
           ]}
         >
-          <Input onBlur={e => changeString(e, 'title')} />
+          <Input onBlur={(e) => changeString(e, 'title')} />
         </Form.Item>
         <Form.Item label="Описание курса" name="courseDescription">
-          <Input.TextArea onBlur={e => changeString(e, 'description')} rows={3} />
+          <Input.TextArea
+            onBlur={(e) => changeString(e, 'description')}
+            rows={3}
+          />
         </Form.Item>
         <div>
           <h2>Разделы курса</h2>
-          <AddSection course={state} setCourse={setState} />
+          <AddSection
+            handleChangeActiveTab={handleChangeActiveTab}
+            course={state}
+            setCourse={setState}
+          />
           <Tabs
             type="editable-card"
+            activeKey={activeTabKey}
             onEdit={onRemove}
+            onTabClick={handleChangeActiveTab}
             hideAdd
           >
             {state.sections?.map((section, i) => (
@@ -118,7 +146,7 @@ const AddForm = () => {
                 }
                 key={section?.title}
               >
-                <AddSectionChild />
+                <AddSectionChild activeSection={activeTabKey} />
               </TabPane>
             ))}
           </Tabs>
@@ -132,13 +160,14 @@ const AddForm = () => {
         okText="Изменить"
         cancelText="Отменить изменение"
         propsValue={
-          state.sections?.find((_, index) => index === editableSectionIndex)?.title as string
+          state.sections?.find((_, index) => index === editableSectionIndex)
+            ?.title as string
         }
         error={isExists ? 'Раздел с таким именем существует!' : ''}
         onErrorClose={() => setIsExists(false)}
       />
     </>
-  )
+  );
 };
 
 export default AddForm;
