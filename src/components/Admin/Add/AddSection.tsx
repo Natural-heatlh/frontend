@@ -1,6 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, {useCallback, useState} from 'react';
 import { Button } from 'antd';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 import { AdminCourse } from '../../../types';
 import AddModal from './AddModal';
 
@@ -44,7 +45,7 @@ const AddSection = (props: Props) => {
         setIsExists(false);
       }
     },
-    [course, setCourse]
+    [course, handleChangeActiveTab, setCourse]
   );
 
   return (
@@ -64,4 +65,6 @@ const AddSection = (props: Props) => {
   );
 };
 
-export default AddSection;
+const mapStateToProps = (state: Record<string, any>) => ({ course: state?.course })
+
+export default connect(mapStateToProps)(AddSection);
