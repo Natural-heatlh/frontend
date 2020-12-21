@@ -86,7 +86,7 @@ const AddForm = () => {
       }
       setEditingMode(false);
     },
-    [editableSectionIndex, state]
+    [editableSectionIndex, handleChangeActiveTab, state]
   );
 
   return (
@@ -119,7 +119,6 @@ const AddForm = () => {
           <h2>Разделы курса</h2>
           <AddSection
             handleChangeActiveTab={handleChangeActiveTab}
-            course={state}
             setCourse={setState}
           />
           <Tabs
