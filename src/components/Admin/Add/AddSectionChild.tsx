@@ -53,7 +53,7 @@ const AddSectionChild = ({ activeSection }: Props) => {
         <StyledSelect
           onChange={handleChange}
           defaultValue={SectionChildren.THEORY}
-          style={{ width: 120 }}
+          style={{ width: 220 }}
         >
           <Option value={SectionChildren.THEORY}>
             {SectionChildren.THEORY}
@@ -61,7 +61,7 @@ const AddSectionChild = ({ activeSection }: Props) => {
           <Option value={SectionChildren.VIDEO}>{SectionChildren.VIDEO}</Option>
           <Option value={SectionChildren.TEST}>{SectionChildren.TEST}</Option>
         </StyledSelect>
-        <Button type="primary" onClick={() => setIsOpened(true)}>
+        <Button type="primary" onClick={() => setIsOpened(true)} style={{ width: 120 }}>
           Добавить
         </Button>
       </div>

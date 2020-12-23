@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Form, Input, Tabs } from 'antd';
+import { Form, Input, Tabs, Popconfirm } from 'antd';
 import styled from 'styled-components';
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, CloseOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { setCourse } from '../../../slices/admin/course';
 import { AdminCourse } from '../../../types';
@@ -57,17 +57,12 @@ const AddForm = () => {
     [setActiveTabKey]
   );
 
-  const onRemove = useCallback(
-    (targetKey, action) => {
-      if (action === 'remove') {
-        setState({
-          ...state,
-          sections: state.sections?.filter((item) => item?.title !== targetKey)
-        });
-      }
-    },
-    [state]
-  );
+  const onConfirm = useCallback((title) => {
+    setState({
+      ...state,
+      sections: state.sections?.filter((item) => item?.title !== title)
+    });
+  }, [state]);
 
   const handleEditSection = useCallback(
     (value) => {
@@ -86,7 +81,7 @@ const AddForm = () => {
       }
       setEditingMode(false);
     },
-    [editableSectionIndex, state]
+    [editableSectionIndex, handleChangeActiveTab, state]
   );
 
   return (
@@ -119,13 +114,11 @@ const AddForm = () => {
           <h2>Разделы курса</h2>
           <AddSection
             handleChangeActiveTab={handleChangeActiveTab}
-            course={state}
             setCourse={setState}
           />
           <Tabs
             type="editable-card"
             activeKey={activeTabKey}
-            onEdit={onRemove}
             onTabClick={handleChangeActiveTab}
             hideAdd
           >
@@ -145,6 +138,16 @@ const AddForm = () => {
                   </TabTitleWrapper>
                 }
                 key={section?.title}
+                closeIcon={
+                  <Popconfirm
+                    title="Вы действительно хотите удалить?"
+                    onConfirm={() => onConfirm(section?.title)}
+                    okText="Да"
+                    cancelText="Нет"
+                  >
+                    <CloseOutlined />
+                  </Popconfirm>
+                }
               >
                 <AddSectionChild activeSection={activeTabKey} />
               </TabPane>
