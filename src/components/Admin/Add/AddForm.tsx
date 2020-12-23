@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Form, Input, Tabs, Popconfirm } from 'antd';
+import { Form, Input, Tabs, Popconfirm, Button } from 'antd';
 import styled from 'styled-components';
 import { EditOutlined, CloseOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
@@ -22,6 +22,21 @@ const EditIconWrapper = styled.a`
   &:hover svg {
     fill: rgba(0, 0, 0, 1);
   }
+`;
+
+const StyledFixedDiv = styled.div`
+   display: flex;
+   align-items: center;
+   justify-content: flex-end;
+   height: 60px;
+   position: fixed;
+   width: 100%;
+   left: 0;
+   bottom: 0;
+   right: 0;
+   background-color: #fff;
+   box-shadow: 0 3px 5px 4px rgba(0,0,0,0.5);
+   z-index: 1000;
 `;
 
 const AddForm = () => {
@@ -169,6 +184,9 @@ const AddForm = () => {
         error={isExists ? 'Раздел с таким именем существует!' : ''}
         onErrorClose={() => setIsExists(false)}
       />
+      <StyledFixedDiv>
+        <Button style={{ marginRight: '10px', width: '120px' }}>Принять</Button>
+      </StyledFixedDiv>
     </>
   );
 };
