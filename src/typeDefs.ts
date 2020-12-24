@@ -145,6 +145,7 @@ export const typeDefs = gql`
     title: String!
     description: String
     sections: [SectionInput]
+    image: String
   }
 
   input updateCourseInput {

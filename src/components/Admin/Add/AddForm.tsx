@@ -5,6 +5,8 @@ import { EditOutlined, CloseOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { setCourse } from '../../../slices/admin/course';
 import { AdminCourse } from '../../../types';
+import Footer from '../Footer';
+import ChildrenTable from '../Components/ChildrenTable';
 import AddModal from './AddModal';
 import AddSection from './AddSection';
 import AddSectionChild from './AddSectionChild';
@@ -22,21 +24,6 @@ const EditIconWrapper = styled.a`
   &:hover svg {
     fill: rgba(0, 0, 0, 1);
   }
-`;
-
-const StyledFixedDiv = styled.div`
-   display: flex;
-   align-items: center;
-   justify-content: flex-end;
-   height: 60px;
-   position: fixed;
-   width: 100%;
-   left: 0;
-   bottom: 0;
-   right: 0;
-   background-color: #fff;
-   box-shadow: 0 3px 5px 4px rgba(0,0,0,0.5);
-   z-index: 1000;
 `;
 
 const AddForm = () => {
@@ -72,12 +59,15 @@ const AddForm = () => {
     [setActiveTabKey]
   );
 
-  const onConfirm = useCallback((title) => {
-    setState({
-      ...state,
-      sections: state.sections?.filter((item) => item?.title !== title)
-    });
-  }, [state]);
+  const onConfirm = useCallback(
+    (title) => {
+      setState({
+        ...state,
+        sections: state.sections?.filter((item) => item?.title !== title)
+      });
+    },
+    [state]
+  );
 
   const handleEditSection = useCallback(
     (value) => {
@@ -169,6 +159,8 @@ const AddForm = () => {
             ))}
           </Tabs>
         </div>
+
+        <ChildrenTable activeSectionName={activeTabKey} />
       </Form>
       <AddModal
         title="Редактирование"
@@ -184,9 +176,7 @@ const AddForm = () => {
         error={isExists ? 'Раздел с таким именем существует!' : ''}
         onErrorClose={() => setIsExists(false)}
       />
-      <StyledFixedDiv>
-        <Button style={{ marginRight: '10px', width: '120px' }}>Принять</Button>
-      </StyledFixedDiv>
+      <Footer />
     </>
   );
 };
