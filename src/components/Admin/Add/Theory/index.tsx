@@ -36,6 +36,7 @@ const TheoryComponent = ({ handleAddChild }: Props) => {
           .map((item: any) => ({ url: item.response?.fileLocation }))
       : [];
 
+
     handleAddChild({
       ...rest,
       audio: audioFile,
