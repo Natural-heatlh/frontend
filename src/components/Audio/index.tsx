@@ -9,10 +9,6 @@ import {
 import { RoundButton } from '../Buttons';
 import './range.less';
 
-type Props = {
-  url?: string | null;
-};
-
 const PlayerWrapper = styled.div`
   height: 50px;
   width: 100%;
@@ -113,7 +109,15 @@ const pad = (str: number) => {
   return ('0' + str).slice(-2);
 };
 
-const AudioPlayer = ({ url }: Props) => {
+const COMPLETE_PERCENT = 80;
+
+type Props = {
+  url?: string | null;
+  addProgress: () => void;
+  isCompleted?: boolean;
+};
+
+const AudioPlayer = ({ url, addProgress, isCompleted }: Props) => {
   const ref = useRef<ReactPlayer>(null);
   const [state, setState] = useState({
     url: null,
@@ -127,6 +131,8 @@ const AudioPlayer = ({ url }: Props) => {
     seeking: false,
     playedSeconds: 0
   });
+
+  const seconds = state.duration * (1 - state.played);
 
   const handleTogglePlay = () => {
     setState({ ...state, playing: !state.playing });
@@ -154,14 +160,15 @@ const AudioPlayer = ({ url }: Props) => {
   };
 
   const handleProgress = (progressState: any) => {
+    if (progressState.played * 100 > COMPLETE_PERCENT && !isCompleted) {
+      addProgress();
+    }
     setState({ ...state, played: progressState.played });
   };
 
   const handleMute = () => {
     setState({ ...state, muted: !state.muted });
   };
-
-  const seconds = state.duration * (1 - state.played);
 
   return (
     <div>

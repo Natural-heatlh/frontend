@@ -160,25 +160,30 @@ const SignUpForm = ({ signUp }: Props) => {
         <Input.Password placeholder="Подтверждение пароля" />
       </FormItem>
 
-      <FormItem name="isPartner">
-        <Checkbox checked={checked} onChange={() => setChecked(!checked)}>
-          Являюсь партнером компании
-        </Checkbox>
+      <FormItem
+        label="Номер телефона"
+        name="phone"
+        rules={[
+          {
+            required: true,
+            message: 'Пожалуйста введите номер телефона!'
+          }
+        ]}
+      >
+        <Input />
       </FormItem>
 
-      {checked ? (
-        <FormItem
-          label="ID"
-          name="partnerID"
-          rules={[
-            {
-              message: 'Пожалуйста введите пароль ID!'
-            }
-          ]}
-        >
-          <Input />
-        </FormItem>
-      ) : null}
+      <FormItem
+        label="Partner ID"
+        name="partnerID"
+        rules={[
+          {
+            message: 'Пожалуйста введите пароль ID!'
+          }
+        ]}
+      >
+        <Input />
+      </FormItem>
 
       <SubmitFormItem>
         <Button style={{ width: '100%' }} type="primary" htmlType="submit">
