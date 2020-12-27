@@ -97,6 +97,8 @@ export type Course = {
   image?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   sections?: Maybe<Array<Maybe<Section>>>;
+  isPublished?: Maybe<Scalars['Boolean']>;
+  isFree?: Maybe<Scalars['Boolean']>;
 };
 
 export type UserCourse = {
@@ -116,6 +118,7 @@ export type User = {
   country?: Maybe<Scalars['String']>;
   partnerID?: Maybe<Scalars['String']>;
   courses?: Maybe<Array<Maybe<UserCourse>>>;
+  phone?: Maybe<Scalars['String']>;
 };
 
 export type SectionInput = {
@@ -169,6 +172,9 @@ export type CreateCourseInput = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   sections?: Maybe<Array<Maybe<SectionInput>>>;
+  image?: Maybe<Scalars['String']>;
+  isPublished?: Maybe<Scalars['Boolean']>;
+  isFree?: Maybe<Scalars['Boolean']>;
 };
 
 export type UpdateCourseInput = {
@@ -462,6 +468,8 @@ export type CourseResolvers<ContextType = any, ParentType extends ResolversParen
   image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   sections?: Resolver<Maybe<Array<Maybe<ResolversTypes['Section']>>>, ParentType, ContextType>;
+  isPublished?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  isFree?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -481,6 +489,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   partnerID?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   courses?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserCourse']>>>, ParentType, ContextType>;
+  phone?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

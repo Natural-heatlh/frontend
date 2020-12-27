@@ -2,13 +2,20 @@ import React from 'react';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 import styled from 'styled-components';
 import { Checkbox } from 'antd';
+import { isTest } from '@apollo/client/utilities/common/environment';
 import { ReactComponent as PapersIcon } from '../../static/papers.svg';
 import { ReactComponent as PlayIcon } from '../../static/play.svg';
 
-const LinkWrapper = styled(NavLink)<NavLinkProps>`
+
+interface LinkProps extends NavLinkProps {
+  disabled?: boolean;
+}
+
+const LinkWrapper = styled(NavLink)<LinkProps>`
   //fix
   color: rgba(38, 38, 38, 1);
   padding: 12px 15px;
+  position: relative;
 
   &.${(props) => props.activeClassName} {
     background: #ebf5f4;
@@ -17,6 +24,17 @@ const LinkWrapper = styled(NavLink)<NavLinkProps>`
       background: #ebf5f4;
     }
   }
+
+  ${props => props.disabled && `
+    &::before {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.01);
+    }
+  `}
 
   &:hover {
     color: rgba(38, 38, 38, 1);
@@ -58,13 +76,21 @@ type Props = {
   item?: any;
   courseUrl: string;
   isPassed?: boolean;
+  disabled?: boolean;
 };
 
-const ChildrenItem = ({ index, item, courseUrl, isPassed }: Props) => {
-  console.log('isPassed', isPassed);
+const ChildrenItem = ({
+  index,
+  item,
+  courseUrl,
+  isPassed,
+  disabled
+}: Props) => {
   return (
     <LinkWrapper
       activeClassName="active"
+      onClick={disabled ? (e) => e.preventDefault() : undefined}
+      disabled={disabled}
       to={`${courseUrl}/lecture/${item.id}`}
     >
       <TitleWrapper>

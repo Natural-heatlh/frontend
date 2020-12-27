@@ -15,7 +15,6 @@ type Props = {
 };
 
 const CourseList = ({ courses, isAvailable, onClick }: Props) => {
-
   return (
     <Wrapper>
       {courses?.map((item) => (

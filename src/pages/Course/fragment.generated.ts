@@ -2,7 +2,7 @@ import * as SchemaTypes from '../../graphql.d';
 
 export type CourseFragmentFragment = (
   { __typename?: 'Course' }
-  & Pick<SchemaTypes.Course, 'id' | 'title' | 'description'>
+  & Pick<SchemaTypes.Course, 'id' | 'title' | 'image' | 'description' | 'isFree' | 'isPublished'>
   & { sections?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
     { __typename?: 'Section' }
     & Pick<SchemaTypes.Section, 'id' | 'title'>

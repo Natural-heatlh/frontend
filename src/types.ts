@@ -17,4 +17,6 @@ export type AdminCourse = {
   description?: string;
   image?: string;
   sections: Array<Omit<Section, 'id'>>;
+  isPublished?: boolean;
+  isFree?: boolean;
 };
