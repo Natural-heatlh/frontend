@@ -59,20 +59,20 @@ const CourseItem = ({
   title,
   description,
   isAvailable,
-  onClick
+  onClick,
+  image
 }: CourseItemProps) => {
   return (
     <WithPadding>
       <Wrapper>
         <CourseHead
           style={{
-            background: `url(https://i.pinimg.com/originals/b9/17/1b/b9171b877a6721ffc9db17bfe2d6a482.png)`
+            background: `url(${image})`
           }}
         />
         <CourseContent>
           <CourseTitle>{title}</CourseTitle>
           <CourseDescription>{description}</CourseDescription>
-
 
           <Button type="primary">
             <Link

@@ -39,27 +39,17 @@ const SecondCell = styled(Td)`
   width: calc(100% - 200px);
 `;
 
-const AboutCourse = () => {
+type Props = {
+  description?: string | null;
+};
+
+const AboutCourse = ({ description }: Props) => {
   return (
     <Table>
       <TableHead>Об этом курсе</TableHead>
       <Tr>
-        <FirstCell>Подробные данные</FirstCell>
-        <SecondCell>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium
-          asperiores aut commodi corporis cumque deserunt et fugit hic iste
-          laboriosam molestiae molestias neque nesciunt placeat possimus
-          praesentium quae quaerat, ratione.
-        </SecondCell>
-      </Tr>
-      <Tr>
-        <FirstCell>Какие то большие подробные данные о чем то</FirstCell>
-        <SecondCell>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium
-          asperiores aut commodi corporis cumque deserunt et fugit hic iste
-          laboriosam molestiae molestias neque nesciunt placeat possimus
-          praesentium quae quaerat, ratione.
-        </SecondCell>
+        <FirstCell>Описание</FirstCell>
+        <SecondCell>{description}</SecondCell>
       </Tr>
     </Table>
   );

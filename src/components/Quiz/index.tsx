@@ -30,6 +30,7 @@ const StyledButton = styled(Button)`
 type Props = {
   lecture?: Test;
   courseId?: string;
+  addProgress: () => void;
 };
 
 export type Item = {
@@ -37,7 +38,7 @@ export type Item = {
   value: string;
 };
 
-const Quiz = ({ lecture, courseId }: Props) => {
+const Quiz = ({ lecture, courseId, addProgress }: Props) => {
   const [isModalVisible, setVisible] = useState(false);
   const [results, setResults] = useState({
     correct: 0,
@@ -90,6 +91,9 @@ const Quiz = ({ lecture, courseId }: Props) => {
       .then((response) => {
         if (response.data && response.data?.checkTestResult) {
           setResults({ ...response.data?.checkTestResult });
+          if(response?.data?.checkTestResult?.isCompleted) {
+            addProgress();
+          }
         }
       })
       .catch((error) => {

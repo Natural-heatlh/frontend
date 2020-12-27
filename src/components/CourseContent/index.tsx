@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Course, Test, Theory as TheoryType } from '../../graphql';
 import Quiz from '../Quiz';
@@ -17,9 +17,16 @@ type Props = {
   lectureId?: string;
   addProgress: () => void;
   progress?: string[];
+  nextLectureId?: string | null;
 };
 
-const CourseContent = ({ course, lectureId, progress, addProgress }: Props) => {
+const CourseContent = ({
+  course,
+  lectureId,
+  progress,
+  addProgress,
+  nextLectureId
+}: Props) => {
   const [currentLecture, setCurrentLecture] = useState<TheoryType | Test>({});
 
   usePageTitle(`${currentLecture.title} - ${course?.title}`);
@@ -31,11 +38,13 @@ const CourseContent = ({ course, lectureId, progress, addProgress }: Props) => {
         setCurrentLecture(current as any);
       }
     });
-  }, [course, lectureId]);
-
-  usePageTitle(`${currentLecture?.title} - ${course?.title}`);
+  }, [course, lectureId, setCurrentLecture]);
 
   const isCompleted = progress?.includes(currentLecture?.id as string);
+
+  const next = nextLectureId
+    ? `/course/${course?.id}/lecture/${nextLectureId}`
+    : null;
 
   return (
     <Wrapper>
@@ -44,12 +53,13 @@ const CourseContent = ({ course, lectureId, progress, addProgress }: Props) => {
           addProgress={addProgress}
           isCompleted={isCompleted}
           lecture={currentLecture as TheoryType}
+          next={next}
         />
       )}
       {currentLecture.type === ContentType.TEST && (
-        <Quiz courseId={course?.id} lecture={currentLecture as Test} />
+        <Quiz courseId={course?.id} lecture={currentLecture as Test} addProgress={addProgress} />
       )}
-      <AboutCourse />
+      <AboutCourse description={course?.description} />
     </Wrapper>
   );
 };

@@ -1,8 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { Button, Drawer, Select } from 'antd';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 import { SectionChildren } from '../../../types';
-import Theory from '../Theory';
+import { setSectionChild } from '../../../slices/actions';
+import Video from './Video';
+import TestComponent from './Test';
+import TheoryComponent from './Theory';
 
 const { Option } = Select;
 
@@ -11,10 +15,16 @@ const StyledSelect = styled(Select)`
   margin-right: 10px;
 `;
 
-const AddChild = () => {
+type Props = {
+  activeSection?: string;
+};
+
+const AddSectionChild = ({ activeSection }: Props) => {
   const [selected, setSelected] = useState<SectionChildren>(
     SectionChildren.THEORY
   );
+
+  const dispatch = useDispatch();
 
   const [drawerIsOpened, setIsOpened] = useState(false);
 
@@ -25,13 +35,25 @@ const AddChild = () => {
     [setSelected]
   );
 
+  const handleAddChild = useCallback(
+    (child) => {
+      const payload = {
+        child,
+        activeSection
+      };
+      dispatch(setSectionChild(payload));
+      setIsOpened(false);
+    },
+    [dispatch, activeSection]
+  );
+
   return (
     <React.Fragment>
       <div>
         <StyledSelect
           onChange={handleChange}
           defaultValue={SectionChildren.THEORY}
-          style={{ width: 120 }}
+          style={{ width: 220 }}
         >
           <Option value={SectionChildren.THEORY}>
             {SectionChildren.THEORY}
@@ -39,7 +61,7 @@ const AddChild = () => {
           <Option value={SectionChildren.VIDEO}>{SectionChildren.VIDEO}</Option>
           <Option value={SectionChildren.TEST}>{SectionChildren.TEST}</Option>
         </StyledSelect>
-        <Button type="primary" onClick={() => setIsOpened(true)}>
+        <Button type="primary" onClick={() => setIsOpened(true)} style={{ width: 120 }}>
           Добавить
         </Button>
       </div>
@@ -51,10 +73,18 @@ const AddChild = () => {
         onClose={() => setIsOpened(false)}
         visible={drawerIsOpened}
       >
-        {selected === SectionChildren.THEORY && <Theory />}
+        {selected === SectionChildren.THEORY && (
+          <TheoryComponent handleAddChild={handleAddChild} />
+        )}
+        {selected === SectionChildren.VIDEO && (
+          <Video handleAddChild={handleAddChild} />
+        )}
+        {selected === SectionChildren.TEST && (
+          <TestComponent handleAddChild={handleAddChild} />
+        )}
       </Drawer>
     </React.Fragment>
   );
 };
 
-export default AddChild;
+export default AddSectionChild;

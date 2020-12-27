@@ -1,21 +1,36 @@
 import { createSlice, CaseReducer, PayloadAction } from '@reduxjs/toolkit';
-import { Course } from '../../graphql';
+import { AdminCourse } from '../../types';
 
-type State = Course;
+type State = AdminCourse;
 
-const setCourseReducer: CaseReducer<State, PayloadAction<Course>> = (
+const setCourseReducer: CaseReducer<State, PayloadAction<AdminCourse>> = (
   state,
   action
 ) => (state = action.payload);
 
 const courseSlice = createSlice({
   name: 'courses',
-  initialState: {} as Course,
+  initialState: {} as AdminCourse,
   reducers: {
-    setCourse: setCourseReducer
+    setCourse: setCourseReducer,
+    setSectionChild: (state: State, action) => {
+      state.sections = state.sections.map((item) => {
+        if (item.title === action.payload.activeSection) {
+          const updatedChildren = item.children || [];
+          updatedChildren.push(action.payload.child);
+          return {
+            ...item,
+            children: updatedChildren
+          };
+        }
+        return item;
+      });
+      console.log(state.sections);
+      return state;
+    }
   }
 });
 
-export const { setCourse } = courseSlice.actions;
+export const { setCourse, setSectionChild } = courseSlice.actions;
 
 export default courseSlice.reducer;

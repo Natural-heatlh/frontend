@@ -8,10 +8,10 @@ type Props = {
   lecture?: TheoryType;
   addProgress: () => void;
   isCompleted?: boolean;
+  next?: string | null;
 };
 
-const Theory = ({ lecture, addProgress, isCompleted }: Props) => {
-  console.log(lecture);
+const Theory = ({ lecture, addProgress, isCompleted, next }: Props) => {
   return (
     <>
       {lecture?.slides ? (
@@ -19,6 +19,7 @@ const Theory = ({ lecture, addProgress, isCompleted }: Props) => {
           addProgress={addProgress}
           isCompleted={isCompleted}
           slides={lecture?.slides as Slide[]}
+          next={next}
         />
       ) : null}
       {lecture?.content ? (

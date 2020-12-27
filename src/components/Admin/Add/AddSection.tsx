@@ -1,13 +1,9 @@
-import React, { useCallback, useState } from 'react';
-import { Button, Input } from 'antd';
+import React, {useCallback, useState} from 'react';
+import { Button } from 'antd';
 import styled from 'styled-components';
-import { CreateCourseInput } from '../../../graphql';
-
-const SectionNameInput = styled(Input)`
-  max-width: 680px;
-  width: 100%;
-  margin-right: 10px;
-`;
+import { connect } from 'react-redux';
+import { AdminCourse } from '../../../types';
+import AddModal from './AddModal';
 
 const Wrapper = styled.div`
   margin-bottom: 40px;
@@ -18,56 +14,57 @@ const AddButton = styled(Button)`
 `;
 
 type Props = {
-  setCourse: (course: CreateCourseInput) => void;
-  course: CreateCourseInput;
+  setCourse: (course: AdminCourse) => void;
+  handleChangeActiveTab: (key: string) => void
+  course: AdminCourse;
 };
 
 const AddSection = (props: Props) => {
-  const [isAddingMode, setAddingMode] = useState(false);
-  const [value, updateValue] = useState('');
-  const { course, setCourse } = props;
+  const [isAddingMode, setAddingMode] = useState<boolean>(false);
+  const [isExists, setIsExists] = useState<boolean>(false);
+  const { course, setCourse, handleChangeActiveTab} = props;
 
-  const handleAddSection = useCallback(() => {
-    if (value && value.length > 0) {
-      setCourse({
-        ...course,
-        sections: [
-          ...course.sections,
-          {
-            title: value
-          }
-        ]
-      });
-    }
-    updateValue('');
-    setAddingMode(false);
-  }, [course, setCourse, value]);
+  const handleAddSection = useCallback(
+    (value) => {
+      const exists = course?.sections?.find((item) => item?.title === value);
+      if (exists) {
+        setIsExists(!!exists);
+        setTimeout(() => setIsExists(false), 1000);
+      } else if (value && value.length > 0) {
+        setCourse({
+          ...course,
+          sections: [
+            ...course.sections,
+            {
+              title: value
+            }
+          ]
+        });
+        handleChangeActiveTab(value)
+        setAddingMode(false);
+        setIsExists(false);
+      }
+    },
+    [course, handleChangeActiveTab, setCourse]
+  );
 
   return (
     <Wrapper>
       <AddButton onClick={() => setAddingMode(true)}>Добавить раздел</AddButton>
-      {isAddingMode && (
-        <div>
-          <SectionNameInput
-            placeholder="Название раздела"
-            value={value}
-            onChange={(e) => updateValue(e.target.value)}
-          />
-          <Button onClick={handleAddSection} shape="round" type="primary">
-            Добавить
-          </Button>
-          <Button
-            onClick={() => setAddingMode(false)}
-            shape="round"
-            type="primary"
-            danger
-          >
-            Отменить добавлние
-          </Button>
-        </div>
-      )}
+      <AddModal
+        title="Добавление"
+        visible={isAddingMode}
+        onOk={(value) => handleAddSection(value)}
+        setMode={setAddingMode}
+        okText="Добавить"
+        cancelText="Отменить добавление"
+        error={isExists ? 'Раздел с таким именем существует!' : ''}
+        onErrorClose={() => setIsExists(false)}
+      />
     </Wrapper>
   );
 };
 
-export default AddSection;
+const mapStateToProps = (state: Record<string, any>) => ({ course: state?.course })
+
+export default connect(mapStateToProps)(AddSection);

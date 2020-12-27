@@ -1,16 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Collapse } from 'antd';
 import { Section } from '../../graphql';
 import SectionItem from './SectionItem';
 import ChildItem from './ChildrenItem';
-
-type Props = {
-  sections: Section[];
-  courseUrl: string;
-  progress: string[];
-  activeSectionKey?: string;
-};
 
 const SectionsWrapper = styled.div`
   display: flex;
@@ -45,11 +38,20 @@ const ChildrenWrapper = styled.div`
   flex-direction: column;
 `;
 
+type Props = {
+  sections: Section[];
+  courseUrl: string;
+  progress: string[];
+  activeSectionKey?: string;
+  isCompletedTillTest?: boolean;
+};
+
 const CourseNavigation = ({
   activeSectionKey,
   sections,
   courseUrl,
-  progress
+  progress,
+  isCompletedTillTest
 }: Props) => {
   const [activeKey, setActive] = useState(activeSectionKey);
   const handleChangeActiveKey = useCallback(
@@ -60,6 +62,11 @@ const CourseNavigation = ({
     },
     [setActive]
   );
+
+  useEffect(() => {
+    setActive(activeSectionKey);
+  }, [activeSectionKey]);
+
   return (
     <SectionsWrapper>
       <StyledCollapse
@@ -84,9 +91,11 @@ const CourseNavigation = ({
                     child ? (
                       <ChildItem
                         isPassed={progress.includes(child.id as string)}
+                        key={child.id}
                         courseUrl={courseUrl}
                         index={index}
                         item={child}
+                        disabled={child.type === 'Test' && !isCompletedTillTest}
                       />
                     ) : null
                   )}
