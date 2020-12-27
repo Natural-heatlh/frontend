@@ -92,6 +92,7 @@ export const typeDefs = gql`
     country: String
     partnerID: String
     courses: [UserCourse]
+    phone: String
   }
 
   input SectionInput {

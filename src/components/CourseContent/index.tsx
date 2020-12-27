@@ -15,9 +15,11 @@ const Wrapper = styled.div`
 type Props = {
   course?: Course;
   lectureId?: string;
+  addProgress: () => void;
+  progress?: string[];
 };
 
-const CourseContent = ({ course, lectureId }: Props) => {
+const CourseContent = ({ course, lectureId, progress, addProgress }: Props) => {
   const [currentLecture, setCurrentLecture] = useState<TheoryType | Test>({});
 
   usePageTitle(`${currentLecture.title} - ${course?.title}`);
@@ -31,10 +33,18 @@ const CourseContent = ({ course, lectureId }: Props) => {
     });
   }, [course, lectureId]);
 
+  usePageTitle(`${currentLecture?.title} - ${course?.title}`);
+
+  const isCompleted = progress?.includes(currentLecture?.id as string);
+
   return (
     <Wrapper>
-      {currentLecture.type === ContentType.THEORY && (
-        <Theory lecture={currentLecture as TheoryType} />
+      {currentLecture?.type === ContentType.THEORY && (
+        <Theory
+          addProgress={addProgress}
+          isCompleted={isCompleted}
+          lecture={currentLecture as TheoryType}
+        />
       )}
       {currentLecture.type === ContentType.TEST && (
         <Quiz courseId={course?.id} lecture={currentLecture as Test} />
