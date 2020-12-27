@@ -6,7 +6,7 @@ import Preloader from '../../components/Preloader';
 import PageContainer from '../../components/PageContainer';
 import CourseContent from '../../components/CourseContent';
 import { AuthContext } from '../../components/Auth/AuthCheck';
-import { Course, Section } from '../../graphql';
+import { Course, Section, SectionChildren } from '../../graphql';
 import query from './query.graphql';
 
 const CourseWrapper = styled.div`
@@ -33,6 +33,8 @@ const checkLecture = (id: string, course: Course) => {
 const CoursePage = (props: any) => {
   const { id, lectureId } = props.match.params;
   const userContext = useContext(AuthContext);
+
+  console.log(lectureId);
 
   const { data, loading } = useQuery(query.CourseQuery, {
     variables: {
@@ -75,6 +77,46 @@ const CoursePage = (props: any) => {
       return activeSection?.id || '';
     }
   }, [data, lectureId, loading]);
+  console.log('section key', activeSectionKey);
+
+  const nextLectureId = useMemo(() => {
+    if (!loading && data?.course) {
+      const activeSectionIndex = data.course?.sections.findIndex(
+        (item: Section) =>
+          item?.children?.find((child) => child?.id === lectureId)
+      );
+      if (activeSectionIndex === data.course?.sections.length - 1) return null;
+
+      const activeSection = data.course?.sections?.find((item: Section) =>
+        item?.children?.find((child) => child?.id === lectureId)
+      );
+
+      const activeLectureIndex = activeSection.children.findIndex(
+        (item: SectionChildren) => item?.id === lectureId
+      );
+
+      if (activeLectureIndex === activeSection?.children.length - 1) {
+        return data.course?.sections[activeSectionIndex + 1]?.children[0]?.id;
+      } else {
+        return activeSection.children[activeLectureIndex + 1]?.id;
+      }
+    }
+    return null;
+  }, [data, lectureId, loading]);
+
+  const isCompletedTillTest = useMemo(() => {
+    const flattenedCourse =
+      data?.course?.sections
+        ?.reduce((acc: Array<any>, item: any) => {
+          return [...acc, ...item?.children];
+        }, [])
+        .filter((item: any) => item.type !== 'Test') || [];
+
+    return (
+      progress?.length === flattenedCourse.length ||
+      progress?.length === flattenedCourse.length + 1
+    );
+  }, [data]);
 
   if (loading) return <Preloader />;
 
@@ -86,6 +128,7 @@ const CoursePage = (props: any) => {
           lectureId={lectureId}
           course={data.course}
           progress={progress as string[]}
+          nextLectureId={nextLectureId}
         />
         <CourseNavigation
           courseUrl={!lectureId ? props.match.url : `/course/${id}`}
@@ -93,6 +136,7 @@ const CoursePage = (props: any) => {
           activeSectionKey={activeSectionKey}
           // TODO fix ts
           progress={progress as string[]}
+          isCompletedTillTest={isCompletedTillTest}
         />
       </CourseWrapper>
     </StyledPageContainer>

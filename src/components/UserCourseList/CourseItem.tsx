@@ -58,6 +58,7 @@ export const UserCourseItem = ({
   id,
   title,
   description,
+  image,
   sections
 }: Course) => {
   const userContext = useContext(AuthContext);
@@ -81,7 +82,7 @@ export const UserCourseItem = ({
       <Wrapper>
         <CourseHead
           style={{
-            background: `url(https://i.pinimg.com/originals/b9/17/1b/b9171b877a6721ffc9db17bfe2d6a482.png)`
+            background: `url(${image})`
           }}
         />
         <CourseContent>

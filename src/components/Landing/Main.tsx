@@ -146,7 +146,7 @@ const Main = () => {
   const advantagesList = useMemo(
     () =>
       advantages.map((item) => (
-        <Advantage>
+        <Advantage key={item.text}>
           <Icon icon={item.icon} />
           <p>{item.text}</p>
         </Advantage>

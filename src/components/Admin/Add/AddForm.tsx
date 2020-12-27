@@ -1,8 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Form, Input, Tabs, Popconfirm } from 'antd';
+import { Form, Input, Tabs, Popconfirm, Checkbox } from 'antd';
 import styled from 'styled-components';
 import { EditOutlined, CloseOutlined } from '@ant-design/icons';
 import { useDispatch, connect } from 'react-redux';
+import { current } from '@reduxjs/toolkit';
 import { setCourse } from '../../../slices/admin/course';
 import { AdminCourse } from '../../../types';
 import Footer from '../Footer';
@@ -36,7 +37,9 @@ const AddForm = ({ course }: Props) => {
     description: '',
     image: '',
     sections: [],
-    title: ''
+    title: '',
+    isFree: false,
+    isPublished: false
   });
 
   const [isEditing, setEditingMode] = useState(false);
@@ -57,9 +60,12 @@ const AddForm = ({ course }: Props) => {
     [course, state]
   );
 
-  const changeImage = useCallback((value) => {
-    setState({ ...state, ...course, image: value });
-  }, [course, state]);
+  const changeImage = useCallback(
+    (value) => {
+      setState({ ...state, ...course, image: value });
+    },
+    [course, state]
+  );
 
   const handleChangeActiveTab = useCallback(
     (key: string) => {
@@ -67,6 +73,14 @@ const AddForm = ({ course }: Props) => {
     },
     [setActiveTabKey]
   );
+
+  const updateIsFree = useCallback(() => {
+    setState((current) => ({ ...current, isFree: !current.isFree }));
+  }, []);
+
+  const updateIsPublished = useCallback(() => {
+    setState((current) => ({ ...current, isPublished: !current.isPublished }));
+  }, []);
 
   const onConfirm = useCallback(
     (title) => {
@@ -126,6 +140,12 @@ const AddForm = ({ course }: Props) => {
             onBlur={(e) => changeString(e, 'description')}
             rows={3}
           />
+        </Form.Item>
+        <Form.Item label="Бесплатный курс" name="isFree">
+          <Checkbox onChange={updateIsFree} />
+        </Form.Item>
+        <Form.Item label="Опубликованный курс" name="isPublished">
+          <Checkbox onChange={updateIsPublished} />
         </Form.Item>
         <div>
           <h2>Разделы курса</h2>
@@ -193,6 +213,8 @@ const AddForm = ({ course }: Props) => {
   );
 };
 
-const mapStateToProps = (state: Record<string, any>) => ({ course: state?.course });
+const mapStateToProps = (state: Record<string, any>) => ({
+  course: state?.course
+});
 
 export default connect(mapStateToProps)(AddForm);

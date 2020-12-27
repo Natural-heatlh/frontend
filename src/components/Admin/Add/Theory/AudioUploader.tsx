@@ -25,7 +25,7 @@ const AudioUploader = () => {
     <Form.Item label="Ссылка на аудио" name="audio">
       <Upload
         action="http://localhost:3000/upload-files"
-        showUploadList={false}
+        multiple={false}
         listType="text"
         beforeUpload={beforeAudioUpload}
         onChange={handleOnChange}

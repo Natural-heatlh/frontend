@@ -7,6 +7,7 @@ const { Content, Sider } = Layout;
 
 const StyledContent = styled(Content)`
   min-height: 100vh;
+  margin-bottom: 150px;
 `;
 
 const StyledSidebar = styled(Sider)`

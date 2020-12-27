@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Carousel from '@brainhubeu/react-carousel';
 import styled from 'styled-components';
+import { Button } from 'antd';
+import { Link } from 'react-router-dom';
 import { ReactComponent as ArrowIcon } from '../../static/up.svg';
 import { Slide } from '../../graphql';
 import { RoundButton } from '../Buttons';
@@ -13,9 +15,8 @@ const SliderWrapper = styled.div`
 `;
 
 const SlideImg = styled.img`
-  object-fit: cover;
   max-width: 100%;
-  height: 100%;
+  width: 100%;
 `;
 
 export const ProgressBar = styled.div`
@@ -41,7 +42,21 @@ export const Toolbox = styled.div`
   background: #f2f3f5;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding-left: 40px;
+  padding-right: 40px;
+`;
+
+const ToolboxLeft = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const ToolboxRight = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 `;
 
 const ArrowLeft = styled(ArrowIcon)`
@@ -58,9 +73,10 @@ type Props = {
   addProgress: () => void;
   progress?: string[];
   isCompleted?: boolean;
+  next?: string | null;
 };
 
-const Slider = ({ slides, addProgress, isCompleted }: Props) => {
+const Slider = ({ slides, addProgress, isCompleted, next }: Props) => {
   const [value, setValue] = useState(0);
 
   useEffect(() => {
@@ -92,23 +108,36 @@ const Slider = ({ slides, addProgress, isCompleted }: Props) => {
           ))}
         </ProgressBar>
         <Toolbox>
-          <RoundButton
-            onClick={() => (value > 0 ? setValue(value - 1) : undefined)}
-          >
-            <ArrowLeft />
-          </RoundButton>
-          <RoundButton
-            onClick={() =>
-              slides && value < slides?.length - 1
-                ? setValue(value + 1)
-                : undefined
-            }
-          >
-            <ArrowLRight />
-          </RoundButton>
-          <span>
-            {value + 1} из {slides?.length} слайдов
-          </span>
+          <ToolboxLeft>
+            <RoundButton
+              onClick={() => (value > 0 ? setValue(value - 1) : undefined)}
+            >
+              <ArrowLeft />
+            </RoundButton>
+            <RoundButton
+              onClick={() =>
+                slides && value < slides?.length - 1
+                  ? setValue(value + 1)
+                  : undefined
+              }
+            >
+              <ArrowLRight />
+            </RoundButton>
+            <span>
+              {value + 1} из {slides?.length} слайдов
+            </span>
+          </ToolboxLeft>
+          {next ? (
+            <ToolboxRight>
+              <Button
+                onClick={() => setValue(0)}
+                type="primary"
+                disabled={!isCompleted}
+              >
+                <Link to={next}>Следующий урок</Link>
+              </Button>
+            </ToolboxRight>
+          ) : null}
         </Toolbox>
       </div>
     </SliderWrapper>
