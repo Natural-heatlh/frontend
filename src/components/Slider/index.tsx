@@ -1,13 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Carousel from '@brainhubeu/react-carousel';
 import styled from 'styled-components';
 import { ReactComponent as ArrowIcon } from '../../static/up.svg';
 import { Slide } from '../../graphql';
 import { RoundButton } from '../Buttons';
-
-type Props = {
-  slides?: Slide[];
-};
 
 const SliderWrapper = styled.div`
   min-height: 400px;
@@ -57,8 +53,21 @@ const ArrowLRight = styled(ArrowIcon)`
   margin-right: -2px;
 `;
 
-const Slider = ({ slides }: Props) => {
+type Props = {
+  slides?: Slide[];
+  addProgress: () => void;
+  progress?: string[];
+  isCompleted?: boolean;
+};
+
+const Slider = ({ slides, addProgress, isCompleted }: Props) => {
   const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (slides && value + 1 === slides?.length && !isCompleted) {
+      addProgress();
+    }
+  }, [value, addProgress]);
 
   const items = useMemo(
     () =>
