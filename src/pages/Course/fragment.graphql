@@ -1,7 +1,10 @@
 fragment CourseFragment on Course {
   id
   title
+  image
   description
+  isFree
+  isPublished
   sections {
     id
     title

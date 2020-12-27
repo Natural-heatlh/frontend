@@ -35,6 +35,7 @@ const Landing = () => {
           <CourseList>
             {coursesData.map((item) => (
               <AvailableCourse
+                key={item.title}
                 image={item.image}
                 title={item.title}
                 description={item.description}

@@ -13,3 +13,21 @@ export type CourseQueryQuery = (
     & CourseFragmentFragment
   )> }
 );
+
+export type AddToProgressMutationVariables = SchemaTypes.Exact<{
+  id: SchemaTypes.Scalars['ID'];
+  courseId: SchemaTypes.Scalars['ID'];
+}>;
+
+
+export type AddToProgressMutation = (
+  { __typename?: 'Mutation' }
+  & { addToProgress?: SchemaTypes.Maybe<(
+    { __typename?: 'User' }
+    & Pick<SchemaTypes.User, 'id'>
+    & { courses?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
+      { __typename?: 'UserCourse' }
+      & Pick<SchemaTypes.UserCourse, 'courseId' | 'progress' | 'isCompleted'>
+    )>>> }
+  )> }
+);

@@ -2,12 +2,12 @@ import React, { useContext, useMemo } from 'react';
 import { useQuery } from '@apollo/client';
 import PageContainer from '../../components/PageContainer';
 import { AuthContext } from '../../components/Auth/AuthCheck';
-import query from '../Courses/query.graphql';
 import Preloader from '../../components/Preloader';
-import { CoursesQueryQuery } from '../Courses/query.generated';
 import { Course } from '../../graphql';
 import UserCourseList from '../../components/UserCourseList';
 import { usePageTitle } from '../../hooks/usePageTitle';
+import { CoursesQueryQuery } from '../Courses/query.generated';
+import query from '../Courses/query.graphql';
 
 const MyCourses = () => {
   usePageTitle('Мои курсы');

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import AdminHeader from '../../components/Admin/Header';
+import AdminHeader from '../../components/Admin/Components/Header';
 import Courses from './Courses';
 import Course from './Course';
 import Add from './Add';

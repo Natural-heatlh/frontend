@@ -1,12 +1,13 @@
 import React from 'react';
 import { Layout } from 'antd';
 import styled from 'styled-components';
-import Wrapper from '../../components/Admin/Wrapper';
+import Wrapper from '../../components/Admin/Components/Wrapper';
 
 const { Content, Sider } = Layout;
 
 const StyledContent = styled(Content)`
   min-height: 100vh;
+  margin-bottom: 150px;
 `;
 
 const StyledSidebar = styled(Sider)`

@@ -75,6 +75,8 @@ export const typeDefs = gql`
     image: String
     description: String
     sections: [Section]
+    isPublished: Boolean
+    isFree: Boolean
   }
 
   type UserCourse {
@@ -147,6 +149,8 @@ export const typeDefs = gql`
     description: String
     sections: [SectionInput]
     image: String
+    isPublished: Boolean
+    isFree: Boolean
   }
 
   input updateCourseInput {
