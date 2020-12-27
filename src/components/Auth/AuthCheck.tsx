@@ -2,9 +2,9 @@ import React, { createContext } from 'react';
 import { useQuery } from '@apollo/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { User } from '../../graphql';
 import { setIsAuth } from '../../slices/actions';
 import Preloader from '../Preloader';
-import {User} from '../../graphql';
 import query from './query.graphql';
 
 type Props = {
@@ -24,6 +24,8 @@ const AuthCheck = ({ children }: Props) => {
 
   if (data?.currentUser) {
     dispatch(setIsAuth(true));
+  } else {
+    dispatch(setIsAuth(false));
   }
 
   return (
