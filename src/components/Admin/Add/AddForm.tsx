@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Form, Input, Tabs, Popconfirm, Button } from 'antd';
+import { Form, Input, Tabs, Popconfirm } from 'antd';
 import styled from 'styled-components';
 import { EditOutlined, CloseOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
@@ -10,6 +10,7 @@ import ChildrenTable from '../Components/ChildrenTable';
 import AddModal from './AddModal';
 import AddSection from './AddSection';
 import AddSectionChild from './AddSectionChild';
+import ImageUploader from './UploadImage';
 
 const { TabPane } = Tabs;
 
@@ -51,6 +52,10 @@ const AddForm = () => {
     },
     [state]
   );
+
+  const changeImage = useCallback((value) => {
+    setState({ ...state, image: value });
+  }, [state]);
 
   const handleChangeActiveTab = useCallback(
     (key: string) => {
@@ -109,6 +114,7 @@ const AddForm = () => {
         >
           <Input onBlur={(e) => changeString(e, 'title')} />
         </Form.Item>
+        <ImageUploader onChange={changeImage} />
         <Form.Item label="Описание курса" name="courseDescription">
           <Input.TextArea
             onBlur={(e) => changeString(e, 'description')}
