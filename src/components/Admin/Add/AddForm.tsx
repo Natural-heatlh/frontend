@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Form, Input, Tabs, Popconfirm } from 'antd';
 import styled from 'styled-components';
 import { EditOutlined, CloseOutlined } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, connect } from 'react-redux';
 import { setCourse } from '../../../slices/admin/course';
 import { AdminCourse } from '../../../types';
 import Footer from '../Footer';
@@ -27,7 +27,11 @@ const EditIconWrapper = styled.a`
   }
 `;
 
-const AddForm = () => {
+interface Props {
+  course: AdminCourse;
+}
+
+const AddForm = ({ course }: Props) => {
   const [state, setState] = useState<AdminCourse>({
     description: '',
     image: '',
@@ -48,14 +52,14 @@ const AddForm = () => {
 
   const changeString = useCallback(
     (e, mode) => {
-      setState({ ...state, [mode]: e.target.value });
+      setState({ ...state, ...course, [mode]: e.target.value });
     },
-    [state]
+    [course, state]
   );
 
   const changeImage = useCallback((value) => {
-    setState({ ...state, image: value });
-  }, [state]);
+    setState({ ...state, ...course, image: value });
+  }, [course, state]);
 
   const handleChangeActiveTab = useCallback(
     (key: string) => {
@@ -68,22 +72,24 @@ const AddForm = () => {
     (title) => {
       setState({
         ...state,
-        sections: state.sections?.filter((item) => item?.title !== title)
+        ...course,
+        sections: course.sections?.filter((item) => item?.title !== title)
       });
     },
-    [state]
+    [course, state]
   );
 
   const handleEditSection = useCallback(
     (value) => {
-      const exists = state?.sections?.find((item) => item?.title === value);
+      const exists = course?.sections?.find((item) => item?.title === value);
       if (exists) {
         setIsExists(!!exists);
         setTimeout(() => setIsExists(false), 1000);
       } else if (value) {
         setState({
           ...state,
-          sections: state.sections?.map((item, index) =>
+          ...course,
+          sections: course.sections?.map((item, index) =>
             index === editableSectionIndex ? { ...item, title: value } : item
           )
         });
@@ -91,7 +97,7 @@ const AddForm = () => {
       }
       setEditingMode(false);
     },
-    [editableSectionIndex, handleChangeActiveTab, state]
+    [course, state, handleChangeActiveTab, editableSectionIndex]
   );
 
   return (
@@ -133,7 +139,7 @@ const AddForm = () => {
             onTabClick={handleChangeActiveTab}
             hideAdd
           >
-            {state.sections?.map((section, i) => (
+            {course.sections?.map((section, i) => (
               <TabPane
                 tab={
                   <TabTitleWrapper>
@@ -187,4 +193,6 @@ const AddForm = () => {
   );
 };
 
-export default AddForm;
+const mapStateToProps = (state: Record<string, any>) => ({ course: state?.course });
+
+export default connect(mapStateToProps)(AddForm);
