@@ -6,16 +6,29 @@ import TheoryContent from './TheoryContent';
 
 type Props = {
   lecture?: TheoryType;
+  addProgress: () => void;
+  isCompleted?: boolean;
 };
 
-const Theory = ({ lecture }: Props) => {
+const Theory = ({ lecture, addProgress, isCompleted }: Props) => {
+  console.log(lecture);
   return (
     <>
-      {lecture?.slides ? <Slider slides={lecture?.slides as Slide[]} /> : null}
+      {lecture?.slides ? (
+        <Slider
+          addProgress={addProgress}
+          isCompleted={isCompleted}
+          slides={lecture?.slides as Slide[]}
+        />
+      ) : null}
       {lecture?.content ? (
         <TheoryContent>{lecture.content}</TheoryContent>
       ) : null}
-      <AudioPlayer url={lecture?.audio} />
+      <AudioPlayer
+        addProgress={addProgress}
+        isCompleted={isCompleted}
+        url={lecture?.audio}
+      />
     </>
   );
 };
