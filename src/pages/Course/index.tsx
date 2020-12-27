@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import CourseNavigation from '../../components/CourseNavigation';
@@ -51,7 +51,7 @@ const CoursePage = (props: any) => {
     }
   }, [data, id, userContext, loading]);
 
-  useEffect(() => {
+  const addProgress = useCallback(() => {
     if (!loading && data?.course) {
       const isTestLecture = checkLecture(id, data?.course);
 
@@ -81,7 +81,12 @@ const CoursePage = (props: any) => {
   return (
     <StyledPageContainer pageTitle={data.course?.title} withTitleMargin={false}>
       <CourseWrapper>
-        <CourseContent lectureId={lectureId} course={data.course} />
+        <CourseContent
+          addProgress={addProgress}
+          lectureId={lectureId}
+          course={data.course}
+          progress={progress as string[]}
+        />
         <CourseNavigation
           courseUrl={!lectureId ? props.match.url : `/course/${id}`}
           sections={data.course?.sections}
