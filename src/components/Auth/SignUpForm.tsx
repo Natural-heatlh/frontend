@@ -3,6 +3,7 @@ import { Form, Input, Button, Checkbox } from 'antd';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ReactComponent as AuthLogo } from '../../static/authLogo.svg';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 const StyledForm = styled(Form)`
   max-width: 384px;
@@ -47,6 +48,7 @@ interface Props {
 }
 
 const SignUpForm = ({ signUp }: Props) => {
+  usePageTitle('Регистрация нового пользователя');
   const [checked, setChecked] = useState(false);
   const [firstPassword, setFirstPassword] = useState('');
 
@@ -70,8 +72,6 @@ const SignUpForm = ({ signUp }: Props) => {
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
-
-  console.log('checked', checked);
 
   return (
     <StyledForm

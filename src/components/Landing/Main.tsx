@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
+import { Link } from 'react-router-dom';
 import MainVector from '../../static/main-vector.svg';
 import MainImg from '../../static/main-bg.png';
 import Smartphone from '../../static/icons/1.svg';
@@ -170,7 +171,12 @@ const Main = () => {
               Для входа на портал электронного обучения нажмите кнопку "Перейти
               к обучению".
             </p>
-            <StyledButton type="primary">Перейти к обучению</StyledButton>
+            <StyledButton type="primary">
+              <Link to="/courses/">
+                Перейти к обучению
+              </Link>
+
+            </StyledButton>
           </MainLeft>
         </MainHeader>
         <Advantages>
