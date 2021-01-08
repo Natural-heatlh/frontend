@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Button } from 'antd';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router';
+import axios from '../../helpers/axios';
 import { ReactComponent as AuthLogo } from '../../static/authLogo.svg';
-import { usePageTitle } from '../../hooks/usePageTitle';
 
 const StyledForm = styled(Form)`
   max-width: 384px;
@@ -42,14 +42,59 @@ const SubmitFormItem = styled(FormItem)`
 `;
 
 interface Props {
-  signIn: ({ email, password }: { email: string; password: string }) => void;
+  reset: ({ email }: { email: string }) => void;
 }
 
-const SignInForm = ({ signIn }: Props) => {
-  usePageTitle('Авторизация');
+type UrlParams = {
+  token?: string;
+};
+
+const UpdatePasswordForm = ({ reset }: Props) => {
+  const params = useParams<UrlParams>();
+  const history = useHistory();
+  const [state, updateState] = useState({
+    userId: null,
+    token: null
+  });
+
+  useEffect(() => {
+    axios
+      .get(`/auth/check-token/${params.token}`)
+      .then((res) => {
+        handleRedirect(res);
+        updateState({
+          userId: res.data.userId,
+          token: res.data.token
+        });
+      })
+      .catch((err) => console.log(err));
+  }, [params, updateState]);
+
+  const handleUpdate = (password: string) => {
+    axios
+      .post('/auth/update-password', {
+        ...state,
+        password
+      })
+      .then((res) => {
+        handleRedirect(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleRedirect = (res: any) => {
+    if (res.data.redirectUrl) {
+      history.replace(res.data.redirectUrl);
+    }
+  };
+
+  if (!params.token) {
+    history.replace('/auth/login');
+  }
 
   const onFinish = (values: any) => {
-    signIn(values);
+    console.log(values);
+    handleUpdate(values?.password);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -70,46 +115,28 @@ const SignInForm = ({ signIn }: Props) => {
         <FormHeadImageWrapper>
           <AuthLogo />
         </FormHeadImageWrapper>
-
-        <FormHeadText>
-          У вас нет аккаунта? <Link to="/auth/signup">Регистрация</Link>
-        </FormHeadText>
       </FormHead>
 
       <FormItem
-        label="Электронная почта"
-        name="email"
-        rules={[
-          {
-            required: true,
-            message: 'Пожалуйста введите Ваш email!'
-          }
-        ]}
-      >
-        <Input placeholder="Электронная почта" />
-      </FormItem>
-
-      <FormItem
-        label="Пароль"
+        label="Новый пароль"
         name="password"
         rules={[
           {
             required: true,
-            message: 'Пожалуйста введите пароль!'
+            message: 'Пожалуйста введите Ваш новый пароль!'
           }
         ]}
       >
-        <Input.Password placeholder="Пароль" />
+        <Input.Password placeholder="Новый пароль" />
       </FormItem>
-      <Link to="/auth/reset/">Забыли пароль?</Link>
 
       <SubmitFormItem>
         <Button style={{ width: '100%' }} type="primary" htmlType="submit">
-          Войти
+          Сохранить
         </Button>
       </SubmitFormItem>
     </StyledForm>
   );
 };
 
-export default SignInForm;
+export default UpdatePasswordForm;

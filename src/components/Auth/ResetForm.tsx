@@ -1,9 +1,7 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { ReactComponent as AuthLogo } from '../../static/authLogo.svg';
-import { usePageTitle } from '../../hooks/usePageTitle';
 
 const StyledForm = styled(Form)`
   max-width: 384px;
@@ -42,14 +40,12 @@ const SubmitFormItem = styled(FormItem)`
 `;
 
 interface Props {
-  signIn: ({ email, password }: { email: string; password: string }) => void;
+  reset: ({ email }: { email: string }) => void;
 }
 
-const SignInForm = ({ signIn }: Props) => {
-  usePageTitle('Авторизация');
-
+const ResetForm = ({ reset }: Props) => {
   const onFinish = (values: any) => {
-    signIn(values);
+    reset(values);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -72,7 +68,7 @@ const SignInForm = ({ signIn }: Props) => {
         </FormHeadImageWrapper>
 
         <FormHeadText>
-          У вас нет аккаунта? <Link to="/auth/signup">Регистрация</Link>
+          Пожалуйста, введите email от вашего аккаунта!
         </FormHeadText>
       </FormHead>
 
@@ -89,27 +85,13 @@ const SignInForm = ({ signIn }: Props) => {
         <Input placeholder="Электронная почта" />
       </FormItem>
 
-      <FormItem
-        label="Пароль"
-        name="password"
-        rules={[
-          {
-            required: true,
-            message: 'Пожалуйста введите пароль!'
-          }
-        ]}
-      >
-        <Input.Password placeholder="Пароль" />
-      </FormItem>
-      <Link to="/auth/reset/">Забыли пароль?</Link>
-
       <SubmitFormItem>
         <Button style={{ width: '100%' }} type="primary" htmlType="submit">
-          Войти
+          Отправить
         </Button>
       </SubmitFormItem>
     </StyledForm>
   );
 };
 
-export default SignInForm;
+export default ResetForm;
