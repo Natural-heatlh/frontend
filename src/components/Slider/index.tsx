@@ -88,7 +88,7 @@ const Slider = ({ slides, addProgress, isCompleted, next }: Props) => {
   const items = useMemo(
     () =>
       slides?.map((item, index) => (
-        <div key={item.id}>
+        <div style={{ height: '622px' }} key={item.id}>
           <SlideImg src={item.url as string} />
         </div>
       )),
@@ -97,7 +97,11 @@ const Slider = ({ slides, addProgress, isCompleted, next }: Props) => {
 
   return items ? (
     <SliderWrapper>
-      <Carousel value={value} slides={items} onChange={setValue} />
+      <Carousel
+        value={value}
+        slides={items}
+        onChange={setValue}
+      />
       <div>
         <ProgressBar>
           {slides?.map((item, index) => (
@@ -124,8 +128,7 @@ const Slider = ({ slides, addProgress, isCompleted, next }: Props) => {
               <ArrowLRight />
             </RoundButton>
             <span>
-              {value + 1} из {slides?.length} слайдов
-            </span>
+              {value + 1} из {slides?.length} слайдов            </span>
           </ToolboxLeft>
           {next ? (
             <ToolboxRight>
@@ -141,6 +144,7 @@ const Slider = ({ slides, addProgress, isCompleted, next }: Props) => {
         </Toolbox>
       </div>
     </SliderWrapper>
+
   ) : null;
 };
 
