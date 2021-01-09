@@ -24,6 +24,7 @@ const FormHead = styled.div`
   margin-bottom: 20px;
 `;
 
+
 const FormHeadText = styled.p`
   font-size: 16px;
   line-height: 28px;
