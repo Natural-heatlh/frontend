@@ -1,45 +1,16 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
-import styled from 'styled-components';
+import { Input, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { ReactComponent as AuthLogo } from '../../static/authLogo.svg';
 import { usePageTitle } from '../../hooks/usePageTitle';
-
-const StyledForm = styled(Form)`
-  max-width: 384px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 48px 32px;
-  background: #ffffff;
-  border-radius: 5px;
-  margin-bottom: 100px;
-`;
-
-const FormHeadImageWrapper = styled.div`
-  margin-bottom: 20px;
-`;
-
-const FormHead = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-`;
-
-const FormHeadText = styled.p`
-  font-size: 16px;
-  line-height: 28px;
-  margin-bottom: 0;
-`;
-
-const FormItem = styled(Form.Item)`
-  margin-bottom: 12px;
-`;
-
-const SubmitFormItem = styled(FormItem)`
-  margin-top: 24px;
-  margin-bottom: 0;
-`;
+import {
+  FormHead,
+  FormHeadImageWrapper,
+  FormHeadText,
+  FormItem,
+  StyledForm,
+  SubmitFormItem
+} from '../Forms/Additional';
 
 const PWD_ERROR_MESSAGE = 'Пароли не совпадают! Пожалуйста введите еще раз!';
 
@@ -49,7 +20,6 @@ interface Props {
 
 const SignUpForm = ({ signUp }: Props) => {
   usePageTitle('Регистрация нового пользователя');
-  const [checked, setChecked] = useState(false);
   const [firstPassword, setFirstPassword] = useState('');
 
   const checkSecondPassword = (rule: any, value: string) => {
