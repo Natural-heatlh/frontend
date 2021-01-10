@@ -5,6 +5,9 @@ query CurrentUser {
     firstName
     lastName
     country
+    city
+    phone
+    partnerID
     courses {
       courseId
       progress

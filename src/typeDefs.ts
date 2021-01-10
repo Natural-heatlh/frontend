@@ -85,6 +85,15 @@ export const typeDefs = gql`
     isCompleted: Boolean
   }
 
+  input UserDataInput {
+    firstName: String
+    lastName: String
+    city: String
+    country: String
+    partnerID: String
+    phone: String
+  }
+
   type User {
     id: ID!
     firstName: String
@@ -173,5 +182,7 @@ export const typeDefs = gql`
     buyCourse(id: ID!): User
     addToProgress(id: ID!, courseId: ID!): User
     checkTestResult(input: TestResultInput): TestResult
+    updateUserData(input: UserDataInput): User
+    updateUserPassword(currentPassword: String, password: String): User
   }
 `;
