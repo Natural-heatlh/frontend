@@ -7,6 +7,7 @@ import Admin from '../Admin';
 import Courses from '../Courses';
 import MyCourses from '../MyCourses';
 import Course from '../Course';
+import Profile from '../Profile';
 import query from '../Courses/query.graphql';
 import Preloader from '../../components/Preloader';
 import { setCourses } from '../../slices/actions';
@@ -34,6 +35,9 @@ const Protected = () => {
         </Route>
         <Route path="/my-courses">
           <MyCourses />
+        </Route>
+        <Route path="/profile" >
+          <Profile />
         </Route>
         <Route
           path="/course/:id"

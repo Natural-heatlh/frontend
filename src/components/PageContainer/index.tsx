@@ -9,6 +9,7 @@ type Props = {
   children?: React.ReactNode;
   className?: string;
   withTitleMargin?: boolean;
+  headColor?: string;
 };
 
 const Content = styled.div`
@@ -20,12 +21,15 @@ const PageContainer = ({
   children,
   className,
   withTitleMargin = true,
+  headColor = '#ebf5f4',
   ...otherProps
 }: Props) => {
   return (
     <Fragment>
       <Header {...otherProps} />
-      <PageHead withTitleMargin={withTitleMargin}>{pageTitle}</PageHead>
+      <PageHead color={headColor} withTitleMargin={withTitleMargin}>
+        {pageTitle}
+      </PageHead>
       <Content className={className}>
         <Container>{children}</Container>
       </Content>

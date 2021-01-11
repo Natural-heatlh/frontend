@@ -35,36 +35,6 @@ const Auth = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const handleSignUp = useCallback(
-    (values) => {
-      axios
-        .post('/auth/signup', {
-          ...values
-        })
-        .then(() => {
-          dispatch(setIsAuth(true));
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    [dispatch]
-  );
-
-  const handleSignIn = useCallback(
-    (values) => {
-      axios
-        .post('/auth/login', {
-          ...values
-        })
-        .then(() => {
-          dispatch(setIsAuth(true));
-        })
-        .catch((error) => console.log(error));
-    },
-    [dispatch]
-  );
-
   const handleReset = useCallback((values) => {
     axios
       .post('/auth/reset-password/', {
@@ -83,10 +53,10 @@ const Auth = () => {
       {!isLoggedIn ? (
         <Fragment>
           <Route path={LOGIN_PATH}>
-            <SignInForm signIn={handleSignIn} />
+            <SignInForm />
           </Route>
           <Route path={SIGN_UP_PATH}>
-            <SignUpForm signUp={handleSignUp} />
+            <SignUpForm />
           </Route>
           <Route path={RESET_PATH}>
             <ResetForm reset={handleReset} />
