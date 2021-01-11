@@ -1,6 +1,7 @@
-import React from 'react';
-import { Input, Button } from 'antd';
+import React, { useCallback } from 'react';
+import { Input, Button, Form } from 'antd';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import {
   FormHead,
   FormHeadImageWrapper,
@@ -11,21 +12,50 @@ import {
 } from '../Forms/Additional';
 import { ReactComponent as AuthLogo } from '../../static/authLogo.svg';
 import { usePageTitle } from '../../hooks/usePageTitle';
+import axios from '../../helpers/axios';
+import { setIsAuth } from '../../slices/auth';
+import { getValidationErrors } from '../../utils/getValidationErrors';
 
-interface Props {
-  signIn: ({ email, password }: { email: string; password: string }) => void;
-}
-
-const SignInForm = ({ signIn }: Props) => {
+const SignInForm = () => {
   usePageTitle('Авторизация');
 
+  const dispatch = useDispatch();
+  const [form] = Form.useForm();
+
   const onFinish = (values: any) => {
-    signIn(values);
+    handleSignIn(values);
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
+
+  const handleSignIn = useCallback(
+    (values) => {
+      axios
+        .post('/auth/login', {
+          ...values
+        })
+        .then(() => {
+          dispatch(setIsAuth(true));
+        })
+        .catch(({ response }) => {
+          const values = form.getFieldsValue();
+
+          if (response?.data?.errors?.errors) {
+            const data = getValidationErrors(
+              values,
+              response.data.errors.errors
+            );
+
+            console.log(data);
+
+            form.setFields(data);
+          }
+        });
+    },
+    [dispatch]
+  );
 
   return (
     <StyledForm
@@ -34,6 +64,7 @@ const SignInForm = ({ signIn }: Props) => {
       initialValues={{
         remember: true
       }}
+      form={form}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
     >
