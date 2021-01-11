@@ -10,11 +10,19 @@ interface State {
 
 type Props = {
   handleAddChild: (child: VideoType) => void;
+  content?: Record<any, any> | undefined;
+  open?: boolean,
 };
 
-const Video = ({ handleAddChild }: Props) => {
+const Video = ({ handleAddChild, content, open }: Props) => {
   const [alert, setAlert] = useState<State>({ visible: false } as State);
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (open) {
+      form.resetFields();
+    }
+  }, [form, open]);
 
   useEffect(() => {
     if (alert) {
@@ -47,6 +55,7 @@ const Video = ({ handleAddChild }: Props) => {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         layout="vertical"
+        initialValues={content}
       >
         <Form.Item
           label="Заголовок видео"

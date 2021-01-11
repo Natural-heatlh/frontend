@@ -74,10 +74,10 @@ const AddSectionChild = ({ activeSection }: Props) => {
         visible={drawerIsOpened}
       >
         {selected === SectionChildren.THEORY && (
-          <TheoryComponent handleAddChild={handleAddChild} />
+          <TheoryComponent handleAddChild={handleAddChild} open={drawerIsOpened} />
         )}
         {selected === SectionChildren.VIDEO && (
-          <Video handleAddChild={handleAddChild} />
+          <Video handleAddChild={handleAddChild} open={drawerIsOpened} />
         )}
         {selected === SectionChildren.TEST && (
           <TestComponent handleAddChild={handleAddChild} />

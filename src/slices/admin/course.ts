@@ -27,10 +27,38 @@ const courseSlice = createSlice({
       });
       console.log(state.sections);
       return state;
+    },
+    removeSectionChild: (state: State, action) => {
+      state.sections = state.sections.map((item) => {
+        if (item.title === action.payload.activeSectionName) {
+          const targetChildren = item.children || [];
+          const updatedChildren = targetChildren.filter(item => item?.title !== action.payload.activeSectionChild);
+          return {
+            ...item,
+            children: updatedChildren
+          };
+        }
+        return item;
+      });
+      return state;
+    },
+    editSectionChild: (state: State, action) => {
+      // state.sections = state.sections.map((item) => {
+      //   if (item.title === action.payload.activeSectionName) {
+      //     const targetChildren = item.children || [];
+      //     const updatedChildren = targetChildren.filter(item => item?.title === action.payload.activeSectionChild);
+      //     return {
+      //       ...item,
+      //       children: updatedChildren
+      //     };
+      //   }
+      //   return item;
+      // });
+      // return state;
     }
   }
 });
 
-export const { setCourse, setSectionChild } = courseSlice.actions;
+export const { setCourse, setSectionChild, removeSectionChild, editSectionChild } = courseSlice.actions;
 
 export default courseSlice.reducer;
