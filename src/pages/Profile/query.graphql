@@ -1,0 +1,17 @@
+mutation UpdateUserData($input: UserDataInput) {
+  updateUserData(input: $input) {
+    id
+    firstName
+    lastName
+    city
+    country
+    phone
+    partnerID
+  }
+}
+
+mutation UpdateUserPassword($currentPassword: String, $password: String) {
+  updateUserPassword(currentPassword: $currentPassword, password: $password) {
+    id
+  }
+}
