@@ -1,5 +1,4 @@
-import React, { useCallback, useState } from 'react';
-import styled from 'styled-components';
+import React, {useCallback, useEffect, useState} from 'react';
 import { Input, Form, Button, Radio } from 'antd';
 import { RadioChangeEvent } from 'antd/es/radio';
 import { Theory } from '../../../../graphql';
@@ -9,10 +8,17 @@ import AudioUploader from './AudioUploader';
 enum TheoryVariants {
   SLIDER = 'Слайдер',
   TEXT = 'Текст'
-}
+};
+
+const mode = {
+  EDIT: 'edit',
+  CREATE: 'create'
+};
 
 type Props = {
   handleAddChild: (child: Theory) => void;
+  content?: Record<any, any> | undefined;
+  open?: boolean,
 };
 
 const initialState = {
@@ -23,9 +29,15 @@ const initialState = {
   audio: ''
 };
 
-const TheoryComponent = ({ handleAddChild }: Props) => {
+const TheoryComponent = ({ handleAddChild, content = initialState, open }: Props) => {
   const [theoryVariant, setTheoryVariant] = useState(TheoryVariants.SLIDER);
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (open) {
+      form.resetFields();
+    }
+  }, [form, open])
 
   const onFinish = useCallback(() => {
     const { uploadSlides, audio, ...rest } = form.getFieldsValue();
@@ -35,7 +47,6 @@ const TheoryComponent = ({ handleAddChild }: Props) => {
           .filter((item: any) => !!item.status)
           .map((item: any) => ({ url: item.response?.fileLocation }))
       : [];
-
 
     handleAddChild({
       ...rest,
@@ -59,7 +70,7 @@ const TheoryComponent = ({ handleAddChild }: Props) => {
         form={form}
         layout="vertical"
         onFinish={onFinish}
-        initialValues={initialState}
+        initialValues={content}
       >
         <Form.Item
           label="Заголовок теории"
@@ -73,7 +84,6 @@ const TheoryComponent = ({ handleAddChild }: Props) => {
         >
           <Input />
         </Form.Item>
-
         <AudioUploader />
         <Form.Item label="Тип контента">
           <Radio.Group onChange={handleVariantChange} value={theoryVariant}>

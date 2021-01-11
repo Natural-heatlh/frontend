@@ -47,12 +47,13 @@ const StyledRadioButton = styled(RadioButton)`
 interface Props {
   onFinish: (any?: any) => void;
   form: FormInstance;
+  content?: Record<any, any> | undefined;
 }
 
-export const TestForm = ({ onFinish, form }: Props) => {
+export const TestForm = ({ onFinish, form, content }: Props) => {
   return (
     <>
-      <Form layout="vertical" onFinish={onFinish} form={form}>
+      <Form layout="vertical" onFinish={onFinish} form={form} initialValues={content}>
         <Item
           label="Заголовок теста"
           name="title"
