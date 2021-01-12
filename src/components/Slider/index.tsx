@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Carousel from '@brainhubeu/react-carousel';
 import styled from 'styled-components';
 import { Button } from 'antd';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ReactComponent as ArrowIcon } from '../../static/up.svg';
 import { Slide } from '../../graphql';
@@ -14,7 +15,7 @@ const SliderWrapper = styled.div`
   overflow-y: auto;
 `;
 
-const SlideImg = styled.img`
+const SlideImg = styled(motion.img)`
   max-width: 100%;
   width: 100%;
 `;
@@ -85,11 +86,20 @@ const Slider = ({ slides, addProgress, isCompleted, next }: Props) => {
     }
   }, [value, addProgress]);
 
+  useEffect(() => {
+    setValue(0);
+  }, [next]);
+
   const items = useMemo(
     () =>
       slides?.map((item, index) => (
         <div style={{ height: '622px' }} key={item.id}>
-          <SlideImg src={item.url as string} />
+          <SlideImg
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            src={item.url as string}
+          />
         </div>
       )),
     [slides]
@@ -97,11 +107,7 @@ const Slider = ({ slides, addProgress, isCompleted, next }: Props) => {
 
   return items ? (
     <SliderWrapper>
-      <Carousel
-        value={value}
-        slides={items}
-        onChange={setValue}
-      />
+      <Carousel value={value} slides={items} onChange={setValue} />
       <div>
         <ProgressBar>
           {slides?.map((item, index) => (
@@ -128,7 +134,8 @@ const Slider = ({ slides, addProgress, isCompleted, next }: Props) => {
               <ArrowLRight />
             </RoundButton>
             <span>
-              {value + 1} из {slides?.length} слайдов            </span>
+              {value + 1} из {slides?.length} слайдов{' '}
+            </span>
           </ToolboxLeft>
           {next ? (
             <ToolboxRight>
@@ -144,7 +151,6 @@ const Slider = ({ slides, addProgress, isCompleted, next }: Props) => {
         </Toolbox>
       </div>
     </SliderWrapper>
-
   ) : null;
 };
 
