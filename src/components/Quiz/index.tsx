@@ -91,7 +91,7 @@ const Quiz = ({ lecture, courseId, addProgress }: Props) => {
       .then((response) => {
         if (response.data && response.data?.checkTestResult) {
           setResults({ ...response.data?.checkTestResult });
-          if(response?.data?.checkTestResult?.isCompleted) {
+          if (response?.data?.checkTestResult?.isCompleted) {
             addProgress();
           }
         }
@@ -99,7 +99,7 @@ const Quiz = ({ lecture, courseId, addProgress }: Props) => {
       .catch((error) => {
         throw error;
       });
-  }, [checkTestResult, test, courseId, lecture]);
+  }, [checkTestResult, test, courseId, lecture, addProgress]);
 
   const handleCancel = useCallback(() => {
     setIndex(0);

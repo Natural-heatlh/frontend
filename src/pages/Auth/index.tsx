@@ -1,12 +1,11 @@
 import React, { Fragment, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router';
 import { Redirect, Route } from 'react-router-dom';
 import axios from '../../helpers/axios';
 import PageContainer from '../../components/PageContainer';
 import SignUpForm from '../../components/Auth/SignUpForm';
 import SignInForm from '../../components/Auth/SignInForm';
-import { setIsAuth } from '../../slices/actions';
 import ResetForm from '../../components/Auth/ResetForm';
 import UpdatePasswordForm from '../../components/Auth/UpdatePasswordForm';
 
@@ -32,7 +31,6 @@ const Auth = () => {
   const location = useLocation();
   const pageTitle = getAuthPageTitle(location.pathname);
   const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
-  const dispatch = useDispatch();
   const history = useHistory();
 
   const handleReset = useCallback((values) => {
@@ -62,7 +60,7 @@ const Auth = () => {
             <ResetForm reset={handleReset} />
           </Route>
           <Route path={UPDATE_PASSWORD}>
-            <UpdatePasswordForm reset={handleReset} />
+            <UpdatePasswordForm />
           </Route>
         </Fragment>
       ) : (

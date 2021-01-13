@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Course, Test, Theory as TheoryType } from '../../graphql';
 import Quiz from '../Quiz';
@@ -57,7 +57,11 @@ const CourseContent = ({
         />
       )}
       {currentLecture.type === ContentType.TEST && (
-        <Quiz courseId={course?.id} lecture={currentLecture as Test} addProgress={addProgress} />
+        <Quiz
+          courseId={course?.id}
+          lecture={currentLecture as Test}
+          addProgress={addProgress}
+        />
       )}
       <AboutCourse description={course?.description} />
     </Wrapper>

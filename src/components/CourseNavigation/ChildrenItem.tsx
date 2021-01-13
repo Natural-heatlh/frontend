@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 import styled from 'styled-components';
 import { Checkbox } from 'antd';
-import { isTest } from '@apollo/client/utilities/common/environment';
 import { ReactComponent as PapersIcon } from '../../static/papers.svg';
 import { ReactComponent as PlayIcon } from '../../static/play.svg';
 

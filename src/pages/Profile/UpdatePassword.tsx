@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { Button, Form, Input } from 'antd';
 import styled from 'styled-components';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { FormItem, SubmitFormItem } from '../../components/Forms/Additional';
 import query from './query.graphql';
 
