@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import CourseNavigation from '../../components/CourseNavigation';
@@ -77,7 +77,6 @@ const CoursePage = (props: any) => {
       return activeSection?.id || '';
     }
   }, [data, lectureId, loading]);
-  console.log('section key', activeSectionKey);
 
   const nextLectureId = useMemo(() => {
     if (!loading && data?.course) {
@@ -116,7 +115,7 @@ const CoursePage = (props: any) => {
       progress?.length === flattenedCourse.length ||
       progress?.length === flattenedCourse.length + 1
     );
-  }, [data]);
+  }, [data, progress]);
 
   if (loading) return <Preloader />;
 

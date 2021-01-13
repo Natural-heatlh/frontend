@@ -1,45 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button } from 'antd';
-import styled from 'styled-components';
+import { Input, Button } from 'antd';
 import { useParams, useHistory } from 'react-router';
 import axios from '../../helpers/axios';
 import { ReactComponent as AuthLogo } from '../../static/authLogo.svg';
-
-const StyledForm = styled(Form)`
-  max-width: 384px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 48px 32px;
-  background: #ffffff;
-  border-radius: 5px;
-  margin-bottom: 100px;
-`;
-
-const FormHeadImageWrapper = styled.div`
-  margin-bottom: 20px;
-`;
-
-const FormHead = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-`;
-
-const FormHeadText = styled.p`
-  font-size: 16px;
-  line-height: 28px;
-  margin-bottom: 0;
-`;
-
-const FormItem = styled(Form.Item)`
-  margin-bottom: 12px;
-`;
-
-const SubmitFormItem = styled(FormItem)`
-  margin-top: 24px;
-  margin-bottom: 0;
-`;
+import {
+  FormHead,
+  FormHeadImageWrapper,
+  FormItem,
+  StyledForm,
+  SubmitFormItem
+} from '../Forms/Additional';
 
 interface Props {
   reset: ({ email }: { email: string }) => void;
@@ -49,7 +19,7 @@ type UrlParams = {
   token?: string;
 };
 
-const UpdatePasswordForm = ({ reset }: Props) => {
+const UpdatePasswordForm = () => {
   const params = useParams<UrlParams>();
   const history = useHistory();
   const [state, updateState] = useState({

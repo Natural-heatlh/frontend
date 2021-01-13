@@ -84,11 +84,11 @@ const Slider = ({ slides, addProgress, isCompleted, next }: Props) => {
     if (slides && value + 1 === slides?.length && !isCompleted) {
       addProgress();
     }
-  }, [value, addProgress]);
+  }, [value, addProgress, slides, isCompleted]);
 
   useEffect(() => {
     setValue(0);
-  }, [next]);
+  }, [next, setValue]);
 
   const items = useMemo(
     () =>

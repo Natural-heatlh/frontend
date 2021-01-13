@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useMutation, useQuery } from '@apollo/client';
 import { FormItem, SubmitFormItem } from '../../components/Forms/Additional';
 import authQuery from '../../components/Auth/query.graphql';
+import Preloader from '../../components/Preloader';
 import query from './query.graphql';
 
 const StyledForm = styled(Form)`
@@ -42,6 +43,8 @@ const OwnDataForm = () => {
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
+
+  if (loading) return <Preloader />;
 
   return (
     <StyledForm
