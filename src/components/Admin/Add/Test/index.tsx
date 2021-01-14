@@ -17,7 +17,6 @@ const TestComponent = ({ handleAddChild, content, open }: Props) => {
 
   useEffect(() => {
     if (open) {
-      console.log('reset!', content)
       form.resetFields();
     }
   }, [form, open]);
@@ -40,7 +39,6 @@ const TestComponent = ({ handleAddChild, content, open }: Props) => {
         description: content.description,
         items: tests
       });
-      console.log('content!', editableContent, content)
     }
   }, [content]);
 

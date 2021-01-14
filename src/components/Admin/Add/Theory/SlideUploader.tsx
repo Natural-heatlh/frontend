@@ -28,8 +28,6 @@ const SlideUploader = () => {
     [updateSlideList]
   );
 
-  console.log('sssss', slideList)
-
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
       return e;
