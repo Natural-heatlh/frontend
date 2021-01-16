@@ -4,10 +4,15 @@ import Container from '../Container';
 
 const Wrapper = styled.div<{ withTitleMargin?: boolean }>`
   height: 90px;
-  background: #ebf5f4;
   width: 100%;
   display: flex;
   align-items: center;
+
+  ${(props) =>
+    props.color &&
+    `
+    background: ${props.color};
+  `}
 
   ${(props) =>
     props.withTitleMargin &&
@@ -25,11 +30,12 @@ const StyledContainer = styled(Container)`
 type Props = {
   children: React.ReactNode;
   withTitleMargin?: boolean;
+  color?: string;
 };
 
-const PageHead = ({ children, withTitleMargin }: Props) => {
+const PageHead = ({ children, withTitleMargin, color }: Props) => {
   return (
-    <Wrapper withTitleMargin={withTitleMargin}>
+    <Wrapper color={color} withTitleMargin={withTitleMargin}>
       <StyledContainer>{children}</StyledContainer>
     </Wrapper>
   );
