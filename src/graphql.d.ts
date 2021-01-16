@@ -108,6 +108,15 @@ export type UserCourse = {
   isCompleted?: Maybe<Scalars['Boolean']>;
 };
 
+export type UserDataInput = {
+  firstName?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']>;
+  city?: Maybe<Scalars['String']>;
+  country?: Maybe<Scalars['String']>;
+  partnerID?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+};
+
 export type User = {
   __typename?: 'User';
   id: Scalars['ID'];
@@ -119,6 +128,7 @@ export type User = {
   partnerID?: Maybe<Scalars['String']>;
   courses?: Maybe<Array<Maybe<UserCourse>>>;
   phone?: Maybe<Scalars['String']>;
+  role?: Maybe<Scalars['String']>;
 };
 
 export type SectionInput = {
@@ -209,6 +219,8 @@ export type Mutation = {
   buyCourse?: Maybe<User>;
   addToProgress?: Maybe<User>;
   checkTestResult?: Maybe<TestResult>;
+  updateUserData?: Maybe<User>;
+  updateUserPassword?: Maybe<User>;
 };
 
 
@@ -241,6 +253,17 @@ export type MutationAddToProgressArgs = {
 
 export type MutationCheckTestResultArgs = {
   input?: Maybe<TestResultInput>;
+};
+
+
+export type MutationUpdateUserDataArgs = {
+  input?: Maybe<UserDataInput>;
+};
+
+
+export type MutationUpdateUserPasswordArgs = {
+  currentPassword?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
 };
 
 export type CacheControlScope = 
@@ -343,6 +366,7 @@ export type ResolversTypes = {
   Section: ResolverTypeWrapper<Omit<Section, 'children'> & { children?: Maybe<Array<Maybe<ResolversTypes['SectionChildren']>>> }>;
   Course: ResolverTypeWrapper<Course>;
   UserCourse: ResolverTypeWrapper<UserCourse>;
+  UserDataInput: UserDataInput;
   User: ResolverTypeWrapper<User>;
   SectionInput: SectionInput;
   TestItemInput: TestItemInput;
@@ -379,6 +403,7 @@ export type ResolversParentTypes = {
   Section: Omit<Section, 'children'> & { children?: Maybe<Array<Maybe<ResolversParentTypes['SectionChildren']>>> };
   Course: Course;
   UserCourse: UserCourse;
+  UserDataInput: UserDataInput;
   User: User;
   SectionInput: SectionInput;
   TestItemInput: TestItemInput;
@@ -490,6 +515,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   partnerID?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   courses?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserCourse']>>>, ParentType, ContextType>;
   phone?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  role?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -507,6 +533,8 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   buyCourse?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationBuyCourseArgs, 'id'>>;
   addToProgress?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationAddToProgressArgs, 'id' | 'courseId'>>;
   checkTestResult?: Resolver<Maybe<ResolversTypes['TestResult']>, ParentType, ContextType, RequireFields<MutationCheckTestResultArgs, never>>;
+  updateUserData?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpdateUserDataArgs, never>>;
+  updateUserPassword?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpdateUserPasswordArgs, never>>;
 };
 
 export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {

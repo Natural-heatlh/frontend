@@ -1,60 +1,61 @@
-import React from 'react';
-import { Form, Input, Button } from 'antd';
-import styled from 'styled-components';
+import React, { useCallback } from 'react';
+import { Input, Button, Form } from 'antd';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import {
+  FormHead,
+  FormHeadImageWrapper,
+  FormHeadText,
+  FormItem,
+  StyledForm,
+  SubmitFormItem
+} from '../Forms/Additional';
 import { ReactComponent as AuthLogo } from '../../static/authLogo.svg';
 import { usePageTitle } from '../../hooks/usePageTitle';
+import axios from '../../helpers/axios';
+import { setIsAuth } from '../../slices/auth';
+import { getValidationErrors } from '../../utils/getValidationErrors';
 
-const StyledForm = styled(Form)`
-  max-width: 384px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 48px 32px;
-  background: #ffffff;
-  border-radius: 5px;
-  margin-bottom: 100px;
-`;
-
-const FormHeadImageWrapper = styled.div`
-  margin-bottom: 20px;
-`;
-
-const FormHead = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-`;
-
-const FormHeadText = styled.p`
-  font-size: 16px;
-  line-height: 28px;
-  margin-bottom: 0;
-`;
-
-const FormItem = styled(Form.Item)`
-  margin-bottom: 12px;
-`;
-
-const SubmitFormItem = styled(FormItem)`
-  margin-top: 24px;
-  margin-bottom: 0;
-`;
-
-interface Props {
-  signIn: ({ email, password }: { email: string; password: string }) => void;
-}
-
-const SignInForm = ({ signIn }: Props) => {
+const SignInForm = () => {
   usePageTitle('Авторизация');
 
+  const dispatch = useDispatch();
+  const [form] = Form.useForm();
+
   const onFinish = (values: any) => {
-    signIn(values);
+    handleSignIn(values);
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
+
+  const handleSignIn = useCallback(
+    (values) => {
+      axios
+        .post('/auth/login', {
+          ...values
+        })
+        .then(() => {
+          dispatch(setIsAuth(true));
+        })
+        .catch(({ response }) => {
+          const values = form.getFieldsValue();
+
+          if (response?.data?.errors?.errors) {
+            const data = getValidationErrors(
+              values,
+              response.data.errors.errors
+            );
+
+            console.log(data);
+
+            form.setFields(data);
+          }
+        });
+    },
+    [dispatch]
+  );
 
   return (
     <StyledForm
@@ -63,6 +64,7 @@ const SignInForm = ({ signIn }: Props) => {
       initialValues={{
         remember: true
       }}
+      form={form}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
     >

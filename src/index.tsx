@@ -41,8 +41,9 @@ const link = createHttpLink({
 
 const client = new ApolloClient({
   link: ApolloLink.from([
-    onError(({ graphQLErrors, networkError }) => {
-      console.log('error message');
+    onError(({ graphQLErrors, networkError, response }) => {
+
+      console.log(graphQLErrors, networkError);
       if (graphQLErrors) {
         graphQLErrors.forEach(({ message, locations, path, extensions }) => {
           if (extensions?.code === 'UNAUTHENTICATED') {

@@ -1,9 +1,7 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { useLocation, useHistory } from 'react-router';
-import { useApolloClient } from '@apollo/client';
 import axios from '../../helpers/axios';
-import query from '../Auth/query.graphql';
 import { NavItem } from './Navigation';
 
 const Wrapper = styled.div`

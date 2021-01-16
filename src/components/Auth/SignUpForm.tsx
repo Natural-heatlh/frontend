@@ -1,72 +1,56 @@
-import React, { useState } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
-import styled from 'styled-components';
+import React, { useCallback } from 'react';
+import { Input, Button, Form } from 'antd';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { ReactComponent as AuthLogo } from '../../static/authLogo.svg';
 import { usePageTitle } from '../../hooks/usePageTitle';
+import axios from '../../helpers/axios';
+import { setIsAuth } from '../../slices/auth';
+import { getValidationErrors } from '../../utils/getValidationErrors';
+import {
+  FormHead,
+  FormHeadImageWrapper,
+  FormHeadText,
+  FormItem,
+  StyledForm,
+  SubmitFormItem
+} from '../Forms/Additional';
 
-const StyledForm = styled(Form)`
-  max-width: 384px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 48px 32px;
-  background: #ffffff;
-  border-radius: 5px;
-  margin-bottom: 100px;
-`;
-
-const FormHeadImageWrapper = styled.div`
-  margin-bottom: 20px;
-`;
-
-const FormHead = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-`;
-
-const FormHeadText = styled.p`
-  font-size: 16px;
-  line-height: 28px;
-  margin-bottom: 0;
-`;
-
-const FormItem = styled(Form.Item)`
-  margin-bottom: 12px;
-`;
-
-const SubmitFormItem = styled(FormItem)`
-  margin-top: 24px;
-  margin-bottom: 0;
-`;
-
-const PWD_ERROR_MESSAGE = 'Пароли не совпадают! Пожалуйста введите еще раз!';
-
-interface Props {
-  signUp: (options: any) => void;
-}
-
-const SignUpForm = ({ signUp }: Props) => {
+const SignUpForm = () => {
   usePageTitle('Регистрация нового пользователя');
-  const [checked, setChecked] = useState(false);
-  const [firstPassword, setFirstPassword] = useState('');
+  const [form] = Form.useForm();
 
-  const checkSecondPassword = (rule: any, value: string) => {
-    if (
-      firstPassword.length > 0 &&
-      value.length > 0 &&
-      firstPassword === value
-    ) {
-      return Promise.resolve();
-    }
-    return Promise.reject(PWD_ERROR_MESSAGE);
-  };
+  const dispatch = useDispatch();
+
+  const handleSignUp = useCallback(
+    (values) => {
+      axios
+        .post('/auth/signup', {
+          ...values
+        })
+        .then(() => {
+          dispatch(setIsAuth(true));
+        })
+        .catch(({ response }) => {
+          const values = form.getFieldsValue();
+
+          if (response?.data?.errors?.errors) {
+            const data = getValidationErrors(
+              values,
+              response.data.errors.errors
+            );
+
+            form.setFields(data);
+          }
+        });
+    },
+    [dispatch]
+  );
 
   const onFinish = (values: any) => {
     const { isPartner, partnerID, ...rest } = values;
     const newUser = isPartner ? { ...rest, partnerID } : { ...rest };
-    signUp(newUser);
+    handleSignUp(newUser);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -75,6 +59,7 @@ const SignUpForm = ({ signUp }: Props) => {
 
   return (
     <StyledForm
+      form={form}
       layout="vertical"
       name="basic"
       initialValues={{
@@ -99,7 +84,8 @@ const SignUpForm = ({ signUp }: Props) => {
         rules={[
           {
             required: true,
-            message: 'Пожалуйста введите Ваше имя!'
+            message: 'Пожалуйста введите Ваше имя!',
+            min: 2
           }
         ]}
       >
@@ -112,7 +98,8 @@ const SignUpForm = ({ signUp }: Props) => {
         rules={[
           {
             required: true,
-            message: 'Пожалуйста введите Вашу фамилию!'
+            message: 'Пожалуйста введите Вашу фамилию!',
+            min: 2
           }
         ]}
       >
@@ -125,7 +112,8 @@ const SignUpForm = ({ signUp }: Props) => {
           {
             required: true,
             type: 'email',
-            message: 'Пожалуйста введите Ваш email!'
+            message: 'Пожалуйста введите Ваш email!',
+            min: 4
           }
         ]}
       >
@@ -138,23 +126,33 @@ const SignUpForm = ({ signUp }: Props) => {
         rules={[
           {
             required: true,
+            min: 8,
             message: 'Пожалуйста введите Ваш пароль!'
           }
         ]}
+        hasFeedback
       >
-        <Input.Password
-          onChange={(e) => setFirstPassword(e.target.value)}
-          placeholder="Пароль"
-        />
+        <Input.Password placeholder="Пароль" />
       </FormItem>
 
       <FormItem
         label="Подтверждение пароля"
-        name="passwordCopy"
+        name="confirm"
+        dependencies={['password']}
         rules={[
           {
-            validator: checkSecondPassword
-          }
+            required: true,
+            message: 'Пожалуйста подтвердите пароль!',
+            min: 8
+          },
+          ({ getFieldValue }) => ({
+            validator(_, value) {
+              if (!value || getFieldValue('password') === value) {
+                return Promise.resolve();
+              }
+              return Promise.reject('Пароли не совпадают!');
+            }
+          })
         ]}
       >
         <Input.Password placeholder="Подтверждение пароля" />
@@ -170,7 +168,7 @@ const SignUpForm = ({ signUp }: Props) => {
           }
         ]}
       >
-        <Input />
+        <Input type="number" />
       </FormItem>
 
       <FormItem
@@ -178,11 +176,13 @@ const SignUpForm = ({ signUp }: Props) => {
         name="partnerID"
         rules={[
           {
-            message: 'Пожалуйста введите пароль ID!'
+            message: 'Пожалуйста введите пароль ID!',
+            min: 8,
+            max: 8,
           }
         ]}
       >
-        <Input />
+        <Input type="number" />
       </FormItem>
 
       <SubmitFormItem>
