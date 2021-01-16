@@ -21,6 +21,7 @@ import {
 } from './slices/reducers';
 import { setIsAuth } from './slices/auth';
 import { typeDefs } from './typeDefs';
+import { API_URL } from './helpers/getApiUrl';
 
 const rootReducer = combineReducers({
   courses: coursesReducer,
@@ -35,14 +36,13 @@ export const store = configureStore({
 });
 
 const link = createHttpLink({
-  uri: 'http://localhost:3000/graphql',
+  uri: `${API_URL}/graphql`,
   credentials: 'include'
 });
 
 const client = new ApolloClient({
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError, response }) => {
-
       console.log(graphQLErrors, networkError);
       if (graphQLErrors) {
         graphQLErrors.forEach(({ message, locations, path, extensions }) => {
