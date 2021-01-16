@@ -156,6 +156,7 @@ const Quiz = ({ lecture, courseId, addProgress }: Props) => {
           results.isCompleted ? 'Продолжить обучение' : 'Попробовать еще раз'
         }
       >
+        <h2>Вы набрали </h2>
         <p>
           {results.isCompleted
             ? 'Поздравляем. Вы успешно сдали тест!'

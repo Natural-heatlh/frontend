@@ -112,6 +112,7 @@ const Slider = ({ slides, addProgress, isCompleted, next }: Props) => {
         <ProgressBar>
           {slides?.map((item, index) => (
             <ProgressItem
+              key={index}
               onClick={() => setValue(index)}
               active={index <= value}
             />

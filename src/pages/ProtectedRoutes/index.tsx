@@ -36,7 +36,7 @@ const Protected = () => {
         <Route path="/my-courses">
           <MyCourses />
         </Route>
-        <Route path="/profile" >
+        <Route key="profile" path="/profile">
           <Profile />
         </Route>
         <Route
@@ -46,7 +46,9 @@ const Protected = () => {
         />
         <Route
           path="/course/:id/lecture/:lectureId"
-          component={(props: any) => <Course {...props} />}
+          component={(props: any) => (
+            <Course key={props.match.params?.lectureId} {...props} />
+          )}
           exact
         />
       </Switch>

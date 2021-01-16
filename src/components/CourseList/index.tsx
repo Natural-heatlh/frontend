@@ -6,21 +6,26 @@ import CourseItem from './CourseItem';
 const Wrapper = styled.div`
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
 `;
 
 type Props = {
   courses?: Course[];
-  isAvailable?: boolean;
   onClick?: (id: string) => void;
+  availableCourses?: string[];
 };
 
-const CourseList = ({ courses, isAvailable, onClick }: Props) => {
+const CourseList = ({
+  courses,
+  onClick,
+  availableCourses
+}: Props) => {
   return (
     <Wrapper>
       {courses?.map((item) => (
         <CourseItem
           onClick={onClick}
-          isAvailable={isAvailable}
+          isAvailable={availableCourses?.includes(item.id)}
           key={item.id}
           {...item}
         />
