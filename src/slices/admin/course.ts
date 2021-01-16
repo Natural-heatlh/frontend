@@ -45,8 +45,7 @@ const courseSlice = createSlice({
       state.sections = state.sections.map((item) => {
         if (item.title === action.payload.activeSection) {
           const targetChildren = item.children || [];
-          const index = targetChildren.findIndex(item => item?.title === action.payload.activeSectionChild);
-          targetChildren[index] = action.payload.child;
+          targetChildren[action.payload.activeSectionChildIndex] = action.payload.child;
           return {
             ...item,
             children: targetChildren
