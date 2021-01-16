@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useMemo } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import styled from 'styled-components';
+import { useHistory } from 'react-router';
 import CourseNavigation from '../../components/CourseNavigation';
 import Preloader from '../../components/Preloader';
 import PageContainer from '../../components/PageContainer';
@@ -31,10 +32,9 @@ const checkLecture = (id: string, course: Course) => {
 };
 
 const CoursePage = (props: any) => {
+  const history = useHistory();
   const { id, lectureId } = props.match.params;
   const userContext = useContext(AuthContext);
-
-  console.log(lectureId);
 
   const { data, loading } = useQuery(query.CourseQuery, {
     variables: {
@@ -78,29 +78,42 @@ const CoursePage = (props: any) => {
     }
   }, [data, lectureId, loading]);
 
-  const nextLectureId = useMemo(() => {
+  const [prevLectureId, nextLectureId] = useMemo(() => {
     if (!loading && data?.course) {
+      let prev, next;
+
       const activeSectionIndex = data.course?.sections.findIndex(
         (item: Section) =>
           item?.children?.find((child) => child?.id === lectureId)
       );
-      if (activeSectionIndex === data.course?.sections.length - 1) return null;
+      if (activeSectionIndex === data.course?.sections.length - 1) {
+        next = null;
+      }
 
       const activeSection = data.course?.sections?.find((item: Section) =>
         item?.children?.find((child) => child?.id === lectureId)
       );
 
-      const activeLectureIndex = activeSection.children.findIndex(
+      const activeLectureIndex = activeSection?.children?.findIndex(
         (item: SectionChildren) => item?.id === lectureId
       );
+      if (activeLectureIndex === 0 && activeSectionIndex !== 0) {
+        const prevSection = data.course?.sections[activeSectionIndex - 1];
+        prev = prevSection.children[prevSection?.children.length - 1 || 0];
+      } else if (activeLectureIndex === 0 && activeSectionIndex === 0) {
+        prev = data?.course?.sections[0]?.children[0]?.id;
+      } else {
+        prev = activeSection?.children[activeLectureIndex - 1]?.id;
+      }
 
       if (activeLectureIndex === activeSection?.children.length - 1) {
-        return data.course?.sections[activeSectionIndex + 1]?.children[0]?.id;
+        next = data.course?.sections[activeSectionIndex + 1]?.children[0]?.id;
       } else {
-        return activeSection.children[activeLectureIndex + 1]?.id;
+        next = activeSection?.children[activeLectureIndex + 1]?.id;
       }
+      return [prev, next];
     }
-    return null;
+    return [null, null];
   }, [data, lectureId, loading]);
 
   const isCompletedTillTest = useMemo(() => {
@@ -119,6 +132,11 @@ const CoursePage = (props: any) => {
 
   if (loading) return <Preloader />;
 
+  if(!lectureId && id && data?.course) {
+    const firstLectureId = data?.course?.sections[0]?.children[0]?.id;
+    history.replace(`/course/${id}/lecture/${firstLectureId}`);
+  }
+
   return (
     <StyledPageContainer pageTitle={data.course?.title} withTitleMargin={false}>
       <CourseWrapper>
@@ -127,7 +145,9 @@ const CoursePage = (props: any) => {
           lectureId={lectureId}
           course={data.course}
           progress={progress as string[]}
+          prevLectureId={prevLectureId}
           nextLectureId={nextLectureId}
+          isCompletedTillTest={isCompletedTillTest}
         />
         <CourseNavigation
           courseUrl={!lectureId ? props.match.url : `/course/${id}`}

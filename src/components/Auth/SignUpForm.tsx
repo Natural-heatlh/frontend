@@ -6,6 +6,7 @@ import { ReactComponent as AuthLogo } from '../../static/authLogo.svg';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import axios from '../../helpers/axios';
 import { setIsAuth } from '../../slices/auth';
+import { getValidationErrors } from '../../utils/getValidationErrors';
 import {
   FormHead,
   FormHeadImageWrapper,
@@ -14,7 +15,6 @@ import {
   StyledForm,
   SubmitFormItem
 } from '../Forms/Additional';
-import { getValidationErrors } from '../../utils/getValidationErrors';
 
 const SignUpForm = () => {
   usePageTitle('Регистрация нового пользователя');
@@ -176,7 +176,9 @@ const SignUpForm = () => {
         name="partnerID"
         rules={[
           {
-            message: 'Пожалуйста введите пароль ID!'
+            message: 'Пожалуйста введите пароль ID!',
+            min: 8,
+            max: 8,
           }
         ]}
       >

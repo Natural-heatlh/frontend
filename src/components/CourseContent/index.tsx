@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router';
+import { Modal } from 'antd';
 import { Course, Test, Theory as TheoryType } from '../../graphql';
 import Quiz from '../Quiz';
 import { ContentType } from '../../types';
@@ -18,6 +20,8 @@ type Props = {
   addProgress: () => void;
   progress?: string[];
   nextLectureId?: string | null;
+  isCompletedTillTest?: boolean;
+  prevLectureId?: string | null;
 };
 
 const CourseContent = ({
@@ -25,20 +29,32 @@ const CourseContent = ({
   lectureId,
   progress,
   addProgress,
-  nextLectureId
+  prevLectureId,
+  nextLectureId,
+  isCompletedTillTest
 }: Props) => {
   const [currentLecture, setCurrentLecture] = useState<TheoryType | Test>({});
+  const [modalMessage, updateMessage] = useState('');
+  const history = useHistory();
 
   usePageTitle(`${currentLecture.title} - ${course?.title}`);
 
   useEffect(() => {
-    course?.sections?.forEach((item) => {
+    course?.sections?.forEach((item, index) => {
       const current = item?.children?.find((child) => child?.id === lectureId);
+      if (!isCompletedTillTest && currentLecture.type === 'Test') {
+        updateMessage('Пройдите курс полностью чтобы получить доступ к тесту!');
+      }
       if (current) {
         setCurrentLecture(current as any);
       }
     });
   }, [course, lectureId, setCurrentLecture]);
+
+  const handleCancelModal = useCallback(() => {
+    history.replace(`/course/${course?.id}/lecture/${prevLectureId}`);
+    updateMessage('');
+  }, []);
 
   const isCompleted = progress?.includes(currentLecture?.id as string);
 
@@ -64,6 +80,15 @@ const CourseContent = ({
         />
       )}
       <AboutCourse description={course?.description} />
+      {modalMessage ? (
+        <Modal
+          visible={!!modalMessage}
+          onCancel={handleCancelModal}
+          onOk={handleCancelModal}
+        >
+          {modalMessage}
+        </Modal>
+      ) : null}
     </Wrapper>
   );
 };

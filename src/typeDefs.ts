@@ -104,6 +104,7 @@ export const typeDefs = gql`
     partnerID: String
     courses: [UserCourse]
     phone: String
+    role: String
   }
 
   input SectionInput {

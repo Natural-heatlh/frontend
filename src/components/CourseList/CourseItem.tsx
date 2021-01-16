@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { Course } from '../../graphql';
 
@@ -35,6 +35,19 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   background: #ffffff;
+  height: 100%;
+  border-radius: 5px;
+  position: relative;
+`;
+
+const Overlay = styled(Tooltip)`
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.7);
+  position: absolute;
+  cursor: pointer;
   border-radius: 5px;
 `;
 
@@ -49,6 +62,22 @@ export const CourseDescription = styled.p`
   line-height: 24px;
 `;
 
+const getButtonText = (
+  isPublished?: boolean | null,
+  isFree?: boolean | null,
+  isAvailable?: boolean | null,
+  courseId?: string
+) => {
+  if (isFree) {
+    return ['Начать курс', `/course/${courseId}`];
+  } else {
+    if (isAvailable) {
+      return ['Начать курс', `/course/${courseId}`];
+    }
+    return ['Купить курс', `/course/preview/${courseId}`];
+  }
+};
+
 interface CourseItemProps extends Course {
   isAvailable?: boolean;
   onClick?: (id: string) => void;
@@ -60,8 +89,17 @@ const CourseItem = ({
   description,
   isAvailable,
   onClick,
-  image
+  image,
+  isFree,
+  isPublished
 }: CourseItemProps) => {
+  const [buttonText, buttonLink] = getButtonText(
+    isPublished,
+    isFree,
+    isAvailable,
+    id
+  );
+
   return (
     <WithPadding>
       <Wrapper>
@@ -74,22 +112,14 @@ const CourseItem = ({
           <CourseTitle>{title}</CourseTitle>
           <CourseDescription>{description}</CourseDescription>
 
-          <Button type="primary">
-            <Link
-              onClick={
-                !isAvailable && onClick
-                  ? (e: React.MouseEvent) => {
-                      e.preventDefault();
-                      onClick(id);
-                    }
-                  : undefined
-              }
-              to={isAvailable ? `/course/${id}` : ''}
-            >
-              {isAvailable ? 'Начать курс' : 'Купить курс'}
-            </Link>
+          <Button
+            type="primary"
+            onClick={onClick ? () => onClick(id) : undefined}
+          >
+            <Link to={buttonLink}>{buttonText}</Link>
           </Button>
         </CourseContent>
+        {!isPublished ? <Overlay title="Данный курс еще не доступен!" /> : null}
       </Wrapper>
     </WithPadding>
   );
