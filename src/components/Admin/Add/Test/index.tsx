@@ -16,10 +16,10 @@ const TestComponent = ({ handleAddChild, content, open }: Props) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (open) {
+    if (open && editableContent) {
       form.resetFields();
     }
-  }, [form, open]);
+  }, [editableContent, form, open]);
 
   useEffect(() => {
     if (content) {

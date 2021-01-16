@@ -37,9 +37,7 @@ type Props = {
 const ChildrenTable = ({ activeSectionName }: Props) => {
   // TODO Fix type
   const [drawerIsOpened, setIsOpened] = useState(false);
-  const [selected, setSelected] = useState('');
-  const [currentContent, setCurrentContent] = useState();
-  const [currentTitle, setCurrentTitle] = useState('');
+  const [currentContent, setCurrentContent] = useState({ content: { type: '' }, index: null});
   const [isEditMode, setEditMode] = useState(false);
 
   const sections = useSelector((state: any) => state.course?.sections);
@@ -49,18 +47,23 @@ const ChildrenTable = ({ activeSectionName }: Props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (currentContent) {
+    if (currentContent.content.type) {
       setIsOpened(true);
-      setEditMode(true);
     }
-  }, [currentContent])
+  }, [currentContent, isEditMode])
+
+  const reset = useCallback(() => {
+    setIsOpened(false);
+    setCurrentContent({content: { type: '' }, index: null});
+    setEditMode(false);
+  }, []);
 
   const handleAddChild = useCallback(
     (child) => {
       const payload = {
         child,
         activeSection: activeSectionName,
-        activeSectionChild: currentTitle
+        activeSectionChildIndex: currentContent?.index
       };
 
       if (isEditMode) {
@@ -70,14 +73,14 @@ const ChildrenTable = ({ activeSectionName }: Props) => {
       }
 
       setIsOpened(false);
+      reset();
     },
-    [activeSectionName, currentTitle, dispatch, isEditMode]
+    [activeSectionName, currentContent, dispatch, isEditMode, reset]
   );
 
-  const onEdit = useCallback((content) => {
-    setCurrentTitle(content?.title);
-    setCurrentContent(content);
-    setSelected(content?.type);
+  const onEdit = useCallback((content, index) => {
+    setCurrentContent({content, index});
+    setEditMode(true);
   }, [])
 
   const onDelete = useCallback((content) => {
@@ -88,13 +91,6 @@ const ChildrenTable = ({ activeSectionName }: Props) => {
     dispatch(removeSectionChild(payload));
   }, [activeSectionName, dispatch]);
 
-  const onDrawerClose = useCallback(() => {
-    setIsOpened(false);
-    setCurrentContent(undefined);
-    setEditMode(false);
-    setCurrentTitle('');
-  }, [])
-
   return children && children.length > 0 ? (
     <>
       <Wrapper>
@@ -103,9 +99,9 @@ const ChildrenTable = ({ activeSectionName }: Props) => {
           <Column title="Тип" dataIndex="type" key="type" />
           <Column
             title="Инструменты"
-            render={(text, record) => {
+            render={(text, record, index) => {
               return <Space size="middle">
-                <Button onClick={() => onEdit(record)}>Редактировать</Button>
+                <Button onClick={() => onEdit(record, index)}>Редактировать</Button>
                 <Popconfirm
                   title="Вы действительно хотите удалить?"
                   onConfirm={() => onDelete(record)}
@@ -124,17 +120,17 @@ const ChildrenTable = ({ activeSectionName }: Props) => {
         placement="right"
         closable={false}
         width="80%"
-        onClose={() => onDrawerClose()}
+        onClose={() => reset()}
         visible={drawerIsOpened}
       >
-        {selected === ContentType.THEORY && (
-          <TheoryComponent handleAddChild={handleAddChild} content={currentContent} open={drawerIsOpened} />
+        {currentContent?.content?.type === ContentType.THEORY && (
+          <TheoryComponent handleAddChild={handleAddChild} content={currentContent?.content} open={drawerIsOpened} />
         )}
-        {selected === ContentType.VIDEO && (
-          <Video handleAddChild={handleAddChild} content={currentContent} open={drawerIsOpened} />
+        {currentContent?.content?.type === ContentType.VIDEO && (
+          <Video handleAddChild={handleAddChild} content={currentContent?.content} open={drawerIsOpened} />
         )}
-        {selected === ContentType.TEST && (
-          <TestComponent handleAddChild={handleAddChild} content={currentContent} open={drawerIsOpened} />
+        {currentContent?.content?.type === ContentType.TEST && (
+          <TestComponent handleAddChild={handleAddChild} content={currentContent?.content} open={drawerIsOpened} />
         )}
       </Drawer>
     </>
