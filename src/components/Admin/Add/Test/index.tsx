@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Form } from 'antd';
 import { Test } from '../../../../graphql';
 import { TestForm } from './TestForm';
@@ -6,12 +6,12 @@ import { TestForm } from './TestForm';
 const answerIndexes = [1, 2, 3, 4];
 
 type Props = {
-  handleAddChild: (child: Test) => void;
+  onSubmit: (child: Test) => void;
   content?: Record<any, any> | undefined;
-  open?: boolean,
+  open?: boolean;
 };
 
-const TestComponent = ({ handleAddChild, content, open }: Props) => {
+const TestComponent = ({ onSubmit, content, open }: Props) => {
   const [editableContent, setEditableContent] = useState({});
   const [form] = Form.useForm();
 
@@ -30,10 +30,11 @@ const TestComponent = ({ handleAddChild, content, open }: Props) => {
           '2': answers[1].title,
           '3': answers[2].title,
           '4': answers[3].title,
-          'answer': answers.findIndex((item: Record<any, any>) => item?.isCorrect) + 1,
-          'question': item.question,
+          answer:
+            answers.findIndex((item: Record<any, any>) => item?.isCorrect) + 1,
+          question: item.question
         };
-      })
+      });
       setEditableContent({
         title: content.title,
         description: content.description,
@@ -61,11 +62,11 @@ const TestComponent = ({ handleAddChild, content, open }: Props) => {
         items: mapItems(value.items)
       };
 
-      handleAddChild(result);
+      onSubmit(result);
 
       form.resetFields();
     },
-    [mapItems]
+    [mapItems, onSubmit, form]
   );
 
   return <TestForm form={form} onFinish={onFinish} content={editableContent} />;

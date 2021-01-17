@@ -31,7 +31,9 @@ const courseSlice = createSlice({
       state.sections = state.sections.map((item) => {
         if (item.title === action.payload.activeSectionName) {
           const targetChildren = item.children || [];
-          const updatedChildren = targetChildren.filter(item => item?.title !== action.payload.activeSectionChild);
+          const updatedChildren = targetChildren.filter(
+            (item) => item?.title !== action.payload.activeSectionChild
+          );
           return {
             ...item,
             children: updatedChildren
@@ -45,10 +47,15 @@ const courseSlice = createSlice({
       state.sections = state.sections.map((item) => {
         if (item.title === action.payload.activeSection) {
           const targetChildren = item.children || [];
-          targetChildren[action.payload.activeSectionChildIndex] = action.payload.child;
+          console.log(action.payload);
           return {
             ...item,
-            children: targetChildren
+            children: targetChildren.map((item) => {
+              if (item?.id === action.payload.child?.id) {
+                return { ...item, ...action.payload.child };
+              }
+              return item;
+            })
           };
         }
         return item;
@@ -58,6 +65,11 @@ const courseSlice = createSlice({
   }
 });
 
-export const { setCourse, setSectionChild, removeSectionChild, editSectionChild } = courseSlice.actions;
+export const {
+  setCourse,
+  setSectionChild,
+  removeSectionChild,
+  editSectionChild
+} = courseSlice.actions;
 
 export default courseSlice.reducer;

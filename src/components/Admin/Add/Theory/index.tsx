@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Input, Form, Button, Radio } from 'antd';
 import { RadioChangeEvent } from 'antd/es/radio';
 import { Theory } from '../../../../graphql';
@@ -8,7 +8,7 @@ import AudioUploader from './AudioUploader';
 enum TheoryVariants {
   SLIDER = 'Слайдер',
   TEXT = 'Текст'
-};
+}
 
 const mode = {
   EDIT: 'edit',
@@ -16,28 +16,21 @@ const mode = {
 };
 
 type Props = {
-  handleAddChild: (child: Theory) => void;
-  content?: Record<any, any> | undefined;
-  open?: boolean,
+  onSubmit: (child: Theory) => void;
+  content: Theory;
+  open?: boolean;
 };
 
-const initialState = {
-  title: '',
-  content: '',
-  type: 'Theory',
-  slides: [],
-  audio: ''
-};
-
-const TheoryComponent = ({ handleAddChild, content = initialState, open }: Props) => {
+const TheoryComponent = ({ onSubmit, content }: Props) => {
   const [theoryVariant, setTheoryVariant] = useState(TheoryVariants.SLIDER);
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (open) {
-      form.resetFields();
-    }
-  }, [form, open])
+    form.setFieldsValue({
+      ...content,
+      uploadSlides: content?.slides || []
+    });
+  }, [form, content]);
 
   const onFinish = useCallback(() => {
     const { uploadSlides, audio, ...rest } = form.getFieldsValue();
@@ -45,17 +38,26 @@ const TheoryComponent = ({ handleAddChild, content = initialState, open }: Props
     const slides = uploadSlides
       ? uploadSlides
           .filter((item: any) => !!item.status)
-          .map((item: any) => ({ url: item.response?.fileLocation }))
+          .map((item: any) => {
+            return {
+              name: item.name,
+              uid: item.uid,
+              url: item.response?.fileLocation || item.url,
+              status: 'done'
+            };
+          })
       : [];
 
-    handleAddChild({
+    onSubmit({
+      ...content,
       ...rest,
       audio: audioFile,
       slides,
       type: 'Theory'
     });
+
     form.resetFields();
-  }, [handleAddChild, form]);
+  }, [onSubmit, form, content]);
 
   const handleVariantChange = useCallback(
     (e: RadioChangeEvent) => {
@@ -105,7 +107,7 @@ const TheoryComponent = ({ handleAddChild, content = initialState, open }: Props
             <Input.TextArea rows={5} />
           </Form.Item>
         ) : (
-          <SlideUploader />
+          <SlideUploader slides={content?.slides || []} />
         )}
 
         <Form.Item>
