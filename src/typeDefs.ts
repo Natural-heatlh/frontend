@@ -43,6 +43,8 @@ export const typeDefs = gql`
   type Slide {
     id: ID
     url: String
+    uid: String
+    name: String
   }
 
   type Theory {
@@ -126,6 +128,8 @@ export const typeDefs = gql`
 
   input SlideInput {
     url: String
+    name: String
+    uid: String
   }
 
   input SectionChildrenInput {

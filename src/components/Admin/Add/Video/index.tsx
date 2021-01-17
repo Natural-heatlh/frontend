@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Input, Form, Button, Alert } from 'antd';
 import { Video as VideoType } from '../../../../graphql';
+import { id } from '../../../../utils';
 
 interface State {
   visible: boolean;
@@ -9,12 +10,12 @@ interface State {
 }
 
 type Props = {
-  handleAddChild: (child: VideoType) => void;
+  onSubmit: (child: VideoType) => void;
   content?: Record<any, any> | undefined;
-  open?: boolean,
+  open?: boolean;
 };
 
-const Video = ({ handleAddChild, content, open }: Props) => {
+const Video = ({ onSubmit, content, open }: Props) => {
   const [alert, setAlert] = useState<State>({ visible: false } as State);
   const [form] = Form.useForm();
 
@@ -32,12 +33,12 @@ const Video = ({ handleAddChild, content, open }: Props) => {
 
   const onFinish = useCallback(
     (values) => {
-      handleAddChild({
+      onSubmit({
         ...values,
         type: 'Video'
       });
     },
-    [handleAddChild]
+    [onSubmit]
   );
 
   const onFinishFailed = useCallback(() => {

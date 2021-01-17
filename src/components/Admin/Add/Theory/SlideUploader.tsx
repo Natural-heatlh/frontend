@@ -1,10 +1,14 @@
 import { Button, Form, message, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { UploadFile } from 'antd/es/upload/interface';
 import { UploadChangeParam } from 'antd/lib/upload';
 
-const SlideUploader = () => {
+type Props = {
+  slides: any;
+};
+
+const SlideUploader = ({ slides }: Props) => {
   const [slideList, updateSlideList] = useState<UploadFile[]>([]);
 
   const beforeSlideUpload = useCallback((file) => {
@@ -22,7 +26,6 @@ const SlideUploader = () => {
 
   const handleOnChange = useCallback(
     (info: UploadChangeParam) => {
-      console.log(info.fileList.filter(file => console.log(file)));
       updateSlideList(info.fileList.filter((file) => !!file.status));
     },
     [updateSlideList]
@@ -44,6 +47,7 @@ const SlideUploader = () => {
       label="Слайды"
     >
       <Upload
+        defaultFileList={slides}
         fileList={slideList}
         onChange={handleOnChange}
         beforeUpload={beforeSlideUpload}

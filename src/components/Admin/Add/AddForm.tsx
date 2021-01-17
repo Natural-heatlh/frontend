@@ -191,8 +191,6 @@ const AddForm = ({ course }: Props) => {
             ))}
           </Tabs>
         </div>
-
-        <ChildrenTable activeSectionName={activeTabKey} />
       </Form>
       <AddModal
         title="Редактирование"
