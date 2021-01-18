@@ -1,8 +1,9 @@
+import React, { useCallback, useState } from 'react';
 import { Button, Form, message, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { UploadFile } from 'antd/es/upload/interface';
 import { UploadChangeParam } from 'antd/lib/upload';
+import { API_URL } from '../../../../helpers/getApiUrl';
 
 type Props = {
   slides: any;
@@ -51,7 +52,7 @@ const SlideUploader = ({ slides }: Props) => {
         fileList={slideList}
         onChange={handleOnChange}
         beforeUpload={beforeSlideUpload}
-        action="http://localhost:3000/upload-files"
+        action={`${API_URL}/upload-files`}
       >
         <Button icon={<UploadOutlined />}>Загрузить слайд</Button>
       </Upload>

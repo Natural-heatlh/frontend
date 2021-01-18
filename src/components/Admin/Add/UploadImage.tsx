@@ -4,6 +4,7 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { UploadFile } from 'antd/es/upload/interface';
 import { UploadChangeParam } from 'antd/lib/upload';
 import { usePrevious } from '../../../utils';
+import {API_URL} from '../../../helpers/getApiUrl';
 
 interface Props {
   onChange: (value: UploadFile<any> | string) => void;
@@ -56,7 +57,7 @@ const ImageUploader = ({ onChange } : Props) => {
     >
       <>
         <Upload
-          action="http://localhost:3000/upload-files"
+          action={`${API_URL}/upload-files`}
           beforeUpload={beforeUpload}
           onChange={handleOnChange}
           fileList={image}
