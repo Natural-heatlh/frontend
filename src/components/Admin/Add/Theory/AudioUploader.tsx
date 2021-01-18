@@ -3,6 +3,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import React, { useCallback, useState } from 'react';
 import { UploadFile } from 'antd/es/upload/interface';
 import { UploadChangeParam } from 'antd/lib/upload';
+import {API_URL} from '../../../../helpers/getApiUrl';
 
 const AudioUploader = () => {
   const [audioList, updateAudioList] = useState<UploadFile[]>([]);
@@ -24,7 +25,7 @@ const AudioUploader = () => {
   return (
     <Form.Item label="Ссылка на аудио" name="audio">
       <Upload
-        action="http://localhost:3000/upload-files"
+        action={`${API_URL}/upload-files`}
         multiple={false}
         listType="text"
         beforeUpload={beforeAudioUpload}
