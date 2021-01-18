@@ -1,4 +1,4 @@
-import { Course, Section } from './graphql';
+import { Section } from './graphql';
 
 export enum ContentType {
   THEORY = 'Theory',
@@ -7,9 +7,9 @@ export enum ContentType {
 }
 
 export enum SectionChildren {
-  THEORY = 'Теория',
-  VIDEO = 'Видео',
-  TEST = 'Тест'
+  THEORY = 'Theory',
+  VIDEO = 'Video',
+  TEST = 'Test'
 }
 
 export type AdminCourse = {

@@ -1,47 +1,39 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Form } from 'antd';
-import { Test } from '../../../../graphql';
+import React, { useCallback, useEffect } from 'react';
+import { FormInstance } from 'antd/es/form';
+import { Answer, Test } from '../../../../graphql';
 import { TestForm } from './TestForm';
 
 const answerIndexes = [1, 2, 3, 4];
 
 type Props = {
   onSubmit: (child: Test) => void;
-  content?: Record<any, any> | undefined;
-  open?: boolean;
+  content?: Record<string, any>;
+  form: FormInstance;
 };
 
-const TestComponent = ({ onSubmit, content, open }: Props) => {
-  const [editableContent, setEditableContent] = useState({});
-  const [form] = Form.useForm();
-
-  useEffect(() => {
-    if (open && editableContent) {
-      form.resetFields();
-    }
-  }, [editableContent, form, open]);
-
+const TestComponent = ({ onSubmit, content, form }: Props) => {
   useEffect(() => {
     if (content) {
-      const tests = content?.items.map((item: Record<any, any>) => {
-        const { answers } = item;
-        return {
-          '1': answers[0].title,
-          '2': answers[1].title,
-          '3': answers[2].title,
-          '4': answers[3].title,
-          answer:
-            answers.findIndex((item: Record<any, any>) => item?.isCorrect) + 1,
-          question: item.question
-        };
-      });
-      setEditableContent({
-        title: content.title,
-        description: content.description,
-        items: tests
-      });
+      const items =
+        content?.items?.map((item: any) => {
+          const itemForForm: any = {
+            question: item.question,
+            answer:
+              item.answers.findIndex(
+                (item: Record<any, any>) => item?.isCorrect
+              ) + 1
+          };
+
+          item?.answers.forEach((item: Answer, index: number) => {
+            itemForForm[index + 1] = item.title;
+          });
+
+          return itemForForm;
+        }) || [];
+
+      form.setFieldsValue({ ...content, items });
     }
-  }, [content]);
+  }, [content, form]);
 
   const mapItems = useCallback((items) => {
     return items.map((item: Record<any, any>) => ({
@@ -53,23 +45,21 @@ const TestComponent = ({ onSubmit, content, open }: Props) => {
     }));
   }, []);
 
-  const onFinish = useCallback(
-    (value) => {
-      const result = {
-        title: value.title,
-        description: value.description,
-        type: 'Test',
-        items: mapItems(value.items)
-      };
+  const onFinish = useCallback(() => {
+    const fields = form.getFieldsValue();
 
-      onSubmit(result);
+    const result = {
+      ...content,
+      ...fields,
+      type: 'Test',
+      items: mapItems(fields.items)
+    };
 
-      form.resetFields();
-    },
-    [mapItems, onSubmit, form]
-  );
+    onSubmit(result);
+    form.resetFields();
+  }, [mapItems, onSubmit, form]);
 
-  return <TestForm form={form} onFinish={onFinish} content={editableContent} />;
+  return <TestForm form={form} onFinish={onFinish} />;
 };
 
 export default TestComponent;

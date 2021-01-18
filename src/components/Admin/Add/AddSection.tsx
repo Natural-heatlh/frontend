@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button } from 'antd';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
@@ -15,14 +15,14 @@ const AddButton = styled(Button)`
 
 type Props = {
   setCourse: (course: AdminCourse) => void;
-  handleChangeActiveTab: (key: string) => void
+  handleChangeActiveTab: (key: string) => void;
   course: AdminCourse;
 };
 
 const AddSection = (props: Props) => {
   const [isAddingMode, setAddingMode] = useState<boolean>(false);
   const [isExists, setIsExists] = useState<boolean>(false);
-  const { course, setCourse, handleChangeActiveTab} = props;
+  const { course, setCourse, handleChangeActiveTab } = props;
 
   const handleAddSection = useCallback(
     (value) => {
@@ -40,7 +40,7 @@ const AddSection = (props: Props) => {
             }
           ]
         });
-        handleChangeActiveTab(value)
+        handleChangeActiveTab(value);
         setAddingMode(false);
         setIsExists(false);
       }
@@ -65,6 +65,8 @@ const AddSection = (props: Props) => {
   );
 };
 
-const mapStateToProps = (state: Record<string, any>) => ({ course: state?.course })
+const mapStateToProps = (state: Record<string, any>) => ({
+  course: state?.course
+});
 
 export default connect(mapStateToProps)(AddSection);
