@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Input, Form, Button, Radio } from 'antd';
 import { RadioChangeEvent } from 'antd/es/radio';
+import { FormInstance } from 'antd/es/form';
 import { Theory } from '../../../../graphql';
 import SlideUploader from './SlideUploader';
 import AudioUploader from './AudioUploader';
@@ -18,18 +19,19 @@ const mode = {
 type Props = {
   onSubmit: (child: Theory) => void;
   content: Theory;
-  open?: boolean;
+  form: FormInstance;
 };
 
-const TheoryComponent = ({ onSubmit, content }: Props) => {
+const TheoryComponent = ({ onSubmit, content, form }: Props) => {
   const [theoryVariant, setTheoryVariant] = useState(TheoryVariants.SLIDER);
-  const [form] = Form.useForm();
 
   useEffect(() => {
-    form.setFieldsValue({
-      ...content,
-      uploadSlides: content?.slides || []
-    });
+    if (content) {
+      form.setFieldsValue({
+        ...content,
+        uploadSlides: content?.slides || []
+      });
+    }
   }, [form, content]);
 
   const onFinish = useCallback(() => {

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Button, Drawer, Select } from 'antd';
+import { Button, Drawer, Select, Form } from 'antd';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { SectionChildren } from '../../../types';
@@ -26,8 +26,14 @@ const AddSectionChild = ({ activeSection }: Props) => {
     SectionChildren.THEORY
   );
   const [editableChild, setEditable] = useState<any>(null);
-
+  const [form] = Form.useForm();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (editableChild) {
+      setSelected(editableChild.type);
+    }
+  }, [editableChild, setSelected]);
 
   const [drawerIsOpened, setIsOpened] = useState(false);
 
@@ -36,13 +42,14 @@ const AddSectionChild = ({ activeSection }: Props) => {
       setEditable(child);
       setIsOpened(true);
     },
-    [setEditable]
+    [setEditable, setIsOpened]
   );
 
   const resetEditable = useCallback(() => {
     setEditable(null);
     setIsOpened(false);
-  }, [setEditable, setIsOpened]);
+    form.resetFields();
+  }, [setEditable, setIsOpened, form]);
 
   const handleChange = useCallback(
     (value) => {
@@ -78,6 +85,17 @@ const AddSectionChild = ({ activeSection }: Props) => {
     ]
   );
 
+  const handleDrawerClose = useCallback(() => {
+    setIsOpened(false);
+    form.resetFields();
+    resetEditable();
+  }, [setIsOpened, form, resetEditable]);
+
+  const handleAddChild = useCallback(() => {
+    resetEditable();
+    setIsOpened(true);
+  }, [resetEditable, setIsOpened]);
+
   return (
     <React.Fragment>
       <div>
@@ -92,11 +110,7 @@ const AddSectionChild = ({ activeSection }: Props) => {
           <Option value={SectionChildren.VIDEO}>{SectionChildren.VIDEO}</Option>
           <Option value={SectionChildren.TEST}>{SectionChildren.TEST}</Option>
         </StyledSelect>
-        <Button
-          type="primary"
-          onClick={() => setIsOpened(true)}
-          style={{ width: 120 }}
-        >
+        <Button type="primary" onClick={handleAddChild} style={{ width: 120 }}>
           Добавить
         </Button>
       </div>
@@ -111,21 +125,25 @@ const AddSectionChild = ({ activeSection }: Props) => {
         placement="right"
         closable={false}
         width="80%"
-        onClose={() => setIsOpened(false)}
+        onClose={handleDrawerClose}
         visible={drawerIsOpened}
       >
         {selected === SectionChildren.THEORY && (
           <TheoryComponent
             onSubmit={onSubmit}
             content={editableChild}
-            open={drawerIsOpened}
+            form={form}
           />
         )}
         {selected === SectionChildren.VIDEO && (
-          <Video onSubmit={onSubmit} open={drawerIsOpened} />
+          <Video content={editableChild} onSubmit={onSubmit} form={form} />
         )}
         {selected === SectionChildren.TEST && (
-          <TestComponent onSubmit={onSubmit} />
+          <TestComponent
+            content={editableChild}
+            form={form}
+            onSubmit={onSubmit}
+          />
         )}
       </Drawer>
     </React.Fragment>

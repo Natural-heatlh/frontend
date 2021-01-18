@@ -46,16 +46,15 @@ const courseSlice = createSlice({
     editSectionChild: (state: State, action) => {
       state.sections = state.sections.map((item) => {
         if (item.title === action.payload.activeSection) {
-          const targetChildren = item.children || [];
-          console.log(action.payload);
           return {
             ...item,
-            children: targetChildren.map((item) => {
-              if (item?.id === action.payload.child?.id) {
-                return { ...item, ...action.payload.child };
-              }
-              return item;
-            })
+            children:
+              item?.children?.map((item) => {
+                if (item?.id === action.payload.child?.id) {
+                  return { ...item, ...action.payload.child };
+                }
+                return item;
+              }) || []
           };
         }
         return item;
