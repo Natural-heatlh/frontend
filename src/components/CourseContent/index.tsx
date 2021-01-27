@@ -49,12 +49,12 @@ const CourseContent = ({
         setCurrentLecture(current as any);
       }
     });
-  }, [course, lectureId, setCurrentLecture]);
+  }, [course, lectureId, setCurrentLecture, isCompletedTillTest, currentLecture]);
 
   const handleCancelModal = useCallback(() => {
     history.replace(`/course/${course?.id}/lecture/${prevLectureId}`);
     updateMessage('');
-  }, []);
+  }, [history, course, prevLectureId]);
 
   const isCompleted = progress?.includes(currentLecture?.lectureId as string);
 

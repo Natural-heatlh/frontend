@@ -1,7 +1,7 @@
 import { Form, message, Upload, Modal } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import React, { useCallback, useState, useEffect } from 'react';
-import { UploadFile, UploadListType } from 'antd/es/upload/interface';
+import { UploadFile } from 'antd/es/upload/interface';
 import { UploadChangeParam } from 'antd/lib/upload';
 import { v4 as uuid } from 'uuid';
 import { usePrevious } from '../../../utils';

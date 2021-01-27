@@ -57,7 +57,7 @@ const TestComponent = ({ onSubmit, content, form }: Props) => {
 
     onSubmit(result);
     form.resetFields();
-  }, [mapItems, onSubmit, form]);
+  }, [mapItems, onSubmit, form, content]);
 
   return <TestForm form={form} onFinish={onFinish} />;
 };

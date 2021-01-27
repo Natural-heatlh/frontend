@@ -77,8 +77,7 @@ const AddSectionChild = ({ activeSection }: Props) => {
     },
     [
       dispatch,
-      setSectionChild,
-      editSectionChild,
+      resetEditable,
       activeSection,
       setIsOpened,
       editableChild

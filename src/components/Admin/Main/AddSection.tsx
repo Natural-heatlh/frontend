@@ -1,9 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { Button } from 'antd';
 import styled from 'styled-components';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
-import { AdminCourse } from '../../../types';
 import { setCourse } from '../../../slices/actions';
 import AddModal from './AddModal';
 
@@ -54,7 +53,7 @@ const AddSection = (props: Props) => {
         setIsExists(false);
       }
     },
-    [course, handleChangeActiveTab, setCourse, dispatch]
+    [course, handleChangeActiveTab, dispatch]
   );
 
   return (

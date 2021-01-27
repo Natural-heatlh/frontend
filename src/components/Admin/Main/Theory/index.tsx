@@ -11,11 +11,6 @@ enum TheoryVariants {
   TEXT = 'Текст'
 }
 
-const mode = {
-  EDIT: 'edit',
-  CREATE: 'create'
-};
-
 type Props = {
   onSubmit: (child: Theory) => void;
   content: Theory;

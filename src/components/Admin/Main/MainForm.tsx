@@ -1,12 +1,14 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Form, Input, Tabs, Popconfirm, Checkbox } from 'antd';
 import styled from 'styled-components';
 import { EditOutlined, CloseOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { FormInstance } from 'antd/es/form';
 import {
-  setCourse, toggleIsFree, toggleIsPublished,
-  updateCourseDescription,
+  setCourse,
+  toggleIsFree,
+  toggleIsPublished,
+  updateCourseDescription, updateCourseImage,
   updateCourseTitle
 } from '../../../slices/admin/course';
 import { AdminCourse } from '../../../types';
@@ -31,15 +33,6 @@ const EditIconWrapper = styled.a`
   }
 `;
 
-const initialState = {
-  description: '',
-  image: '',
-  sections: [],
-  title: '',
-  isFree: false,
-  isPublished: false
-};
-
 interface Props {
   course: AdminCourse;
   form: FormInstance;
@@ -63,14 +56,14 @@ const MainForm = ({ course, form, handleSave }: Props) => {
         dispatch(updateCourseDescription(e.target.value));
       }
     },
-    [course, updateCourseDescription, updateCourseTitle, dispatch]
+    [dispatch]
   );
 
   const changeImage = useCallback(
     (value) => {
-      dispatch(setCourse({ ...course, image: value }));
+      dispatch(updateCourseImage(value));
     },
-    [dispatch, course, setCourse]
+    [dispatch]
   );
 
   const handleChangeActiveTab = useCallback(
@@ -82,11 +75,11 @@ const MainForm = ({ course, form, handleSave }: Props) => {
 
   const updateIsFree = useCallback(() => {
     dispatch(toggleIsFree());
-  }, [dispatch, toggleIsFree]);
+  }, [dispatch]);
 
   const updateIsPublished = useCallback(() => {
     dispatch(toggleIsPublished());
-  }, [dispatch, toggleIsPublished]);
+  }, [dispatch]);
 
   const onConfirm = useCallback(
     (sectionId) => {
@@ -99,7 +92,7 @@ const MainForm = ({ course, form, handleSave }: Props) => {
         })
       );
     },
-    [course, dispatch, setCourse]
+    [course, dispatch]
   );
 
   const handleEditSection = useCallback(
@@ -123,7 +116,7 @@ const MainForm = ({ course, form, handleSave }: Props) => {
       }
       setEditingMode(false);
     },
-    [course, setCourse, dispatch, handleChangeActiveTab, editableSectionId]
+    [course, dispatch, handleChangeActiveTab, editableSectionId]
   );
 
   const onEditButtonClick = useCallback(
