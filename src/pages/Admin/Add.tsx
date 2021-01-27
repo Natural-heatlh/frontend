@@ -32,7 +32,7 @@ const Add = () => {
         sections: []
       })
     );
-  }, []);
+  }, [dispatch]);
 
   const [createCourse] = useMutation(query.CreateCourse);
 
@@ -53,7 +53,7 @@ const Add = () => {
     if (result?.data?.createCourse) {
       history.replace(`/admin/courses/${result?.data?.createCourse?.id}`);
     }
-  }, [course, createCourse]);
+  }, [course, createCourse, history]);
 
   return (
     <AdminContainer>

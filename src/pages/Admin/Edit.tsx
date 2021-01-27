@@ -43,13 +43,12 @@ const Edit = (props: any) => {
   }, [course, updateCourse]);
 
   useEffect(() => {
-    console.log('COURSE', data?.course);
     if (data && data.course) {
       dispatch(setCourse(data?.course));
 
       form.setFieldsValue({ ...data?.course });
     }
-  }, [data, loading, dispatch]);
+  }, [data, loading, dispatch, form]);
 
   if (loading) return <Preloader />;
   if (error) return <div>Error</div>;

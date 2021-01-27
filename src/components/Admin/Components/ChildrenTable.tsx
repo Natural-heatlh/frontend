@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Table, Space, Button, Drawer, Popconfirm } from 'antd';
+import { Table, Space, Button, Popconfirm } from 'antd';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import {Section, SectionChildren} from '../../../graphql';

@@ -11,11 +11,12 @@ const Admin = () => {
   const user = useContext(AuthContext);
   const location = useLocation();
   const history = useHistory();
+
   useEffect(() => {
     if (user?.role !== 'admin') {
       history.replace('/');
     }
-  }, [location]);
+  }, [location, history, user]);
 
   return (
     <React.Fragment>
