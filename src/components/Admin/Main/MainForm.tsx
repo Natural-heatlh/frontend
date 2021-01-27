@@ -9,7 +9,8 @@ import {
   setCourse,
   toggleIsFree,
   toggleIsPublished,
-  updateCourseDescription, updateCourseImage,
+  updateCourseDescription,
+  updateCourseImage,
   updateCourseTitle
 } from '../../../slices/admin/course';
 import { AdminCourse } from '../../../types';
@@ -105,9 +106,9 @@ const MainForm = ({ course, form, handleSave }: Props) => {
       } else if (value) {
         const payload = {
           title: value,
-          sectionId: editableSectionId,
-        }
-        dispatch(editSectionTitle(payload))
+          sectionId: editableSectionId
+        };
+        dispatch(editSectionTitle(payload));
 
         handleChangeActiveTab(editableSectionId);
       }
@@ -205,6 +206,7 @@ const MainForm = ({ course, form, handleSave }: Props) => {
         visible={isEditing}
         setMode={setEditingMode}
         onOk={handleEditSectionTitle}
+        setSectionId={setEditableId}
         okText="Изменить"
         cancelText="Отменить изменение"
         propsValue={

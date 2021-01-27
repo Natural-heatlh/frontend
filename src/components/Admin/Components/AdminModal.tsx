@@ -2,17 +2,26 @@ import React from 'react';
 import { Modal } from 'antd';
 
 type Props = {
-  visible?: boolean,
-  children?: React.ReactNode,
-  onClose?: () => void,
-  okText?: string,
-  cancelText?: string,
-  onOk?: (value: any) => void,
-  bodyStyle?: any,
-  title?: string,
-}
+  visible?: boolean;
+  children?: React.ReactNode;
+  onClose?: () => void;
+  okText?: string;
+  cancelText?: string;
+  onOk?: (value: any) => void;
+  bodyStyle?: any;
+  title?: string;
+};
 
-const AdminModal = ({ visible, children, onClose, okText, cancelText, onOk, bodyStyle, title } : Props) => {
+const AdminModal = ({
+  visible,
+  children,
+  onClose,
+  okText,
+  cancelText,
+  onOk,
+  bodyStyle,
+  title
+}: Props) => {
   return (
     <Modal
       title={title}
@@ -25,7 +34,7 @@ const AdminModal = ({ visible, children, onClose, okText, cancelText, onOk, body
     >
       {children}
     </Modal>
-  )
-}
+  );
+};
 
 export default AdminModal;
