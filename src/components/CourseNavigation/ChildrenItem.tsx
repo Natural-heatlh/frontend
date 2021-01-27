@@ -90,7 +90,7 @@ const ChildrenItem = ({
       activeClassName="active"
       onClick={disabled ? (e) => e.preventDefault() : undefined}
       disabled={disabled}
-      to={`${courseUrl}/lecture/${item.id}`}
+      to={`${courseUrl}/lecture/${item.lectureId}`}
     >
       <TitleWrapper>
         <Checkbox checked={isPassed} />
@@ -110,7 +110,7 @@ const ChildrenItem = ({
         )}
         <AdditionalItem>
           <PlayIcon />
-          <AdditionalContent>3 мин.</AdditionalContent>
+          {/*<AdditionalContent>3 мин.</AdditionalContent>*/}
         </AdditionalItem>
       </Additional>
     </LinkWrapper>

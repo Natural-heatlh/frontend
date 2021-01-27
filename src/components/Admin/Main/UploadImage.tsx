@@ -1,25 +1,39 @@
 import { Form, message, Upload, Modal } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import React, { useCallback, useState, useEffect } from 'react';
-import { UploadFile } from 'antd/es/upload/interface';
+import { UploadFile, UploadListType } from 'antd/es/upload/interface';
 import { UploadChangeParam } from 'antd/lib/upload';
+import { v4 as uuid } from 'uuid';
 import { usePrevious } from '../../../utils';
-import {API_URL} from '../../../helpers/getApiUrl';
+import { API_URL } from '../../../helpers/getApiUrl';
 
 interface Props {
   onChange: (value: UploadFile<any> | string) => void;
+  imageUrl?: string;
 }
 
-const ImageUploader = ({ onChange } : Props) => {
-  const [image, updateImage] = useState<UploadFile[]>([]);
+const ImageUploader = ({ onChange, imageUrl }: Props) => {
+  const [image, updateImage] = useState<any>([]);
   const [isImageExist, setIsImageExist] = useState<boolean>(false);
-  const [previewImage, setPreviewImage] = useState<string>('');
+  const [previewImage, setPreviewImage] = useState<string>(imageUrl || '');
   const [previewVisible, setPreviewVisible] = useState<boolean>(false);
 
-  const beforeUpload = useCallback(file => {
+  useEffect(() => {
+    if (imageUrl) {
+      updateImage([
+        {
+          uid: uuid(),
+          status: 'done',
+          url: imageUrl
+        }
+      ]);
+    }
+  }, [imageUrl, updateImage]);
+
+  const beforeUpload = useCallback((file) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
-      message.error('Вы можете загружать картинку только в формате jpeg/png!')
+      message.error('Вы можете загружать картинку только в формате jpeg/png!');
     }
     return isJpgOrPng;
   }, []);
@@ -34,11 +48,13 @@ const ImageUploader = ({ onChange } : Props) => {
         setIsImageExist(true);
       }
     }
-  }, [image, prevState])
+  }, [image, prevState]);
 
   const handleOnChange = useCallback(
     (info: UploadChangeParam) => {
-      const link = info?.fileList[info?.fileList?.length - 1]?.response?.fileLocation || '';
+      const link =
+        info?.fileList[info?.fileList?.length - 1]?.response?.fileLocation ||
+        '';
       onChange(link);
       updateImage(info.fileList.filter((file) => !!file.status));
     },
@@ -46,15 +62,12 @@ const ImageUploader = ({ onChange } : Props) => {
   );
 
   const handlePreview = useCallback(() => {
-    setPreviewImage( image[0]?.response?.fileLocation);
+    setPreviewImage(image[0]?.response?.fileLocation);
     setPreviewVisible(true);
   }, [image]);
 
   return (
-    <Form.Item
-      label="Картинка"
-      name="image"
-    >
+    <Form.Item label="Картинка" name="image">
       <>
         <Upload
           action={`${API_URL}/upload-files`}
@@ -69,7 +82,7 @@ const ImageUploader = ({ onChange } : Props) => {
         </Upload>
         <Modal
           visible={previewVisible}
-          title='Предпросмотр картинки'
+          title="Предпросмотр картинки"
           footer={null}
           onCancel={() => setPreviewVisible(false)}
         >

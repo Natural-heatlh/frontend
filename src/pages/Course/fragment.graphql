@@ -6,17 +6,19 @@ fragment CourseFragment on Course {
   isFree
   isPublished
   sections {
-    id
+    sectionId
     title
     children {
       __typename
       ... on Video {
+        lectureId
         id
         type
         title
         url
       }
       ... on Theory {
+        lectureId
         id
         type
         title
@@ -28,6 +30,7 @@ fragment CourseFragment on Course {
         }
       }
       ... on Test {
+        lectureId
         id
         type
         title

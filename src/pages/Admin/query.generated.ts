@@ -38,3 +38,30 @@ export type DeleteCourseMutation = (
     & Pick<SchemaTypes.Course, 'id'>
   )> }
 );
+
+export type UpdateCourseMutationVariables = SchemaTypes.Exact<{
+  id: SchemaTypes.Scalars['ID'];
+  input?: SchemaTypes.Maybe<SchemaTypes.UpdateCourseInput>;
+}>;
+
+
+export type UpdateCourseMutation = (
+  { __typename?: 'Mutation' }
+  & { updateCourse?: SchemaTypes.Maybe<(
+    { __typename?: 'Course' }
+    & CourseFragmentFragment
+  )> }
+);
+
+export type CreateCourseMutationVariables = SchemaTypes.Exact<{
+  input?: SchemaTypes.Maybe<SchemaTypes.CreateCourseInput>;
+}>;
+
+
+export type CreateCourseMutation = (
+  { __typename?: 'Mutation' }
+  & { createCourse?: SchemaTypes.Maybe<(
+    { __typename?: 'Course' }
+    & CourseFragmentFragment
+  )> }
+);

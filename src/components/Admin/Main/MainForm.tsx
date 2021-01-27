@@ -1,8 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Form, Input, Tabs, Popconfirm, Checkbox } from 'antd';
 import styled from 'styled-components';
+import isEmpty from 'lodash/isEmpty';
 import { EditOutlined, CloseOutlined } from '@ant-design/icons';
-import { useDispatch, connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { FormInstance } from 'antd/es/form';
 import { setCourse } from '../../../slices/admin/course';
 import { AdminCourse } from '../../../types';
 import Footer from '../Footer';
@@ -26,43 +28,42 @@ const EditIconWrapper = styled.a`
   }
 `;
 
+const initialState = {
+  description: '',
+  image: '',
+  sections: [],
+  title: '',
+  isFree: false,
+  isPublished: false
+};
+
 interface Props {
   course: AdminCourse;
+  form: FormInstance;
+  handleSave: () => void;
 }
 
-const AddForm = ({ course }: Props) => {
-  const [state, setState] = useState<AdminCourse>({
-    description: '',
-    image: '',
-    sections: [],
-    title: '',
-    isFree: false,
-    isPublished: false
-  });
-
+const MainForm = ({ course, form, handleSave }: Props) => {
   const [isEditing, setEditingMode] = useState(false);
-  const [editableSectionIndex, setIndex] = useState<number | null>(null);
+  const [editableSectionId, setEditableId] = useState<string>('');
   const [isExists, setIsExists] = useState<boolean>(false);
   const [activeTabKey, setActiveTabKey] = useState<string>('');
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(setCourse(state));
-  }, [dispatch, state]);
-
-  const changeString = useCallback(
-    (e, mode) => {
-      setState({ ...state, ...course, [mode]: e.target.value });
-    },
-    [course, state]
-  );
+  // const changeString = useCallback(
+  //   (e, mode) => {
+  //     console.log(mode);
+  //     setState({ ...state, ...course, [mode]: e.target.value });
+  //   },
+  //   [course, state]
+  // );
 
   const changeImage = useCallback(
     (value) => {
-      setState({ ...state, ...course, image: value });
+      dispatch(setCourse({ ...course, image: value }));
     },
-    [course, state]
+    [dispatch, course, setCourse]
   );
 
   const handleChangeActiveTab = useCallback(
@@ -73,22 +74,25 @@ const AddForm = ({ course }: Props) => {
   );
 
   const updateIsFree = useCallback(() => {
-    setState((current) => ({ ...current, isFree: !current.isFree }));
-  }, []);
+    dispatch(setCourse({ ...course, isFree: !course.isFree }));
+  }, [dispatch, setCourse, course]);
 
   const updateIsPublished = useCallback(() => {
-    setState((current) => ({ ...current, isPublished: !current.isPublished }));
-  }, []);
+    dispatch(setCourse({ ...course, isPublished: !course.isPublished }));
+  }, [dispatch, setCourse, course]);
 
   const onConfirm = useCallback(
-    (title) => {
-      setState({
-        ...state,
-        ...course,
-        sections: course.sections?.filter((item) => item?.title !== title)
-      });
+    (sectionId) => {
+      dispatch(
+        setCourse({
+          ...course,
+          sections: course.sections?.filter(
+            (item) => item?.sectionId !== sectionId
+          )
+        })
+      );
     },
-    [course, state]
+    [course, dispatch, setCourse]
   );
 
   const handleEditSection = useCallback(
@@ -98,18 +102,29 @@ const AddForm = ({ course }: Props) => {
         setIsExists(!!exists);
         setTimeout(() => setIsExists(false), 1000);
       } else if (value) {
-        setState({
-          ...state,
-          ...course,
-          sections: course.sections?.map((item, index) =>
-            index === editableSectionIndex ? { ...item, title: value } : item
-          )
-        });
+        dispatch(
+          setCourse({
+            ...course,
+            sections: course.sections?.map((item) =>
+              item?.sectionId === editableSectionId
+                ? { ...item, title: value }
+                : item
+            )
+          })
+        );
         handleChangeActiveTab(value);
       }
       setEditingMode(false);
     },
-    [course, state, handleChangeActiveTab, editableSectionIndex]
+    [course, setCourse, dispatch, handleChangeActiveTab, editableSectionId]
+  );
+
+  const onEditButtonClick = useCallback(
+    (sectionId: string) => {
+      setEditingMode(true);
+      setEditableId(sectionId);
+    },
+    [setEditingMode, setEditableId]
   );
 
   return (
@@ -118,6 +133,7 @@ const AddForm = ({ course }: Props) => {
         onFinish={() => {
           console.log('finish');
         }}
+        form={form}
         layout="vertical"
       >
         <Form.Item
@@ -130,27 +146,24 @@ const AddForm = ({ course }: Props) => {
             }
           ]}
         >
-          <Input onBlur={(e) => changeString(e, 'title')} />
+          <Input />
         </Form.Item>
-        <ImageUploader onChange={changeImage} />
-        <Form.Item label="Описание курса" name="courseDescription">
-          <Input.TextArea
-            onBlur={(e) => changeString(e, 'description')}
-            rows={3}
-          />
+        <ImageUploader
+          onChange={changeImage}
+          imageUrl={form.getFieldsValue()?.image}
+        />
+        <Form.Item label="Описание курса" name="description">
+          <Input.TextArea rows={3} />
         </Form.Item>
         <Form.Item label="Бесплатный курс" name="isFree">
-          <Checkbox onChange={updateIsFree} />
+          <Checkbox checked={course.isFree} onChange={updateIsFree} />
         </Form.Item>
         <Form.Item label="Опубликованный курс" name="isPublished">
-          <Checkbox onChange={updateIsPublished} />
+          <Checkbox checked={course.isPublished} onChange={updateIsPublished} />
         </Form.Item>
         <div>
           <h2>Разделы курса</h2>
-          <AddSection
-            handleChangeActiveTab={handleChangeActiveTab}
-            setCourse={setState}
-          />
+          <AddSection handleChangeActiveTab={handleChangeActiveTab} />
           <Tabs
             type="editable-card"
             activeKey={activeTabKey}
@@ -163,20 +176,17 @@ const AddForm = ({ course }: Props) => {
                   <TabTitleWrapper>
                     {section?.title}
                     <EditIconWrapper
-                      onClick={() => {
-                        setEditingMode(true);
-                        setIndex(i);
-                      }}
+                      onClick={() => onEditButtonClick(section.sectionId)}
                     >
                       <EditOutlined />
                     </EditIconWrapper>
                   </TabTitleWrapper>
                 }
-                key={section?.title}
+                key={section?.sectionId}
                 closeIcon={
                   <Popconfirm
                     title="Вы действительно хотите удалить?"
-                    onConfirm={() => onConfirm(section?.title)}
+                    onConfirm={() => onConfirm(section?.sectionId)}
                     okText="Да"
                     cancelText="Нет"
                   >
@@ -198,19 +208,15 @@ const AddForm = ({ course }: Props) => {
         okText="Изменить"
         cancelText="Отменить изменение"
         propsValue={
-          state.sections?.find((_, index) => index === editableSectionIndex)
+          course.sections?.find((item) => item.sectionId === editableSectionId)
             ?.title as string
         }
         error={isExists ? 'Раздел с таким именем существует!' : ''}
         onErrorClose={() => setIsExists(false)}
       />
-      <Footer />
+      <Footer save={handleSave} />
     </>
   );
 };
 
-const mapStateToProps = (state: Record<string, any>) => ({
-  course: state?.course
-});
-
-export default connect(mapStateToProps)(AddForm);
+export default MainForm;

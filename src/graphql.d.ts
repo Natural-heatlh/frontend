@@ -51,6 +51,7 @@ export type TestResult = {
 export type Test = {
   __typename?: 'Test';
   id?: Maybe<Scalars['String']>;
+  lectureId?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
@@ -61,11 +62,15 @@ export type Slide = {
   __typename?: 'Slide';
   id?: Maybe<Scalars['ID']>;
   url?: Maybe<Scalars['String']>;
+  uid?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  status?: Maybe<Scalars['String']>;
 };
 
 export type Theory = {
   __typename?: 'Theory';
   id?: Maybe<Scalars['String']>;
+  lectureId?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
   content?: Maybe<Scalars['String']>;
@@ -76,6 +81,7 @@ export type Theory = {
 export type Video = {
   __typename?: 'Video';
   id?: Maybe<Scalars['String']>;
+  lectureId?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
@@ -85,7 +91,7 @@ export type SectionChildren = Theory | Video | Test;
 
 export type Section = {
   __typename?: 'Section';
-  id: Scalars['ID'];
+  sectionId: Scalars['ID'];
   title?: Maybe<Scalars['String']>;
   children?: Maybe<Array<Maybe<SectionChildren>>>;
 };
@@ -132,6 +138,7 @@ export type User = {
 };
 
 export type SectionInput = {
+  sectionId?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   children?: Maybe<Array<Maybe<SectionChildrenInput>>>;
 };
@@ -150,9 +157,13 @@ export type TestInput = {
 
 export type SlideInput = {
   url?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  uid?: Maybe<Scalars['String']>;
+  status?: Maybe<Scalars['String']>;
 };
 
 export type SectionChildrenInput = {
+  lectureId?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   content?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
@@ -164,11 +175,13 @@ export type SectionChildrenInput = {
 };
 
 export type TheoryInput = {
+  lectureId?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   content?: Maybe<Scalars['String']>;
 };
 
 export type VideoInput = {
+  lectureId?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
 };
@@ -191,6 +204,9 @@ export type UpdateCourseInput = {
   title?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   sections?: Maybe<Array<Maybe<SectionInput>>>;
+  image?: Maybe<Scalars['String']>;
+  isPublished?: Maybe<Scalars['Boolean']>;
+  isFree?: Maybe<Scalars['Boolean']>;
 };
 
 export type Query = {
@@ -445,6 +461,7 @@ export type TestResultResolvers<ContextType = any, ParentType extends ResolversP
 
 export type TestResolvers<ContextType = any, ParentType extends ResolversParentTypes['Test'] = ResolversParentTypes['Test']> = {
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  lectureId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -455,11 +472,15 @@ export type TestResolvers<ContextType = any, ParentType extends ResolversParentT
 export type SlideResolvers<ContextType = any, ParentType extends ResolversParentTypes['Slide'] = ResolversParentTypes['Slide']> = {
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  uid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  status?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type TheoryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Theory'] = ResolversParentTypes['Theory']> = {
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  lectureId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -470,6 +491,7 @@ export type TheoryResolvers<ContextType = any, ParentType extends ResolversParen
 
 export type VideoResolvers<ContextType = any, ParentType extends ResolversParentTypes['Video'] = ResolversParentTypes['Video']> = {
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  lectureId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -481,7 +503,7 @@ export type SectionChildrenResolvers<ContextType = any, ParentType extends Resol
 };
 
 export type SectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Section'] = ResolversParentTypes['Section']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  sectionId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   children?: Resolver<Maybe<Array<Maybe<ResolversTypes['SectionChildren']>>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
