@@ -5,6 +5,7 @@ import { EditOutlined, CloseOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { FormInstance } from 'antd/es/form';
 import {
+  editSectionTitle,
   setCourse,
   toggleIsFree,
   toggleIsPublished,
@@ -95,24 +96,20 @@ const MainForm = ({ course, form, handleSave }: Props) => {
     [course, dispatch]
   );
 
-  const handleEditSection = useCallback(
+  const handleEditSectionTitle = useCallback(
     (value) => {
       const exists = course?.sections?.find((item) => item?.title === value);
       if (exists) {
         setIsExists(!!exists);
         setTimeout(() => setIsExists(false), 1000);
       } else if (value) {
-        dispatch(
-          setCourse({
-            ...course,
-            sections: course.sections?.map((item) =>
-              item?.sectionId === editableSectionId
-                ? { ...item, title: value }
-                : item
-            )
-          })
-        );
-        handleChangeActiveTab(value);
+        const payload = {
+          title: value,
+          sectionId: editableSectionId,
+        }
+        dispatch(editSectionTitle(payload))
+
+        handleChangeActiveTab(editableSectionId);
       }
       setEditingMode(false);
     },
@@ -207,7 +204,7 @@ const MainForm = ({ course, form, handleSave }: Props) => {
         title="Редактирование"
         visible={isEditing}
         setMode={setEditingMode}
-        onOk={handleEditSection}
+        onOk={handleEditSectionTitle}
         okText="Изменить"
         cancelText="Отменить изменение"
         propsValue={
