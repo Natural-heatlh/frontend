@@ -1,5 +1,6 @@
 import { createSlice, CaseReducer, PayloadAction } from '@reduxjs/toolkit';
 import { AdminCourse } from '../../types';
+import { Section } from '../../graphql';
 
 type State = AdminCourse;
 
@@ -34,6 +35,16 @@ const courseSlice = createSlice({
     ) => {
       state.isFree = !state.isFree;
       return state;
+    },
+    addSection: (state: State, action: PayloadAction<Section>) => {
+      state.sections.push(action.payload);
+    },
+    editSectionTitle: (state: State, action) => {
+      state.sections = state.sections?.map((item) =>
+        item?.sectionId === action.payload.sectionId
+          ? { ...item, title: action.payload.title }
+          : item
+      )
     },
     updateCourseImage: (state: State, action) => {
       state.image = action.payload;
@@ -107,7 +118,9 @@ export const {
   updateCourseTitle,
   updateCourseImage,
   toggleIsFree,
-  toggleIsPublished
+  toggleIsPublished,
+  addSection,
+  editSectionTitle
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

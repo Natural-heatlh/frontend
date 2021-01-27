@@ -3,7 +3,7 @@ import { Button } from 'antd';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
-import { setCourse } from '../../../slices/actions';
+import { addSection } from '../../../slices/actions';
 import AddModal from './AddModal';
 
 const Wrapper = styled.div`
@@ -23,6 +23,7 @@ const AddSection = (props: Props) => {
   const [isExists, setIsExists] = useState<boolean>(false);
   const { handleChangeActiveTab } = props;
   const course = useSelector((state: any) => state.course);
+
   const dispatch = useDispatch();
 
   const handleAddSection = useCallback(
@@ -36,18 +37,9 @@ const AddSection = (props: Props) => {
         setIsExists(!!exists);
         setTimeout(() => setIsExists(false), 1000);
       } else if (value && value.length > 0) {
-        dispatch(
-          setCourse({
-            ...course,
-            sections: [
-              ...course.sections,
-              {
-                sectionId,
-                title: value
-              }
-            ]
-          })
-        );
+        const section = { sectionId, title: value, children: [] };
+        dispatch(addSection(section));
+
         handleChangeActiveTab(sectionId);
         setAddingMode(false);
         setIsExists(false);
