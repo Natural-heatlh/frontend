@@ -1,11 +1,14 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Form, Input, Tabs, Popconfirm, Checkbox } from 'antd';
 import styled from 'styled-components';
-import isEmpty from 'lodash/isEmpty';
 import { EditOutlined, CloseOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { FormInstance } from 'antd/es/form';
-import { setCourse } from '../../../slices/admin/course';
+import {
+  setCourse, toggleIsFree, toggleIsPublished,
+  updateCourseDescription,
+  updateCourseTitle
+} from '../../../slices/admin/course';
 import { AdminCourse } from '../../../types';
 import Footer from '../Footer';
 import AddModal from './AddModal';
@@ -51,13 +54,17 @@ const MainForm = ({ course, form, handleSave }: Props) => {
 
   const dispatch = useDispatch();
 
-  // const changeString = useCallback(
-  //   (e, mode) => {
-  //     console.log(mode);
-  //     setState({ ...state, ...course, [mode]: e.target.value });
-  //   },
-  //   [course, state]
-  // );
+  const changeText = useCallback(
+    (e, mode) => {
+      if (mode === 'title') {
+        dispatch(updateCourseTitle(e.target.value));
+      }
+      if (mode === 'description') {
+        dispatch(updateCourseDescription(e.target.value));
+      }
+    },
+    [course, updateCourseDescription, updateCourseTitle, dispatch]
+  );
 
   const changeImage = useCallback(
     (value) => {
@@ -74,12 +81,12 @@ const MainForm = ({ course, form, handleSave }: Props) => {
   );
 
   const updateIsFree = useCallback(() => {
-    dispatch(setCourse({ ...course, isFree: !course.isFree }));
-  }, [dispatch, setCourse, course]);
+    dispatch(toggleIsFree());
+  }, [dispatch, toggleIsFree]);
 
   const updateIsPublished = useCallback(() => {
-    dispatch(setCourse({ ...course, isPublished: !course.isPublished }));
-  }, [dispatch, setCourse, course]);
+    dispatch(toggleIsPublished());
+  }, [dispatch, toggleIsPublished]);
 
   const onConfirm = useCallback(
     (sectionId) => {
@@ -146,14 +153,17 @@ const MainForm = ({ course, form, handleSave }: Props) => {
             }
           ]}
         >
-          <Input />
+          <Input onChange={(e) => changeText(e, 'title')} />
         </Form.Item>
         <ImageUploader
           onChange={changeImage}
           imageUrl={form.getFieldsValue()?.image}
         />
         <Form.Item label="Описание курса" name="description">
-          <Input.TextArea rows={3} />
+          <Input.TextArea
+            rows={3}
+            onChange={(e) => changeText(e, 'description')}
+          />
         </Form.Item>
         <Form.Item label="Бесплатный курс" name="isFree">
           <Checkbox checked={course.isFree} onChange={updateIsFree} />

@@ -32,12 +32,18 @@ const Edit = (props: any) => {
         id: course.id,
         input: {
           ...rest
+        },
+      },
+      refetchQueries: [
+        {
+          query: query.Courses,
         }
-      }
+      ],
     });
   }, [course, updateCourse]);
 
   useEffect(() => {
+    console.log('COURSE', data?.course);
     if (data && data.course) {
       dispatch(setCourse(data?.course));
 

@@ -33,7 +33,6 @@ export const typeDefs = gql`
   }
 
   type Test {
-    id: String
     lectureId: String
     title: String
     description: String
@@ -50,7 +49,6 @@ export const typeDefs = gql`
   }
 
   type Theory {
-    id: String
     lectureId: String
     title: String
     type: String
@@ -60,7 +58,6 @@ export const typeDefs = gql`
   }
 
   type Video {
-    id: String
     lectureId: String
     title: String
     type: String

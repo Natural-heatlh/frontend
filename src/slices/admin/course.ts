@@ -21,6 +21,31 @@ const courseSlice = createSlice({
   name: 'courses',
   initialState: initialState as AdminCourse,
   reducers: {
+    toggleIsPublished: (
+      state: State,
+      action: PayloadAction<boolean | undefined>
+    ) => {
+      state.isPublished = !state.isPublished;
+      return state;
+    },
+    toggleIsFree: (
+      state: State,
+      action: PayloadAction<boolean | undefined>
+    ) => {
+      state.isFree = !state.isFree;
+      return state;
+    },
+    updateCourseImage: (state: State, action) => {
+      state.image = action.payload;
+    },
+    updateCourseDescription: (state: State, action) => {
+      state.description = action.payload;
+      return state;
+    },
+    updateCourseTitle: (state: State, action) => {
+      state.title = action.payload;
+      return state;
+    },
     setCourse: setCourseReducer,
     setSectionChild: (state: State, action) => {
       state.sections = state.sections.map((item) => {
@@ -77,7 +102,12 @@ export const {
   setCourse,
   setSectionChild,
   removeSectionChild,
-  editSectionChild
+  editSectionChild,
+  updateCourseDescription,
+  updateCourseTitle,
+  updateCourseImage,
+  toggleIsFree,
+  toggleIsPublished
 } = courseSlice.actions;
 
 export default courseSlice.reducer;
