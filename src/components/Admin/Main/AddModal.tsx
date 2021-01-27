@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import { Input, Alert } from 'antd';
 import { usePrevious } from '../../../utils';
@@ -27,6 +27,7 @@ type Props = {
   title: string;
   error?: string;
   onErrorClose?: () => void;
+  setSectionId?: (value: string) => void;
 };
 
 const AddModal = ({
@@ -38,8 +39,10 @@ const AddModal = ({
   propsValue,
   title,
   error,
-  onErrorClose
+  onErrorClose,
+  setSectionId,
 }: Props) => {
+  console.log(propsValue);
   const [value, updateValue] = useState<string>(propsValue || '');
 
   const prev = usePrevious(propsValue);
@@ -50,18 +53,25 @@ const AddModal = ({
     }
   }, [propsValue, value, updateValue, prev]);
 
+  const reset = useCallback(() => {
+    if(setSectionId) {
+      setSectionId('');
+    }
+    updateValue('');
+  }, [setSectionId, updateValue]);
+
   return (
     <AdminModal
       title={title}
       visible={visible}
       onClose={() => {
-        updateValue('');
         setMode(false);
+        reset();
       }}
       onOk={() => {
         if (!error) {
           onOk(value);
-          updateValue('');
+          reset();
         }
       }}
       okText={okText}
