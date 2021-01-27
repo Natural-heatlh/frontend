@@ -35,6 +35,20 @@ export const store = configureStore({
   devTools: true
 });
 
+const omitTypename = (key: string, value: string) => {
+  return key === '__typename' ? undefined : value
+}
+
+const omitTypenameLink = new ApolloLink((operation, forward) => {
+  if (operation.variables) {
+    operation.variables = JSON.parse(
+      JSON.stringify(operation.variables),
+      omitTypename
+    )
+  }
+  return forward(operation)
+})
+
 const link = createHttpLink({
   uri: `${API_URL}/graphql`,
   credentials: 'include'
@@ -58,7 +72,8 @@ const client = new ApolloClient({
 
       if (networkError) console.log(`[Network error]: ${networkError}`);
     }),
-    link
+    omitTypenameLink,
+    link,
   ]),
   cache: new InMemoryCache(),
   typeDefs

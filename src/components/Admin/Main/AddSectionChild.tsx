@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Drawer, Select, Form } from 'antd';
+import { v4 as uuid } from 'uuid';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { SectionChildren } from '../../../types';
 import { setSectionChild, editSectionChild } from '../../../slices/actions';
-import { id } from '../../../utils';
 import ChildrenTable from '../Components/ChildrenTable';
 import Video from './Video';
 import TestComponent from './Test';
@@ -60,11 +60,11 @@ const AddSectionChild = ({ activeSection }: Props) => {
 
   const onSubmit = useCallback(
     (child) => {
-      const childWithId = { ...child, id: child?.id || id() };
+      const childWithId = { ...child, lectureId: child?.lectureId || uuid() };
 
       const payload = {
         child: childWithId,
-        activeSection
+        sectionId: activeSection
       };
 
       if (editableChild) {
@@ -117,7 +117,7 @@ const AddSectionChild = ({ activeSection }: Props) => {
 
       <ChildrenTable
         onEdit={handleSetEditable}
-        activeSectionName={activeSection}
+        activeSectionId={activeSection}
       />
 
       <Drawer

@@ -18,11 +18,11 @@ const StyledPageContainer = styled(PageContainer)`
   background: #fff;
 `;
 
-const checkLecture = (id: string, course: Course) => {
+const checkLecture = (lectureId: string, course: Course) => {
   let isTestLecture = false;
   course?.sections?.forEach((item) => {
     item?.children?.forEach((child) => {
-      if (child?.type === 'Theory' && child.id === id) {
+      if (child?.type === 'Test' && child.lectureId === lectureId) {
         isTestLecture = true;
       }
     });
@@ -34,6 +34,7 @@ const checkLecture = (id: string, course: Course) => {
 const CoursePage = (props: any) => {
   const history = useHistory();
   const { id, lectureId } = props.match.params;
+
   const userContext = useContext(AuthContext);
 
   const { data, loading } = useQuery(query.CourseQuery, {
@@ -55,7 +56,7 @@ const CoursePage = (props: any) => {
 
   const addProgress = useCallback(() => {
     if (!loading && data?.course) {
-      const isTestLecture = checkLecture(id, data?.course);
+      const isTestLecture = checkLecture(lectureId, data?.course);
 
       if (id && lectureId && !isTestLecture) {
         addToProgress({
@@ -71,10 +72,10 @@ const CoursePage = (props: any) => {
   const activeSectionKey = useMemo(() => {
     if (!loading && data.course) {
       const activeSection = data.course?.sections?.find((item: Section) =>
-        item?.children?.find((child) => child?.id === lectureId)
+        item?.children?.find((child) => child?.lectureId === lectureId)
       );
 
-      return activeSection?.id || '';
+      return activeSection?.sectionId || '';
     }
   }, [data, lectureId, loading]);
 
@@ -84,32 +85,32 @@ const CoursePage = (props: any) => {
 
       const activeSectionIndex = data.course?.sections.findIndex(
         (item: Section) =>
-          item?.children?.find((child) => child?.id === lectureId)
+          item?.children?.find((child) => child?.lectureId === lectureId)
       );
       if (activeSectionIndex === data.course?.sections.length - 1) {
         next = null;
       }
 
       const activeSection = data.course?.sections?.find((item: Section) =>
-        item?.children?.find((child) => child?.id === lectureId)
+        item?.children?.find((child) => child?.lectureId === lectureId)
       );
 
       const activeLectureIndex = activeSection?.children?.findIndex(
-        (item: SectionChildren) => item?.id === lectureId
+        (item: SectionChildren) => item?.lectureId === lectureId
       );
       if (activeLectureIndex === 0 && activeSectionIndex !== 0) {
         const prevSection = data.course?.sections[activeSectionIndex - 1];
-        prev = prevSection.children[prevSection?.children.length - 1 || 0];
+        prev = prevSection.children[prevSection?.children.length - 1 || 0]?.lectureId;
       } else if (activeLectureIndex === 0 && activeSectionIndex === 0) {
-        prev = data?.course?.sections[0]?.children[0]?.id;
+        prev = data?.course?.sections[0]?.children[0]?.lectureId;
       } else {
-        prev = activeSection?.children[activeLectureIndex - 1]?.id;
+        prev = activeSection?.children[activeLectureIndex - 1]?.lectureId;
       }
 
       if (activeLectureIndex === activeSection?.children.length - 1) {
-        next = data.course?.sections[activeSectionIndex + 1]?.children[0]?.id;
+        next = data.course?.sections[activeSectionIndex + 1]?.children[0]?.lectureId;
       } else {
-        next = activeSection?.children[activeLectureIndex + 1]?.id;
+        next = activeSection?.children[activeLectureIndex + 1]?.lectureId;
       }
       return [prev, next];
     }
@@ -133,7 +134,7 @@ const CoursePage = (props: any) => {
   if (loading) return <Preloader />;
 
   if(!lectureId && id && data?.course) {
-    const firstLectureId = data?.course?.sections[0]?.children[0]?.id;
+    const firstLectureId = data?.course?.sections[0]?.children[0]?.lectureId;
     history.replace(`/course/${id}/lecture/${firstLectureId}`);
   }
 

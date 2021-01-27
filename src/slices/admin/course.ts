@@ -8,14 +8,23 @@ const setCourseReducer: CaseReducer<State, PayloadAction<AdminCourse>> = (
   action
 ) => (state = action.payload);
 
+const initialState = {
+  description: '',
+  image: '',
+  sections: [],
+  title: '',
+  isFree: false,
+  isPublished: false
+};
+
 const courseSlice = createSlice({
   name: 'courses',
-  initialState: {} as AdminCourse,
+  initialState: initialState as AdminCourse,
   reducers: {
     setCourse: setCourseReducer,
     setSectionChild: (state: State, action) => {
       state.sections = state.sections.map((item) => {
-        if (item.title === action.payload.activeSection) {
+        if (item.sectionId === action.payload.sectionId) {
           const updatedChildren = item.children || [];
           updatedChildren.push(action.payload.child);
           return {
@@ -29,10 +38,10 @@ const courseSlice = createSlice({
     },
     removeSectionChild: (state: State, action) => {
       state.sections = state.sections.map((item) => {
-        if (item.title === action.payload.activeSectionName) {
+        if (item?.sectionId === action.payload.sectionId) {
           const targetChildren = item.children || [];
           const updatedChildren = targetChildren.filter(
-            (item) => item?.title !== action.payload.activeSectionChild
+            (child) => child?.lectureId !== action.payload.removableId
           );
           return {
             ...item,
@@ -45,12 +54,12 @@ const courseSlice = createSlice({
     },
     editSectionChild: (state: State, action) => {
       state.sections = state.sections.map((item) => {
-        if (item.title === action.payload.activeSection) {
+        if (item?.sectionId === action.payload.sectionId) {
           return {
             ...item,
             children:
               item?.children?.map((item) => {
-                if (item?.id === action.payload.child?.id) {
+                if (item?.lectureId === action.payload.child?.lectureId) {
                   return { ...item, ...action.payload.child };
                 }
                 return item;

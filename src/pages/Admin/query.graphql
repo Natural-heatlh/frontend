@@ -18,3 +18,15 @@ mutation DeleteCourse($id: ID!) {
     id
   }
 }
+
+mutation UpdateCourse($id: ID!, $input: updateCourseInput) {
+  updateCourse(id: $id, input: $input) {
+    ...CourseFragment
+  }
+}
+
+mutation CreateCourse($input: CreateCourseInput) {
+  createCourse(input: $input) {
+    ...CourseFragment
+  }
+}

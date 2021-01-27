@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Table, Space, Button, Drawer, Popconfirm } from 'antd';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { SectionChildren } from '../../../graphql';
+import {Section, SectionChildren} from '../../../graphql';
 import { removeSectionChild } from '../../../slices/actions';
 
 const Wrapper = styled.div`
@@ -14,19 +14,19 @@ const Wrapper = styled.div`
 const { Column } = Table;
 
 type Props = {
-  activeSectionName?: string | null;
+  activeSectionId?: string | null;
   onEdit: (child: SectionChildren) => void;
 };
 
-const ChildrenTable = ({ activeSectionName, onEdit }: Props) => {
+const ChildrenTable = ({ activeSectionId, onEdit }: Props) => {
   const sections = useSelector((state: any) => state.course?.sections);
 
   const children = useMemo(
     () =>
       sections?.find(
-        (item: SectionChildren) => item.title === activeSectionName
+        (item: Section) => item.sectionId === activeSectionId
       )?.children || [],
-    [sections, activeSectionName]
+    [sections, activeSectionId]
   );
 
   const dispatch = useDispatch();
@@ -34,12 +34,12 @@ const ChildrenTable = ({ activeSectionName, onEdit }: Props) => {
   const onDelete = useCallback(
     (content) => {
       const payload = {
-        activeSectionName,
-        activeSectionChild: content?.title
+        sectionId: activeSectionId,
+        removableId: content?.lectureId
       };
       dispatch(removeSectionChild(payload));
     },
-    [activeSectionName, dispatch]
+    [activeSectionId, dispatch]
   );
 
   const handleEdit = useCallback(

@@ -1,4 +1,4 @@
-import { Section } from './graphql';
+import { Course, Section } from './graphql';
 
 export enum ContentType {
   THEORY = 'Theory',
@@ -13,10 +13,20 @@ export enum SectionChildren {
 }
 
 export type AdminCourse = {
+  id?: string;
   title?: string;
   description?: string;
   image?: string;
-  sections: Array<Omit<Section, 'id'>>;
+  sections: Array<Section>;
   isPublished?: boolean;
   isFree?: boolean;
+};
+
+export type State = {
+  course: AdminCourse;
+  courses: Course[];
+  auth: {
+    isLoggedIn: boolean;
+  };
+  test?: Array<any>;
 };

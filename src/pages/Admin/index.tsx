@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router';
 import AdminHeader from '../../components/Admin/Components/Header';
 import { AuthContext } from '../../components/Auth/AuthCheck';
 import Courses from './Courses';
-import Course from './Course';
+import Edit from './Edit';
 import Add from './Add';
 
 const Admin = () => {
@@ -22,7 +22,7 @@ const Admin = () => {
       <AdminHeader />
       <Switch>
         <Route path="/admin/courses" component={Courses} exact />
-        <Route path="/admin/courses/:id" component={Course} exact />
+        <Route path="/admin/courses/:id" component={Edit} exact />
         <Route path="/admin/add-course" component={Add} exact />
       </Switch>
     </React.Fragment>

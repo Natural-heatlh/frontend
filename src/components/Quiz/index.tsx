@@ -81,7 +81,7 @@ const Quiz = ({ lecture, courseId, addProgress }: Props) => {
     checkTestResult({
       variables: {
         input: {
-          id: lecture?.id,
+          id: lecture?.lectureId,
           results: test,
           courseId
         }
