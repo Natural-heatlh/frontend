@@ -2,7 +2,7 @@
 
 query Courses {
   courses {
-    id
+    courseId
     ...CourseFragment
   }
 }
@@ -15,7 +15,7 @@ query Course($id: ID!) {
 
 mutation DeleteCourse($id: ID!) {
   deleteCourse(id: $id) {
-    id
+    courseId
   }
 }
 

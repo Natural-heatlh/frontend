@@ -84,7 +84,7 @@ interface CourseItemProps extends Course {
 }
 
 const CourseItem = ({
-  id,
+  courseId,
   title,
   description,
   isAvailable,
@@ -97,7 +97,7 @@ const CourseItem = ({
     isPublished,
     isFree,
     isAvailable,
-    id
+    courseId
   );
 
   return (
@@ -114,7 +114,7 @@ const CourseItem = ({
 
           <Button
             type="primary"
-            onClick={onClick ? () => onClick(id) : undefined}
+            onClick={onClick ? () => onClick(courseId) : undefined}
           >
             <Link to={buttonLink}>{buttonText}</Link>
           </Button>

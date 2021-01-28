@@ -25,8 +25,8 @@ const CourseList = ({
       {courses?.map((item) => (
         <CourseItem
           onClick={onClick}
-          isAvailable={availableCourses?.includes(item.id)}
-          key={item.id}
+          isAvailable={availableCourses?.includes(item.courseId)}
+          key={item.courseId}
           {...item}
         />
       ))}

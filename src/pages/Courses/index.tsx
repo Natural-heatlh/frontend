@@ -20,7 +20,9 @@ const Courses = () => {
     [buyCourse]
   );
 
-  const availableCourses = user?.courses?.map((item: any) => item?.id);
+  const availableCourses = user?.courses?.map<string>(
+    (item) => item?.courseId as string
+  );
 
   if (loading) return <Preloader />;
 
