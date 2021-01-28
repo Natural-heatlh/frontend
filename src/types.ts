@@ -7,16 +7,26 @@ export enum ContentType {
 }
 
 export enum SectionChildren {
-  THEORY = 'Теория',
-  VIDEO = 'Видео',
-  TEST = 'Тест'
+  THEORY = 'Theory',
+  VIDEO = 'Video',
+  TEST = 'Test'
 }
 
 export type AdminCourse = {
+  id?: string;
   title?: string;
   description?: string;
   image?: string;
-  sections: Array<Omit<Section, 'id'>>;
+  sections: Array<Section>;
   isPublished?: boolean;
   isFree?: boolean;
+};
+
+export type State = {
+  course: AdminCourse;
+  courses: Course[];
+  auth: {
+    isLoggedIn: boolean;
+  };
+  test?: Array<any>;
 };

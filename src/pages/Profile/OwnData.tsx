@@ -17,13 +17,15 @@ const OwnDataForm = () => {
   const { data, loading, error } = useQuery(authQuery.CurrentUser);
   const [updateUserData] = useMutation(query.UpdateUserData);
 
+  console.log(error);
+
   const [form] = useForm();
 
   useEffect(() => {
     if (data && data.currentUser) {
       form.setFieldsValue(data.currentUser);
     }
-  }, [data]);
+  }, [data, form]);
 
   const handleUpdate = useCallback(
     async (values) => {

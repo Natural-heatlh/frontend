@@ -1,7 +1,0 @@
-mutation CreateCourse($input: CreateCourseInput) {
-  createCourse(input: $input) {
-    id
-    title
-    image
-  }
-}

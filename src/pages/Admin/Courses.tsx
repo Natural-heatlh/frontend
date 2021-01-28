@@ -38,13 +38,11 @@ const Courses = () => {
         variables: {
           id
         },
-        optimisticResponse: {
-          __typename: 'Mutation',
-          deleteCourse: {
-            __typename: 'Course',
-            id: id
+        refetchQueries: [
+          {
+            query: query.Courses
           }
-        },
+        ],
         update: (cache, result) => {
           const deleteCourse = result.data?.deleteCourse;
           const dataCourses = cache.readQuery<CoursesQuery>({
@@ -90,7 +88,7 @@ const Courses = () => {
           renderItem={(item) => (
             <List.Item
               actions={[
-                <Link to={`${location.pathname}/edit/${item?.id}`}>
+                <Link to={`${location.pathname}/${item?.id}`}>
                   Редактировать
                 </Link>,
                 <span onClick={() => item?.id && handleRemove(item.id)}>

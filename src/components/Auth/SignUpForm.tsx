@@ -44,7 +44,7 @@ const SignUpForm = () => {
           }
         });
     },
-    [dispatch]
+    [dispatch, form]
   );
 
   const onFinish = (values: any) => {

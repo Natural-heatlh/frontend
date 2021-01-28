@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { Input, Button } from 'antd';
 import { useParams, useHistory } from 'react-router';
 import axios from '../../helpers/axios';
@@ -10,10 +10,6 @@ import {
   StyledForm,
   SubmitFormItem
 } from '../Forms/Additional';
-
-interface Props {
-  reset: ({ email }: { email: string }) => void;
-}
 
 type UrlParams = {
   token?: string;
@@ -27,6 +23,12 @@ const UpdatePasswordForm = () => {
     token: null
   });
 
+  const handleRedirect = useCallback((res: any) => {
+    if (res.data.redirectUrl) {
+      history.replace(res.data.redirectUrl);
+    }
+  }, [history]);
+
   useEffect(() => {
     axios
       .get(`/auth/check-token/${params.token}`)
@@ -38,9 +40,9 @@ const UpdatePasswordForm = () => {
         });
       })
       .catch((err) => console.log(err));
-  }, [params, updateState]);
+  }, [params, updateState, handleRedirect]);
 
-  const handleUpdate = (password: string) => {
+  const handleUpdate = useCallback((password: string) => {
     axios
       .post('/auth/update-password', {
         ...state,
@@ -50,13 +52,8 @@ const UpdatePasswordForm = () => {
         handleRedirect(res);
       })
       .catch((err) => console.log(err));
-  };
+  }, [handleRedirect, state]);
 
-  const handleRedirect = (res: any) => {
-    if (res.data.redirectUrl) {
-      history.replace(res.data.redirectUrl);
-    }
-  };
 
   if (!params.token) {
     history.replace('/auth/login');
