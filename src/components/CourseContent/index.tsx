@@ -2,10 +2,16 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router';
 import { Modal } from 'antd';
-import { Course, Test, Theory as TheoryType } from '../../graphql';
+import {
+  Course,
+  Test,
+  Theory as TheoryType,
+  Video as VideoType
+} from '../../graphql';
 import Quiz from '../Quiz';
 import { ContentType } from '../../types';
 import { usePageTitle } from '../../hooks/usePageTitle';
+import Video from '../Video';
 import AboutCourse from './AboutCourse';
 import Theory from './Theory';
 
@@ -33,7 +39,9 @@ const CourseContent = ({
   nextLectureId,
   isCompletedTillTest
 }: Props) => {
-  const [currentLecture, setCurrentLecture] = useState<TheoryType | Test>({});
+  const [currentLecture, setCurrentLecture] = useState<
+    TheoryType | Test | VideoType
+  >({});
   const [modalMessage, updateMessage] = useState('');
   const history = useHistory();
 
@@ -41,7 +49,9 @@ const CourseContent = ({
 
   useEffect(() => {
     course?.sections?.forEach((item, index) => {
-      const current = item?.children?.find((child) => child?.lectureId === lectureId);
+      const current = item?.children?.find(
+        (child) => child?.lectureId === lectureId
+      );
       if (!isCompletedTillTest && currentLecture.type === 'Test') {
         updateMessage('Пройдите курс полностью чтобы получить доступ к тесту!');
       }
@@ -49,7 +59,13 @@ const CourseContent = ({
         setCurrentLecture(current as any);
       }
     });
-  }, [course, lectureId, setCurrentLecture, isCompletedTillTest, currentLecture]);
+  }, [
+    course,
+    lectureId,
+    setCurrentLecture,
+    isCompletedTillTest,
+    currentLecture
+  ]);
 
   const handleCancelModal = useCallback(() => {
     history.replace(`/course/${course?.id}/lecture/${prevLectureId}`);
@@ -78,6 +94,9 @@ const CourseContent = ({
           lecture={currentLecture as Test}
           addProgress={addProgress}
         />
+      )}
+      {currentLecture.type === ContentType.VIDEO && (
+        <Video lecture={currentLecture as VideoType} />
       )}
       <AboutCourse description={course?.description} />
       {modalMessage ? (
