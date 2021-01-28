@@ -1,8 +1,9 @@
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button } from 'antd';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { AdminCourse } from '../../../types';
+import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuid } from 'uuid';
+import { addSection } from '../../../slices/actions';
 import AddModal from './AddModal';
 
 const Wrapper = styled.div`
@@ -14,38 +15,37 @@ const AddButton = styled(Button)`
 `;
 
 type Props = {
-  setCourse: (course: AdminCourse) => void;
-  handleChangeActiveTab: (key: string) => void
-  course: AdminCourse;
+  handleChangeActiveTab: (key: string) => void;
 };
 
 const AddSection = (props: Props) => {
   const [isAddingMode, setAddingMode] = useState<boolean>(false);
   const [isExists, setIsExists] = useState<boolean>(false);
-  const { course, setCourse, handleChangeActiveTab} = props;
+  const { handleChangeActiveTab } = props;
+  const course = useSelector((state: any) => state.course);
+
+  const dispatch = useDispatch();
 
   const handleAddSection = useCallback(
     (value) => {
-      const exists = course?.sections?.find((item) => item?.title === value);
+      const sectionId = uuid();
+      const exists = course?.sections?.find(
+        (item: any) => item?.title === value
+      );
+
       if (exists) {
         setIsExists(!!exists);
         setTimeout(() => setIsExists(false), 1000);
       } else if (value && value.length > 0) {
-        setCourse({
-          ...course,
-          sections: [
-            ...course.sections,
-            {
-              title: value
-            }
-          ]
-        });
-        handleChangeActiveTab(value)
+        const section = { sectionId, title: value, children: [] };
+        dispatch(addSection(section));
+
+        handleChangeActiveTab(sectionId);
         setAddingMode(false);
         setIsExists(false);
       }
     },
-    [course, handleChangeActiveTab, setCourse]
+    [course, handleChangeActiveTab, dispatch]
   );
 
   return (
@@ -65,6 +65,4 @@ const AddSection = (props: Props) => {
   );
 };
 
-const mapStateToProps = (state: Record<string, any>) => ({ course: state?.course })
-
-export default connect(mapStateToProps)(AddSection);
+export default AddSection;

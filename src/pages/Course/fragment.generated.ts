@@ -5,20 +5,20 @@ export type CourseFragmentFragment = (
   & Pick<SchemaTypes.Course, 'id' | 'title' | 'image' | 'description' | 'isFree' | 'isPublished'>
   & { sections?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
     { __typename?: 'Section' }
-    & Pick<SchemaTypes.Section, 'id' | 'title'>
+    & Pick<SchemaTypes.Section, 'sectionId' | 'title'>
     & { children?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
       { __typename: 'Theory' }
-      & Pick<SchemaTypes.Theory, 'id' | 'type' | 'title' | 'content' | 'audio'>
+      & Pick<SchemaTypes.Theory, 'lectureId' | 'id' | 'type' | 'title' | 'content' | 'audio'>
       & { slides?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
         { __typename?: 'Slide' }
         & Pick<SchemaTypes.Slide, 'id' | 'url'>
       )>>> }
     ) | (
       { __typename: 'Video' }
-      & Pick<SchemaTypes.Video, 'id' | 'type' | 'title' | 'url'>
+      & Pick<SchemaTypes.Video, 'lectureId' | 'id' | 'type' | 'title' | 'url'>
     ) | (
       { __typename: 'Test' }
-      & Pick<SchemaTypes.Test, 'id' | 'type' | 'title' | 'description'>
+      & Pick<SchemaTypes.Test, 'lectureId' | 'id' | 'type' | 'title' | 'description'>
       & { items?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
         { __typename?: 'TestItem' }
         & Pick<SchemaTypes.TestItem, 'id' | 'question'>

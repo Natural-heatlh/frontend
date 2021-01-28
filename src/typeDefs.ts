@@ -33,7 +33,7 @@ export const typeDefs = gql`
   }
 
   type Test {
-    id: String
+    lectureId: String
     title: String
     description: String
     type: String
@@ -43,10 +43,13 @@ export const typeDefs = gql`
   type Slide {
     id: ID
     url: String
+    uid: String
+    name: String
+    status: String
   }
 
   type Theory {
-    id: String
+    lectureId: String
     title: String
     type: String
     content: String
@@ -55,7 +58,7 @@ export const typeDefs = gql`
   }
 
   type Video {
-    id: String
+    lectureId: String
     title: String
     type: String
     url: String
@@ -64,7 +67,7 @@ export const typeDefs = gql`
   union SectionChildren = Theory | Video | Test
 
   type Section {
-    id: ID!
+    sectionId: ID!
     title: String
     children: [SectionChildren]
   }
@@ -108,6 +111,7 @@ export const typeDefs = gql`
   }
 
   input SectionInput {
+    sectionId: String
     title: String
     children: [SectionChildrenInput]
   }
@@ -126,9 +130,13 @@ export const typeDefs = gql`
 
   input SlideInput {
     url: String
+    name: String
+    uid: String
+    status: String
   }
 
   input SectionChildrenInput {
+    lectureId: String
     title: String
     content: String
     url: String
@@ -140,11 +148,13 @@ export const typeDefs = gql`
   }
 
   input TheoryInput {
+    lectureId: String
     title: String
     content: String
   }
 
   input VideoInput {
+    lectureId: String
     title: String
     url: String
   }
@@ -167,6 +177,9 @@ export const typeDefs = gql`
     title: String
     description: String
     sections: [SectionInput]
+    image: String
+    isPublished: Boolean
+    isFree: Boolean
   }
 
   type Query {

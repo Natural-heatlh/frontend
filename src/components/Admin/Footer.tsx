@@ -1,9 +1,6 @@
 import { Button } from 'antd';
-import React, { useCallback } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
-import { useMutation } from '@apollo/client';
-import query from './Add/query.graphql';
 
 const StyledFixedDiv = styled.div`
   display: flex;
@@ -20,21 +17,14 @@ const StyledFixedDiv = styled.div`
   padding: 0 50px;
 `;
 
-const Footer = () => {
-  const course = useSelector((state: any) => state.course);
-  const [createCourse] = useMutation(query.CreateCourse);
-  const handleSave = useCallback(async () => {
-    await createCourse({
-      variables: {
-        input: {
-          ...course
-        }
-      }
-    });
-  }, [course, createCourse]);
+type Props = {
+  save: () => void;
+};
+
+const Footer = ({ save }: Props) => {
   return (
     <StyledFixedDiv>
-      <Button size="large" type="primary" onClick={handleSave}>
+      <Button size="large" type="primary" onClick={save}>
         Сохранить
       </Button>
     </StyledFixedDiv>

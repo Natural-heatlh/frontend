@@ -54,7 +54,7 @@ const SignInForm = () => {
           }
         });
     },
-    [dispatch]
+    [dispatch, form]
   );
 
   return (

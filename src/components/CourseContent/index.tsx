@@ -41,7 +41,7 @@ const CourseContent = ({
 
   useEffect(() => {
     course?.sections?.forEach((item, index) => {
-      const current = item?.children?.find((child) => child?.id === lectureId);
+      const current = item?.children?.find((child) => child?.lectureId === lectureId);
       if (!isCompletedTillTest && currentLecture.type === 'Test') {
         updateMessage('Пройдите курс полностью чтобы получить доступ к тесту!');
       }
@@ -49,14 +49,14 @@ const CourseContent = ({
         setCurrentLecture(current as any);
       }
     });
-  }, [course, lectureId, setCurrentLecture]);
+  }, [course, lectureId, setCurrentLecture, isCompletedTillTest, currentLecture]);
 
   const handleCancelModal = useCallback(() => {
     history.replace(`/course/${course?.id}/lecture/${prevLectureId}`);
     updateMessage('');
-  }, []);
+  }, [history, course, prevLectureId]);
 
-  const isCompleted = progress?.includes(currentLecture?.id as string);
+  const isCompleted = progress?.includes(currentLecture?.lectureId as string);
 
   const next = nextLectureId
     ? `/course/${course?.id}/lecture/${nextLectureId}`

@@ -44,7 +44,7 @@ const Auth = () => {
         }
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [history]);
 
   return (
     <PageContainer pageTitle={pageTitle}>

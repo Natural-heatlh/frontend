@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Button, Divider, Form, Input, Radio } from 'antd';
 import {
   MinusCircleOutlined,
@@ -47,6 +47,7 @@ const StyledRadioButton = styled(RadioButton)`
 interface Props {
   onFinish: (any?: any) => void;
   form: FormInstance;
+  content?: Record<any, any> | undefined;
 }
 
 export const TestForm = ({ onFinish, form }: Props) => {
@@ -82,7 +83,7 @@ export const TestForm = ({ onFinish, form }: Props) => {
           {(fields, { add, remove }) => (
             <>
               {fields.map((field, i) => (
-                <>
+                <Fragment key={field.name}>
                   <StyledDivider />
                   <QuestionBlockWrapper>
                     <QuestionWrapper>
@@ -144,7 +145,7 @@ export const TestForm = ({ onFinish, form }: Props) => {
                         >
                           <Item name={[field.name, `answers`]}>
                             {answersArray.map((item, i) => (
-                              <QuestionItemWrapper>
+                              <QuestionItemWrapper key={item}>
                                 <Item
                                   label={`${item}. Вариант ответа`}
                                   name={[field.name, `${i + 1}`]}
@@ -157,18 +158,19 @@ export const TestForm = ({ onFinish, form }: Props) => {
                                   ]}
                                   style={{ width: '100%' }}
                                 >
-                                  <Input placeholder={'Введите вариант ответа'} />
+                                  <Input
+                                    placeholder={'Введите вариант ответа'}
+                                  />
                                 </Item>
                               </QuestionItemWrapper>
                             ))}
                           </Item>
-
                         </div>
                       </div>
                     </QuestionWrapper>
                     <MinusCircleOutlined onClick={() => remove(field.name)} />
                   </QuestionBlockWrapper>
-                </>
+                </Fragment>
               ))}
               <Item>
                 <Button

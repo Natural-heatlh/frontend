@@ -54,6 +54,7 @@ const CourseNavigation = ({
   isCompletedTillTest
 }: Props) => {
   const [activeKey, setActive] = useState(activeSectionKey);
+
   const handleChangeActiveKey = useCallback(
     (e) => {
       if (e.length > 0) {
@@ -77,10 +78,10 @@ const CourseNavigation = ({
         {sections.length > 0
           ? sections.map((item) => (
               <StyledPanel
-                key={item.id}
+                key={item.sectionId}
                 header={
                   <SectionItem
-                    id={item.id}
+                    id={item.sectionId}
                     title={item.title}
                     count={item.children?.length}
                   />
@@ -90,8 +91,8 @@ const CourseNavigation = ({
                   {item.children?.map((child, index) =>
                     child ? (
                       <ChildItem
-                        isPassed={progress.includes(child.id as string)}
-                        key={child.id}
+                        isPassed={progress.includes(child.lectureId as string)}
+                        key={child.lectureId}
                         courseUrl={courseUrl}
                         index={index}
                         item={child}
