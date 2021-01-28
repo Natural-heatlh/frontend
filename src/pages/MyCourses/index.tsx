@@ -16,7 +16,7 @@ const MyCourses = () => {
 
   const availableCourses = useMemo(() => {
     return data?.courses.filter((item) =>
-      userContext?.courses?.find((course) => course?.courseId === item?.id)
+      userContext?.courses?.find((course) => course?.courseId === item?.courseId)
     );
   }, [data, userContext]);
 

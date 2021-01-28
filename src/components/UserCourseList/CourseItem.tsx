@@ -55,7 +55,7 @@ const getProgressInPercent = (
 };
 
 export const UserCourseItem = ({
-  id,
+  courseId,
   title,
   description,
   image,
@@ -72,8 +72,8 @@ export const UserCourseItem = ({
   }, [sections]);
 
   const userCourse = useMemo(() => {
-    return userContext?.courses?.find((item) => item?.courseId === id);
-  }, [userContext, id]);
+    return userContext?.courses?.find((item) => item?.courseId === courseId);
+  }, [userContext, courseId]);
 
   const percent = getProgressInPercent(userCourse, flattenCourse);
 
@@ -102,8 +102,8 @@ export const UserCourseItem = ({
             <Link
               to={
                 percent === 0
-                  ? `/course/${id}/lecture/${flattenCourse[0].id}`
-                  : `/course/${id}/lecture/${
+                  ? `/course/${courseId}/lecture/${flattenCourse[0].id}`
+                  : `/course/${courseId}/lecture/${
                       userCourse?.progress && userCourse.progress.length > 0
                         ? userCourse.progress[userCourse.progress.length - 1]
                         : flattenCourse[0].id

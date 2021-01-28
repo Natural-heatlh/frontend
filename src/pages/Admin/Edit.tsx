@@ -9,8 +9,6 @@ import { State } from '../../types';
 import AdminContainer from './Container';
 import query from './query.graphql';
 
-
-
 const Edit = (props: any) => {
   const dispatch = useDispatch();
   const [form] = useForm();
@@ -26,10 +24,11 @@ const Edit = (props: any) => {
   const [updateCourse] = useMutation(query.UpdateCourse);
 
   const handleUpdate = useCallback(async () => {
-    const { id, ...rest } = course;
+    const { courseId, ...rest } = course;
+
     await updateCourse({
       variables: {
-        id: course.id,
+        id: course.courseId,
         input: {
           ...rest
         },

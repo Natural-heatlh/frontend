@@ -73,7 +73,7 @@ export const typeDefs = gql`
   }
 
   type Course {
-    id: ID!
+    courseId: ID!
     title: String!
     image: String
     description: String
@@ -165,6 +165,7 @@ export const typeDefs = gql`
   }
 
   input CreateCourseInput {
+    courseId: String!
     title: String!
     description: String
     sections: [SectionInput]

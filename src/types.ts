@@ -23,7 +23,7 @@ export type AdminCourse = {
 };
 
 export type State = {
-  course: AdminCourse;
+  course: Course;
   courses: Course[];
   auth: {
     isLoggedIn: boolean;

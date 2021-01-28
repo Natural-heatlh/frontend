@@ -13,8 +13,8 @@ import {
   updateCourseImage,
   updateCourseTitle
 } from '../../../slices/admin/course';
-import { AdminCourse } from '../../../types';
 import Footer from '../Footer';
+import { Course } from '../../../graphql';
 import AddModal from './AddModal';
 import AddSection from './AddSection';
 import AddSectionChild from './AddSectionChild';
@@ -36,7 +36,7 @@ const EditIconWrapper = styled.a`
 `;
 
 interface Props {
-  course: AdminCourse;
+  course: Course;
   form: FormInstance;
   handleSave: () => void;
 }
@@ -157,10 +157,16 @@ const MainForm = ({ course, form, handleSave }: Props) => {
           />
         </Form.Item>
         <Form.Item label="Бесплатный курс" name="isFree">
-          <Checkbox checked={course.isFree} onChange={updateIsFree} />
+          <Checkbox
+            checked={course.isFree as boolean}
+            onChange={updateIsFree}
+          />
         </Form.Item>
         <Form.Item label="Опубликованный курс" name="isPublished">
-          <Checkbox checked={course.isPublished} onChange={updateIsPublished} />
+          <Checkbox
+            checked={course.isPublished as boolean}
+            onChange={updateIsPublished}
+          />
         </Form.Item>
         <div>
           <h2>Разделы курса</h2>
@@ -177,7 +183,9 @@ const MainForm = ({ course, form, handleSave }: Props) => {
                   <TabTitleWrapper>
                     {section?.title}
                     <EditIconWrapper
-                      onClick={() => onEditButtonClick(section.sectionId)}
+                      onClick={() =>
+                        onEditButtonClick(section?.sectionId as string)
+                      }
                     >
                       <EditOutlined />
                     </EditIconWrapper>
@@ -210,7 +218,7 @@ const MainForm = ({ course, form, handleSave }: Props) => {
         okText="Изменить"
         cancelText="Отменить изменение"
         propsValue={
-          course.sections?.find((item) => item.sectionId === editableSectionId)
+          course.sections?.find((item) => item?.sectionId === editableSectionId)
             ?.title as string
         }
         error={isExists ? 'Раздел с таким именем существует!' : ''}
