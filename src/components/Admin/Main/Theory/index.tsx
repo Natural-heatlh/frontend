@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Input, Form, Button, Radio } from 'antd';
+import { v4 as uuid } from 'uuid';
 import { RadioChangeEvent } from 'antd/es/radio';
 import { FormInstance } from 'antd/es/form';
 import { Theory } from '../../../../graphql';
@@ -37,6 +38,7 @@ const TheoryComponent = ({ onSubmit, content, form }: Props) => {
           .filter((item: any) => !!item.status)
           .map((item: any) => {
             return {
+              slideId: item.slideId || `slide-${uuid()}`,
               name: item.name,
               uid: item.uid,
               url: item.response?.fileLocation || item.url,

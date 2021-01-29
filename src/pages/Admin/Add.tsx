@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
+import { v4 as uuid } from 'uuid';
 import { Form } from 'antd';
 import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,13 +12,13 @@ import AdminContainer from './Container';
 import query from './query.graphql';
 
 const initialState = {
+  courseId: `course-${uuid()}`,
   description: '',
   image: undefined,
   title: '',
   isFree: false,
   isPublished: false
 };
-
 const Add = () => {
   usePageTitle('Добавить курс');
   const [form] = Form.useForm();
@@ -51,7 +52,7 @@ const Add = () => {
     });
 
     if (result?.data?.createCourse) {
-      history.replace(`/admin/courses/${result?.data?.createCourse?.id}`);
+      history.replace(`/admin/courses/${result?.data?.createCourse?.courseId}`);
     }
   }, [course, createCourse, history]);
 

@@ -18,7 +18,7 @@ const UserCourseList = ({ courses }: Props) => {
   return (
     <Wrapper>
       {courses?.map((item) => (
-        <UserCourseItem key={item.id} {...item} />
+        <UserCourseItem key={item.courseId} {...item} />
       ))}
     </Wrapper>
   );

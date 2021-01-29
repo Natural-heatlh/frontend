@@ -87,8 +87,8 @@ const Navigation = ({ courses }: Props) => {
     () => (
       <StyledMenu onClick={() => changeVisible(false)}>
         {courses?.map((item) => (
-          <MenuItem key={item.id}>
-            <Link to={`/course/${item.id}`}>{item.title}</Link>
+          <MenuItem key={item.courseId}>
+            <Link to={`/course/${item.courseId}`}>{item.title}</Link>
           </MenuItem>
         ))}
       </StyledMenu>

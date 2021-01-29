@@ -55,7 +55,7 @@ const Courses = () => {
               data: {
                 ...dataCourses,
                 courses: dataCourses?.courses.filter(
-                  (item) => item?.id !== deleteCourse?.id
+                  (item) => item?.courseId !== deleteCourse?.courseId
                 )
               }
             });
@@ -88,17 +88,17 @@ const Courses = () => {
           renderItem={(item) => (
             <List.Item
               actions={[
-                <Link to={`${location.pathname}/${item?.id}`}>
+                <Link to={`${location.pathname}/${item?.courseId}`}>
                   Редактировать
                 </Link>,
-                <span onClick={() => item?.id && handleRemove(item.id)}>
+                <span onClick={() => item?.courseId && handleRemove(item.courseId)}>
                   Удалить
                 </span>
               ]}
             >
               <List.Item.Meta
                 title={
-                  <Link to={`/admin/courses/${item?.id}`}>{item?.title}</Link>
+                  <Link to={`/admin/courses/${item?.courseId}`}>{item?.title}</Link>
                 }
                 description={item?.description}
               />

@@ -8,7 +8,7 @@ export type CoursesQuery = (
   { __typename?: 'Query' }
   & { courses: Array<SchemaTypes.Maybe<(
     { __typename?: 'Course' }
-    & Pick<SchemaTypes.Course, 'id'>
+    & Pick<SchemaTypes.Course, 'courseId'>
     & CourseFragmentFragment
   )>> }
 );
@@ -35,7 +35,7 @@ export type DeleteCourseMutation = (
   { __typename?: 'Mutation' }
   & { deleteCourse?: SchemaTypes.Maybe<(
     { __typename?: 'Course' }
-    & Pick<SchemaTypes.Course, 'id'>
+    & Pick<SchemaTypes.Course, 'courseId'>
   )> }
 );
 

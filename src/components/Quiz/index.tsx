@@ -65,12 +65,12 @@ const Quiz = ({ lecture, courseId, addProgress }: Props) => {
     () =>
       items?.map((item) => (
         <QuizItem
-          id={item?.id}
-          key={item?.id}
+          itemId={item?.itemId}
+          key={item?.itemId}
           question={item?.question}
           answers={item?.answers}
           currentAnswer={test.find(
-            (testItem: Item) => testItem.id === item?.id
+            (testItem: Item) => testItem.id === item?.itemId
           )}
         />
       )),

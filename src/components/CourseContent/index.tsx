@@ -68,14 +68,14 @@ const CourseContent = ({
   ]);
 
   const handleCancelModal = useCallback(() => {
-    history.replace(`/course/${course?.id}/lecture/${prevLectureId}`);
+    history.replace(`/course/${course?.courseId}/lecture/${prevLectureId}`);
     updateMessage('');
   }, [history, course, prevLectureId]);
 
   const isCompleted = progress?.includes(currentLecture?.lectureId as string);
 
   const next = nextLectureId
-    ? `/course/${course?.id}/lecture/${nextLectureId}`
+    ? `/course/${course?.courseId}/lecture/${nextLectureId}`
     : null;
 
   return (
@@ -90,13 +90,13 @@ const CourseContent = ({
       )}
       {currentLecture.type === ContentType.TEST && (
         <Quiz
-          courseId={course?.id}
+          courseId={course?.courseId}
           lecture={currentLecture as Test}
           addProgress={addProgress}
         />
       )}
       {currentLecture.type === ContentType.VIDEO && (
-        <Video lecture={currentLecture as VideoType} />
+        <Video addProgress={addProgress} lecture={currentLecture as VideoType} />
       )}
       <AboutCourse description={course?.description} />
       {modalMessage ? (
