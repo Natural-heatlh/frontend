@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Button, Drawer, Select, Form } from 'antd';
+import { Button, Drawer, Form, Select } from 'antd';
 import { v4 as uuid } from 'uuid';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { SectionChildren } from '../../../types';
-import { setSectionChild, editSectionChild } from '../../../slices/actions';
+import { editSectionChild, setSectionChild } from '../../../slices/actions';
 import ChildrenTable from '../Components/ChildrenTable';
 import Video from './Video';
 import TestComponent from './Test';
@@ -25,6 +25,7 @@ const AddSectionChild = ({ activeSection }: Props) => {
   const [selected, setSelected] = useState<SectionChildren>(
     SectionChildren.THEORY
   );
+  const [defaultSelected, setDefault] = useState<SectionChildren>(SectionChildren.THEORY);
   const [editableChild, setEditable] = useState<any>(null);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
@@ -49,13 +50,16 @@ const AddSectionChild = ({ activeSection }: Props) => {
     setEditable(null);
     setIsOpened(false);
     form.resetFields();
-  }, [setEditable, setIsOpened, form]);
+    setSelected(defaultSelected);
+  }, [setEditable, setIsOpened, form, setSelected, defaultSelected]);
 
   const handleChange = useCallback(
     (value) => {
+      form.resetFields();
       setSelected(value);
+      setDefault(value);
     },
-    [setSelected]
+    [setSelected, setDefault, form]
   );
 
   const onSubmit = useCallback(
@@ -75,13 +79,7 @@ const AddSectionChild = ({ activeSection }: Props) => {
         setIsOpened(false);
       }
     },
-    [
-      dispatch,
-      resetEditable,
-      activeSection,
-      setIsOpened,
-      editableChild
-    ]
+    [dispatch, resetEditable, activeSection, setIsOpened, editableChild]
   );
 
   const handleDrawerClose = useCallback(() => {
@@ -100,7 +98,7 @@ const AddSectionChild = ({ activeSection }: Props) => {
       <div>
         <StyledSelect
           onChange={handleChange}
-          defaultValue={SectionChildren.THEORY}
+          defaultValue={selected}
           style={{ width: 220 }}
         >
           <Option value={SectionChildren.THEORY}>

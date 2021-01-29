@@ -12,6 +12,7 @@ const setTestReducer: CaseReducer<State, PayloadAction<TestItem>> = (
   action
 ) => {
   const { id, value } = action.payload;
+  console.log(action.payload);
 
   if (!state.find((item) => item.id === id)) {
     state.push({ id, value });

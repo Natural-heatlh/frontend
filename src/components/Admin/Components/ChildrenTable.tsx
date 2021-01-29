@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Table, Space, Button, Popconfirm } from 'antd';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import {Section, SectionChildren} from '../../../graphql';
+import { Section, SectionChildren } from '../../../graphql';
 import { removeSectionChild } from '../../../slices/actions';
 
 const Wrapper = styled.div`
@@ -23,9 +23,9 @@ const ChildrenTable = ({ activeSectionId, onEdit }: Props) => {
 
   const children = useMemo(
     () =>
-      sections?.find(
-        (item: Section) => item.sectionId === activeSectionId
-      )?.children || [],
+      sections
+        ?.find((item: Section) => item.sectionId === activeSectionId)
+        ?.children.map((item: SectionChildren) => ({ ...item, key: item.lectureId })) || [],
     [sections, activeSectionId]
   );
 
@@ -45,6 +45,7 @@ const ChildrenTable = ({ activeSectionId, onEdit }: Props) => {
   const handleEdit = useCallback(
     (child) => {
       if (child) {
+        delete child.key;
         onEdit(child);
       }
     },

@@ -42,7 +42,6 @@ const AddModal = ({
   onErrorClose,
   setSectionId,
 }: Props) => {
-  console.log(propsValue);
   const [value, updateValue] = useState<string>(propsValue || '');
 
   const prev = usePrevious(propsValue);
