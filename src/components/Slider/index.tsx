@@ -93,7 +93,7 @@ const Slider = ({ slides, addProgress, isCompleted, next }: Props) => {
   const items = useMemo(
     () =>
       slides?.map((item, index) => (
-        <div style={{ height: '622px' }} key={item.id}>
+        <div style={{ height: '622px' }} key={item.slideId}>
           <SlideImg
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

@@ -62,7 +62,7 @@ const ImageUploader = ({ onChange, imageUrl }: Props) => {
   );
 
   const handlePreview = useCallback(() => {
-    setPreviewImage(image[0]?.response?.fileLocation);
+    setPreviewImage(image[0]?.response?.fileLocation || image[0]?.url);
     setPreviewVisible(true);
   }, [image]);
 
