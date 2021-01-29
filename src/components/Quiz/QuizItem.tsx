@@ -36,7 +36,12 @@ interface QuizItemProps extends TestItem {
   currentAnswer: Item;
 }
 
-const QuizItem = ({ id, question, answers, currentAnswer }: QuizItemProps) => {
+const QuizItem = ({
+  itemId,
+  question,
+  answers,
+  currentAnswer
+}: QuizItemProps) => {
   const [value, setValue] = useState(currentAnswer?.value || null);
   const dispatch = useDispatch();
 
@@ -45,23 +50,23 @@ const QuizItem = ({ id, question, answers, currentAnswer }: QuizItemProps) => {
       setValue(e.target.value);
       dispatch(
         setTest({
-          id: id as string,
+          id: itemId as string,
           value: e.target.value
         })
       );
     },
-    [setValue, dispatch, id]
+    [setValue, dispatch, itemId]
   );
 
   return (
-    <Wrapper key={id}>
+    <Wrapper key={itemId}>
       <Question>{question}</Question>
       <AnswersWrapper
         value={currentAnswer ? value : null}
         onChange={handleChange}
       >
         {answers?.map((answ) => (
-          <Answer value={answ?.id} key={answ?.id}>
+          <Answer value={answ?.answerId} key={answ?.answerId}>
             {answ?.title}
           </Answer>
         ))}

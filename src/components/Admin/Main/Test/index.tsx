@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { FormInstance } from 'antd/es/form';
+import { v4 as uuid } from 'uuid';
 import { Answer, Test } from '../../../../graphql';
 import { TestForm } from './TestForm';
 
@@ -17,6 +18,7 @@ const TestComponent = ({ onSubmit, content, form }: Props) => {
       const items =
         content?.items?.map((item: any) => {
           const itemForForm: any = {
+            itemId: item?.itemId,
             question: item.question,
             answer:
               item.answers.findIndex(
@@ -25,7 +27,10 @@ const TestComponent = ({ onSubmit, content, form }: Props) => {
           };
 
           item?.answers.forEach((item: Answer, index: number) => {
-            itemForForm[index + 1] = item.title;
+            itemForForm[index + 1] = {
+              answerId: item.answerId,
+              title: item.title,
+            };
           });
 
           return itemForForm;
@@ -37,9 +42,11 @@ const TestComponent = ({ onSubmit, content, form }: Props) => {
 
   const mapItems = useCallback((items) => {
     return items.map((item: Record<any, any>) => ({
+      itemId: item?.itemId || `testItem-${uuid()}`,
       question: item.question,
       answers: answerIndexes.map((index) => ({
-        title: item[index],
+        answerId: item[index]?.answerId || `answer-${uuid()}`,
+        title: item[index].title,
         isCorrect: item.answer === index
       }))
     }));

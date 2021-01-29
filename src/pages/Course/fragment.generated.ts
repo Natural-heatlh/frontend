@@ -11,7 +11,7 @@ export type CourseFragmentFragment = (
       & Pick<SchemaTypes.Theory, 'lectureId' | 'type' | 'title' | 'content' | 'audio'>
       & { slides?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
         { __typename?: 'Slide' }
-        & Pick<SchemaTypes.Slide, 'id' | 'url' | 'uid' | 'name' | 'status'>
+        & Pick<SchemaTypes.Slide, 'slideId' | 'url' | 'uid' | 'name' | 'status'>
       )>>> }
     ) | (
       { __typename: 'Video' }
@@ -21,10 +21,10 @@ export type CourseFragmentFragment = (
       & Pick<SchemaTypes.Test, 'lectureId' | 'type' | 'title' | 'description'>
       & { items?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
         { __typename?: 'TestItem' }
-        & Pick<SchemaTypes.TestItem, 'id' | 'question'>
+        & Pick<SchemaTypes.TestItem, 'itemId' | 'question'>
         & { answers?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
           { __typename?: 'Answer' }
-          & Pick<SchemaTypes.Answer, 'id' | 'title' | 'isCorrect'>
+          & Pick<SchemaTypes.Answer, 'answerId' | 'title' | 'isCorrect'>
         )>>> }
       )>>> }
     )>>> }

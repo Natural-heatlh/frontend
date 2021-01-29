@@ -50,37 +50,37 @@ interface Props {
   content?: Record<any, any> | undefined;
 }
 
-export const TestForm = ({ onFinish, form }: Props) => {
-  return (
-    <>
-      <Form layout="vertical" onFinish={onFinish} form={form}>
-        <Item
-          label="Заголовок теста"
-          name="title"
-          rules={[
-            {
-              required: true,
-              message: 'Пожалуйста введите заголовок теста!'
-            }
-          ]}
-          style={{ width: '100%' }}
-        >
-          <Input />
-        </Item>
-        <Item
-          label="Описание"
-          name="description"
-          rules={[
-            {
-              required: true,
-              message: 'Пожалуйста введите текст описания!'
-            }
-          ]}
-        >
-          <Input.TextArea rows={3} />
-        </Item>
-        <List name="items">
-          {(fields, { add, remove }) => (
+export const TestForm = ({ onFinish, form }: Props) => (
+  <>
+    <Form layout="vertical" onFinish={onFinish} form={form}>
+      <Item
+        label="Заголовок теста"
+        name="title"
+        rules={[
+          {
+            required: true,
+            message: 'Пожалуйста введите заголовок теста!'
+          }
+        ]}
+        style={{ width: '100%' }}
+      >
+        <Input />
+      </Item>
+      <Item
+        label="Описание"
+        name="description"
+        rules={[
+          {
+            required: true,
+            message: 'Пожалуйста введите текст описания!'
+          }
+        ]}
+      >
+        <Input.TextArea rows={3} />
+      </Item>
+      <List name="items">
+        {(fields, { add, remove }) => {
+          return (
             <>
               {fields.map((field, i) => (
                 <Fragment key={field.name}>
@@ -106,9 +106,20 @@ export const TestForm = ({ onFinish, form }: Props) => {
                         />
                       </Item>
                       <div style={{ display: 'flex', flexDirection: 'row' }}>
-                        <Item name={[field.name, `answer`]}>
+                        <Item
+                          name={[field.name, `answer`]}
+                          rules={[
+                            {
+                              required: true,
+                              message: 'Выберите ответ'
+                            }
+                          ]}
+                        >
                           <Radio.Group
-                            style={{ display: 'flex', flexDirection: 'column' }}
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column'
+                            }}
                           >
                             <StyledRadioButton
                               value={1}
@@ -147,8 +158,14 @@ export const TestForm = ({ onFinish, form }: Props) => {
                             {answersArray.map((item, i) => (
                               <QuestionItemWrapper key={item}>
                                 <Item
+                                  {...field}
                                   label={`${item}. Вариант ответа`}
-                                  name={[field.name, `${i + 1}`]}
+                                  name={[field.name, `${i + 1}`, 'title']}
+                                  fieldKey={[
+                                    field.fieldKey,
+                                    `${i + 1}`,
+                                    'answerId'
+                                  ]}
                                   rules={[
                                     {
                                       required: true,
@@ -172,25 +189,21 @@ export const TestForm = ({ onFinish, form }: Props) => {
                   </QuestionBlockWrapper>
                 </Fragment>
               ))}
-              <Item>
-                <Button
-                  type="dashed"
-                  onClick={() => add()}
-                  block
-                  icon={<PlusOutlined />}
-                >
-                  Добавить вопрос
-                </Button>
-              </Item>
+              <Button
+                type="dashed"
+                onClick={() => add()}
+                block
+                icon={<PlusOutlined />}
+              >
+                Добавить вопрос
+              </Button>
             </>
-          )}
-        </List>
-        <Item>
-          <Button type="primary" htmlType="submit">
-            Принять
-          </Button>
-        </Item>
-      </Form>
-    </>
-  );
-};
+          );
+        }}
+      </List>
+      <Button type="primary" htmlType="submit">
+        Принять
+      </Button>
+    </Form>
+  </>
+);

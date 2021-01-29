@@ -23,7 +23,7 @@ fragment CourseFragment on Course {
         content
         audio
         slides {
-          id
+          slideId
           url
           uid
           name
@@ -36,10 +36,10 @@ fragment CourseFragment on Course {
         title
         description
         items {
-          id
+          itemId
           question
           answers {
-            id
+            answerId
             title
             isCorrect
           }
