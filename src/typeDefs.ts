@@ -80,6 +80,7 @@ export const typeDefs = gql`
     sections: [Section]
     isPublished: Boolean
     isFree: Boolean
+    level: Int
   }
 
   type UserCourse {
@@ -95,6 +96,7 @@ export const typeDefs = gql`
     country: String
     partnerID: String
     phone: String
+    status: Int
   }
 
   type User {
@@ -106,6 +108,7 @@ export const typeDefs = gql`
     country: String
     partnerID: String
     courses: [UserCourse]
+    status: Int
     phone: String
     role: String
   }
@@ -175,6 +178,7 @@ export const typeDefs = gql`
     image: String
     isPublished: Boolean
     isFree: Boolean
+    level: Int
   }
 
   input updateCourseInput {
@@ -184,6 +188,7 @@ export const typeDefs = gql`
     image: String
     isPublished: Boolean
     isFree: Boolean
+    level: Int
   }
 
   type Query {

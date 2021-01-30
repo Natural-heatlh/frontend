@@ -64,6 +64,10 @@ const courseSlice = createSlice({
       state.title = action.payload;
       return state;
     },
+    updateLevel: (state: State, action) => {
+      state.level = action.payload;
+      return state;
+    },
     setCourse: setCourseReducer,
     setSectionChild: (state: State, action) => {
       state.sections = state.sections?.map((item) => {
@@ -130,7 +134,8 @@ export const {
   toggleIsFree,
   toggleIsPublished,
   addSection,
-  editSectionTitle
+  editSectionTitle,
+  updateLevel
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

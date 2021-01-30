@@ -102,6 +102,7 @@ export type Course = {
   sections?: Maybe<Array<Maybe<Section>>>;
   isPublished?: Maybe<Scalars['Boolean']>;
   isFree?: Maybe<Scalars['Boolean']>;
+  level?: Maybe<Scalars['Int']>;
 };
 
 export type UserCourse = {
@@ -118,6 +119,7 @@ export type UserDataInput = {
   country?: Maybe<Scalars['String']>;
   partnerID?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
+  status?: Maybe<Scalars['Int']>;
 };
 
 export type User = {
@@ -130,6 +132,7 @@ export type User = {
   country?: Maybe<Scalars['String']>;
   partnerID?: Maybe<Scalars['String']>;
   courses?: Maybe<Array<Maybe<UserCourse>>>;
+  status?: Maybe<Scalars['Int']>;
   phone?: Maybe<Scalars['String']>;
   role?: Maybe<Scalars['String']>;
 };
@@ -199,6 +202,7 @@ export type CreateCourseInput = {
   image?: Maybe<Scalars['String']>;
   isPublished?: Maybe<Scalars['Boolean']>;
   isFree?: Maybe<Scalars['Boolean']>;
+  level?: Maybe<Scalars['Int']>;
 };
 
 export type UpdateCourseInput = {
@@ -208,6 +212,7 @@ export type UpdateCourseInput = {
   image?: Maybe<Scalars['String']>;
   isPublished?: Maybe<Scalars['Boolean']>;
   isFree?: Maybe<Scalars['Boolean']>;
+  level?: Maybe<Scalars['Int']>;
 };
 
 export type Query = {
@@ -515,6 +520,7 @@ export type CourseResolvers<ContextType = any, ParentType extends ResolversParen
   sections?: Resolver<Maybe<Array<Maybe<ResolversTypes['Section']>>>, ParentType, ContextType>;
   isPublished?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   isFree?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  level?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -534,6 +540,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   partnerID?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   courses?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserCourse']>>>, ParentType, ContextType>;
+  status?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   phone?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   role?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Button, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { Course } from '../../graphql';
+import { AuthContext } from '../Auth/AuthCheck';
 
 export const CourseHead = styled.div`
   height: 250px;
@@ -62,6 +63,29 @@ export const CourseDescription = styled.p`
   line-height: 24px;
 `;
 
+const checkCourseAvailable = (
+  isPublished: boolean,
+  userStatus: number,
+  courseStatus: number
+) => {
+  if (!isPublished) {
+    return [false, 'Курс ещё не опубликован'];
+  }
+
+  if (Number(userStatus) === 0 && Number(courseStatus) !== 0) {
+    return [
+      false,
+      'Для перехода к данному курсу Вам необходимо стать партнером!'
+    ];
+  }
+
+  if (Number(courseStatus) > Number(userStatus) + 1) {
+    return [false, 'Пройдите предыдущие курсы для перехода'];
+  }
+
+  return [true, 'Для перехода к курсу нажмите купить'];
+};
+
 const getButtonText = (
   isPublished?: boolean | null,
   isFree?: boolean | null,
@@ -80,7 +104,7 @@ const getButtonText = (
 
 interface CourseItemProps extends Course {
   isAvailable?: boolean;
-  onClick?: (id: string) => void;
+  onClick?: (e: React.MouseEvent, id: string) => void;
 }
 
 const CourseItem = ({
@@ -91,13 +115,21 @@ const CourseItem = ({
   onClick,
   image,
   isFree,
-  isPublished
+  isPublished,
+  level
 }: CourseItemProps) => {
+  const userContext = useContext(AuthContext);
   const [buttonText, buttonLink] = getButtonText(
     isPublished,
     isFree,
     isAvailable,
     courseId
+  );
+
+  const [isAccessible, tooltipText] = checkCourseAvailable(
+    isPublished as boolean,
+    userContext?.status as number,
+    level as number
   );
 
   return (
@@ -114,12 +146,13 @@ const CourseItem = ({
 
           <Button
             type="primary"
-            onClick={onClick ? () => onClick(courseId) : undefined}
           >
-            <Link to={buttonLink}>{buttonText}</Link>
+            <Link onClick={onClick ? (e) => onClick(e, courseId) : undefined} to={buttonLink}>{buttonText}</Link>
           </Button>
         </CourseContent>
-        {!isPublished ? <Overlay title="Данный курс еще не доступен!" /> : null}
+        {!isAccessible ? (
+          <Overlay placement="right" title={tooltipText} />
+        ) : null}
       </Wrapper>
     </WithPadding>
   );

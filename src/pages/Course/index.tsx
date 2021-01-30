@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, {useCallback, useContext, useEffect, useMemo} from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import { useHistory } from 'react-router';
@@ -42,6 +42,14 @@ const CoursePage = (props: any) => {
       id
     }
   });
+
+  useEffect(() => {
+    if(data?.course) {
+      if(Number(userContext?.status) + 1 < Number(data?.course?.level)) {
+        history.replace('/courses');
+      }
+    }
+  }, [data, userContext, history]);
 
   const [addToProgress] = useMutation(query.AddToProgress);
 
