@@ -71,6 +71,10 @@ const Circle = styled.div`
   border: 2px solid #f5f5f5;
 `;
 
+const StyledDownIcon = styled(DownOutlined)`
+  padding-left: 10px;
+`;
+
 interface Props {
   isLoggedIn?: boolean;
 }
@@ -146,7 +150,7 @@ const HeaderRight = ({ isLoggedIn }: Props) => {
       <ProfileButton>
         {initials ? <Circle>{initials}</Circle> : null}
         <span>{profileName}</span>
-        <DownOutlined width={50} height={50} />
+        <StyledDownIcon width={50} height={50} />
       </ProfileButton>
     </Dropdown>
   );

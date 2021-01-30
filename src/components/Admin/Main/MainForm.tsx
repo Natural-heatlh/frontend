@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Form, Input, Tabs, Popconfirm, Checkbox } from 'antd';
+import { Form, Input, Tabs, Popconfirm, Checkbox, Select } from 'antd';
 import styled from 'styled-components';
 import { EditOutlined, CloseOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
@@ -11,16 +11,20 @@ import {
   toggleIsPublished,
   updateCourseDescription,
   updateCourseImage,
-  updateCourseTitle
+  updateCourseTitle, updateLevel
 } from '../../../slices/admin/course';
 import Footer from '../Footer';
 import { Course } from '../../../graphql';
+import { getLevelName } from '../../../utils/getLevels';
 import AddModal from './AddModal';
 import AddSection from './AddSection';
 import AddSectionChild from './AddSectionChild';
 import ImageUploader from './UploadImage';
 
 const { TabPane } = Tabs;
+const { Option } = Select;
+
+const statusArray = [0, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const TabTitleWrapper = styled.span`
   display: flex;
@@ -60,6 +64,10 @@ const MainForm = ({ course, form, handleSave }: Props) => {
     },
     [dispatch]
   );
+
+  const changeLevel = useCallback((value) => {
+    dispatch(updateLevel(value));
+  }, [dispatch]);
 
   const changeImage = useCallback(
     (value) => {
@@ -145,6 +153,22 @@ const MainForm = ({ course, form, handleSave }: Props) => {
           ]}
         >
           <Input onChange={(e) => changeText(e, 'title')} />
+        </Form.Item>
+        <Form.Item
+          label="Статус курса"
+          name="level"
+          rules={[
+            {
+              required: true,
+              message: 'Пожалуйста выберите статус курса'
+            }
+          ]}
+        >
+          <Select allowClear onChange={changeLevel} placeholder="Пожалуйста, выберите статус курса">
+            {statusArray.map((item) => (
+              <Option value={item}>{getLevelName(item)}</Option>
+            ))}
+          </Select>
         </Form.Item>
         <ImageUploader
           onChange={changeImage}

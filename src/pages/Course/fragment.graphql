@@ -5,6 +5,7 @@ fragment CourseFragment on Course {
   description
   isFree
   isPublished
+  level
   sections {
     sectionId
     title
