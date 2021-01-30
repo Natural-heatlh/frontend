@@ -5,6 +5,8 @@ import { useMutation, useQuery } from '@apollo/client';
 import { FormItem, SubmitFormItem } from '../../components/Forms/Additional';
 import authQuery from '../../components/Auth/query.graphql';
 import Preloader from '../../components/Preloader';
+import { getValidationErrors } from '../../utils/getValidationErrors';
+import { getUserInputError } from '../../utils/getUserInputError';
 import query from './query.graphql';
 
 const StyledForm = styled(Form)`
@@ -14,10 +16,8 @@ const StyledForm = styled(Form)`
 const { useForm } = Form;
 
 const OwnDataForm = () => {
-  const { data, loading, error } = useQuery(authQuery.CurrentUser);
+  const { data, loading } = useQuery(authQuery.CurrentUser);
   const [updateUserData] = useMutation(query.UpdateUserData);
-
-  console.log(error);
 
   const [form] = useForm();
 
@@ -27,20 +27,22 @@ const OwnDataForm = () => {
     }
   }, [data, form]);
 
-  const handleUpdate = useCallback(
-    async (values) => {
-      await updateUserData({
-        variables: {
-          input: { ...values }
-        }
-      });
+  const onFinish = useCallback(
+    async (values: any) => {
+      try {
+        await updateUserData({
+          variables: {
+            input: { ...values }
+          }
+        });
+      } catch (e) {
+        const errors = getUserInputError(e);
+        const data = getValidationErrors(values, errors);
+        form.setFields(data);
+      }
     },
-    [updateUserData]
+    [updateUserData, form]
   );
-
-  const onFinish = (values: any) => {
-    handleUpdate(values);
-  };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);

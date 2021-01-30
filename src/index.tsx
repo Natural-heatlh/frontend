@@ -9,7 +9,6 @@ import {
   createHttpLink,
   InMemoryCache
 } from '@apollo/client';
-import { onError } from '@apollo/client/link/error';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -19,7 +18,6 @@ import {
   authReducer,
   testReducer
 } from './slices/reducers';
-import { setIsAuth } from './slices/auth';
 import { typeDefs } from './typeDefs';
 import { API_URL } from './helpers/getApiUrl';
 
@@ -54,9 +52,10 @@ const link = createHttpLink({
   credentials: 'include'
 });
 
-const client = new ApolloClient({
-  link: ApolloLink.from([
-    onError(({ graphQLErrors, networkError, response }) => {
+
+/*
+*
+*     onError(({ graphQLErrors, networkError, response }) => {
       console.log(graphQLErrors, networkError);
       if (graphQLErrors) {
         graphQLErrors.forEach(({ message, locations, path, extensions }) => {
@@ -72,6 +71,10 @@ const client = new ApolloClient({
 
       if (networkError) console.log(`[Network error]: ${networkError}`);
     }),
+* */
+
+const client = new ApolloClient({
+  link: ApolloLink.from([
     omitTypenameLink,
     link,
   ]),
