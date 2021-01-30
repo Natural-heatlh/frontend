@@ -1,13 +1,18 @@
 import React from 'react';
 import { Tabs } from 'antd';
+import styled from 'styled-components';
 import PageContainer from '../../components/PageContainer';
 import OwnDataForm from './OwnData';
 import UpdatePasswordForm from './UpdatePassword';
 
 const { TabPane } = Tabs;
 
+const StyledPageContainer = styled(PageContainer)`
+  background: #fff;
+`;
+
 const Profile = () => (
-  <PageContainer pageTitle="Личный кабинет">
+  <StyledPageContainer pageTitle="Личный кабинет">
     <Tabs>
       <TabPane tab="Личные даннные" key="1">
         <OwnDataForm />
@@ -19,7 +24,7 @@ const Profile = () => (
         Сертификаты
       </TabPane>
     </Tabs>
-  </PageContainer>
+  </StyledPageContainer>
 );
 
 export default Profile;
