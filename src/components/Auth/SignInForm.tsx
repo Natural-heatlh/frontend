@@ -48,8 +48,6 @@ const SignInForm = () => {
               response.data.errors.errors
             );
 
-            console.log(data);
-
             form.setFields(data);
           }
         });
