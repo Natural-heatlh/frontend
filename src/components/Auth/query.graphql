@@ -9,6 +9,7 @@ query CurrentUser {
     phone
     partnerID
     role
+    status
     courses {
       courseId
       progress

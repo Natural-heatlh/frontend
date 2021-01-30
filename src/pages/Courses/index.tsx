@@ -14,8 +14,12 @@ const Courses = () => {
 
   const [buyCourse] = useMutation(query.BuyCourse);
   const handleBuyCourse = useCallback(
-    async (id: string) => {
-      return await buyCourse({ variables: { id } });
+    async (event: React.MouseEvent, id: string) => {
+      try {
+        await buyCourse({ variables: { id } });
+      } catch (e) {
+        console.log(e);
+      }
     },
     [buyCourse]
   );

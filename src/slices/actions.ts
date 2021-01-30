@@ -11,6 +11,7 @@ export {
   toggleIsPublished,
   addSection,
   editSectionTitle,
+  updateLevel,
 } from './admin/course';
 export { setCourses } from './admin/courses';
 export { setTest, resetTest } from './test';

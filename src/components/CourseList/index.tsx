@@ -11,15 +11,11 @@ const Wrapper = styled.div`
 
 type Props = {
   courses?: Course[];
-  onClick?: (id: string) => void;
+  onClick?: (event: React.MouseEvent, id: string) => void;
   availableCourses?: string[];
 };
 
-const CourseList = ({
-  courses,
-  onClick,
-  availableCourses
-}: Props) => {
+const CourseList = ({ courses, onClick, availableCourses }: Props) => {
   return (
     <Wrapper>
       {courses?.map((item) => (

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
+import { onError } from '@apollo/client/link/error';
 import {
   ApolloClient,
   ApolloLink,
@@ -20,6 +21,7 @@ import {
 } from './slices/reducers';
 import { typeDefs } from './typeDefs';
 import { API_URL } from './helpers/getApiUrl';
+import { setIsAuth } from './slices/actions';
 
 const rootReducer = combineReducers({
   courses: coursesReducer,
@@ -34,29 +36,32 @@ export const store = configureStore({
 });
 
 const omitTypename = (key: string, value: string) => {
-  return key === '__typename' ? undefined : value
-}
+  return key === '__typename' ? undefined : value;
+};
 
 const omitTypenameLink = new ApolloLink((operation, forward) => {
   if (operation.variables) {
     operation.variables = JSON.parse(
       JSON.stringify(operation.variables),
       omitTypename
-    )
+    );
   }
-  return forward(operation)
-})
+  return forward(operation);
+});
 
 const link = createHttpLink({
   uri: `${API_URL}/graphql`,
   credentials: 'include'
 });
 
-
 /*
-*
-*     onError(({ graphQLErrors, networkError, response }) => {
-      console.log(graphQLErrors, networkError);
+ *
+ *
+ * */
+
+const client = new ApolloClient({
+  link: ApolloLink.from([
+    onError(({ graphQLErrors, networkError, response }) => {
       if (graphQLErrors) {
         graphQLErrors.forEach(({ message, locations, path, extensions }) => {
           if (extensions?.code === 'UNAUTHENTICATED') {
@@ -71,12 +76,8 @@ const link = createHttpLink({
 
       if (networkError) console.log(`[Network error]: ${networkError}`);
     }),
-* */
-
-const client = new ApolloClient({
-  link: ApolloLink.from([
     omitTypenameLink,
-    link,
+    link
   ]),
   cache: new InMemoryCache(),
   typeDefs
