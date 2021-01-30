@@ -83,7 +83,7 @@ const Navigation = ({ courses }: Props) => {
     [changeVisible]
   );
 
-  const coursesItem = useMemo(
+  const coursesItems = useMemo(
     () => (
       <StyledMenu onClick={() => changeVisible(false)}>
         {courses?.map((item) => (
@@ -99,7 +99,7 @@ const Navigation = ({ courses }: Props) => {
   return (
     <Fragment>
       <StyledDropdown
-        overlay={coursesItem}
+        overlay={coursesItems}
         visible={visible}
         onVisibleChange={handleVisibleChange}
       >
