@@ -1,5 +1,7 @@
-
-export const getValidationErrors = (values?: any, errors?: any) => {
+export const getValidationErrors = (
+  values: Record<string, any>,
+  errors: Record<string, any>[]
+) => {
   return Object.keys(values).map((item) => {
     const errorMessage =
       errors.find((err: any) => err.param === item)?.msg || undefined;

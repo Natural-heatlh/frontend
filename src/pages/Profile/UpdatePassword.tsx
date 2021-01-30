@@ -3,6 +3,8 @@ import { Button, Form, Input } from 'antd';
 import styled from 'styled-components';
 import { useMutation } from '@apollo/client';
 import { FormItem, SubmitFormItem } from '../../components/Forms/Additional';
+import { getValidationErrors } from '../../utils/getValidationErrors';
+import { getUserInputError } from '../../utils/getUserInputError';
 import query from './query.graphql';
 
 const StyledForm = styled(Form)`
@@ -15,18 +17,20 @@ const UpdatePasswordForm = () => {
   const [form] = useForm();
   const [updateUserPassword] = useMutation(query.UpdateUserPassword);
 
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     const { password, currentPassword } = values;
-    updateUserPassword({
-      variables: {
-        currentPassword,
-        password
-      }
-    })
-      .then((resp) => {
-        console.log(resp);
-      })
-      .catch((error) => console.log(error));
+    try {
+      await updateUserPassword({
+        variables: {
+          currentPassword,
+          password
+        }
+      });
+    } catch (e) {
+      const errors = getUserInputError(e);
+      const data = getValidationErrors(values, errors);
+      form.setFields(data);
+    }
   };
 
   const onFinishFailed = (errorInfo: any) => {

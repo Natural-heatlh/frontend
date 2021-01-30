@@ -106,7 +106,7 @@ const Navigation = ({ courses }: Props) => {
         <NavItem active={visible} to="/courses">
           <KnowledgeIcon />
           <LinkText>
-            Курсы <DownOutlined />
+            Курсы <DownOutlined size={10} />
           </LinkText>
         </NavItem>
       </StyledDropdown>
