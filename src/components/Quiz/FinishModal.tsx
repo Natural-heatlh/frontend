@@ -55,6 +55,8 @@ const FinishModal = ({
   handleContinue,
   isFree
 }: Props) => {
+  const sum = Number(results.wrong) + Number(results.correct);
+
   return (
     <Modal
       width={384}
@@ -92,7 +94,7 @@ const FinishModal = ({
                   <img src={FailImg} alt="Повторите попытку" />
                 </ImageWrapper>
 
-                <Title>Вы набрали {results.correct} из 20 вопросов</Title>
+                <Title>Вы набрали {results.correct} из {sum} вопросов</Title>
                 <Description>
                   К сожалению, этого недостаточно, чтобы перейти к следующему
                   курсу. <br /> <br /> Вы можете повторить попытку или вернуться
@@ -129,7 +131,7 @@ const FinishModal = ({
                   <img src={FailImg} alt="Повторите попытку!" />
                 </ImageWrapper>
 
-                <Title>Вы набрали {results.correct} из 20 вопросов</Title>
+                <Title>Вы набрали {results.correct} из {sum} вопросов</Title>
                 <Description>
                   К сожалению, этого недостаточно, чтобы перейти к следующему
                   курсу. <br /> <br /> Вы можете повторить попытку или вернуться
