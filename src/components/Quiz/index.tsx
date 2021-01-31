@@ -10,13 +10,15 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import Carousel from '@brainhubeu/react-carousel';
 import { useMutation } from '@apollo/client';
-import { Button, Modal } from 'antd';
+import { Button } from 'antd';
+
 import { Test } from '../../graphql';
 import { resetTest } from '../../slices/actions';
 import { Toolbox } from '../Slider';
 import authQuery from '../Auth/query.graphql';
 import QuizItem from './QuizItem';
 import query from './query.graphql';
+import FinishModal from './FinishModal';
 
 const StyledCarousel = styled(Carousel)`
   min-height: 350px;
@@ -31,6 +33,7 @@ type Props = {
   lecture?: Test;
   courseId?: string;
   addProgress: () => void;
+  isFree?: boolean | null;
 };
 
 export type Item = {
@@ -38,7 +41,7 @@ export type Item = {
   value: string;
 };
 
-const Quiz = ({ lecture, courseId, addProgress }: Props) => {
+const Quiz = ({ lecture, courseId, addProgress, isFree }: Props) => {
   const [isModalVisible, setVisible] = useState(false);
   const [results, setResults] = useState({
     correct: 0,
@@ -146,25 +149,13 @@ const Quiz = ({ lecture, courseId, addProgress }: Props) => {
           ) : null}
         </Toolbox>
       </div>
-      <Modal
-        title="Результаты теста"
-        visible={isModalVisible}
-        onCancel={handleReset}
-        onOk={results.isCompleted ? handleContinue : handleReset}
-        cancelText="Закрыть"
-        okText={
-          results.isCompleted ? 'Продолжить обучение' : 'Попробовать еще раз'
-        }
-      >
-        <h2>Вы набрали </h2>
-        <p>
-          {results.isCompleted
-            ? 'Поздравляем. Вы успешно сдали тест!'
-            : 'К сожалению вы не прошли тест. Попробуйте ещё раз!'}
-        </p>
-        <p>Правильных ответов: {results.correct}</p>
-        <p>Неправильных ответов: {results.wrong}</p>
-      </Modal>
+      <FinishModal
+        isVisible={isModalVisible}
+        handleReset={handleReset}
+        handleContinue={handleContinue}
+        results={results}
+        isFree={isFree}
+      />
     </Fragment>
   );
 };
