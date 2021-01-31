@@ -9,8 +9,8 @@ import { Course } from '../../graphql';
 import AdminContainer from './Container';
 import query from './query.graphql';
 import {
-  CoursesQuery,
-  CoursesQueryVariables,
+  AdminCoursesQuery,
+  AdminCoursesQueryVariables,
   DeleteCourseMutation,
   DeleteCourseMutationVariables
 } from './query.generated';
@@ -18,13 +18,13 @@ import {
 const Courses = () => {
   const location = useLocation();
   const { data, loading, error } = useQuery<
-    CoursesQuery,
-    CoursesQueryVariables
-  >(query.Courses);
+    AdminCoursesQuery,
+    AdminCoursesQueryVariables
+  >(query.AdminCourses);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setCourses(data?.courses as Course[]));
+    dispatch(setCourses(data?.adminCourses as Course[]));
   }, [data, dispatch]);
 
   const [deleteOneCourse] = useMutation<
@@ -45,7 +45,7 @@ const Courses = () => {
         ],
         update: (cache, result) => {
           const deleteCourse = result.data?.deleteCourse;
-          const dataCourses = cache.readQuery<CoursesQuery>({
+          const dataCourses = cache.readQuery<AdminCoursesQuery>({
             query: query.Courses
           });
 
@@ -54,8 +54,8 @@ const Courses = () => {
               query: query.Courses,
               data: {
                 ...dataCourses,
-                courses: dataCourses?.courses.filter(
-                  (item) => item?.courseId !== deleteCourse?.courseId
+                courses: dataCourses?.adminCourses.filter(
+                  (item: any) => item?.courseId !== deleteCourse?.courseId
                 )
               }
             });
@@ -80,10 +80,10 @@ const Courses = () => {
         </Button>
       }
     >
-      {data?.courses ? (
+      {data?.adminCourses ? (
         <List
           itemLayout="horizontal"
-          dataSource={data?.courses}
+          dataSource={data?.adminCourses}
           bordered
           renderItem={(item) => (
             <List.Item
@@ -91,14 +91,18 @@ const Courses = () => {
                 <Link to={`${location.pathname}/${item?.courseId}`}>
                   Редактировать
                 </Link>,
-                <span onClick={() => item?.courseId && handleRemove(item.courseId)}>
+                <span
+                  onClick={() => item?.courseId && handleRemove(item.courseId)}
+                >
                   Удалить
                 </span>
               ]}
             >
               <List.Item.Meta
                 title={
-                  <Link to={`/admin/courses/${item?.courseId}`}>{item?.title}</Link>
+                  <Link to={`/admin/courses/${item?.courseId}`}>
+                    {item?.title}
+                  </Link>
                 }
                 description={item?.description}
               />

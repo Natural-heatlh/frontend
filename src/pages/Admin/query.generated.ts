@@ -1,26 +1,25 @@
 import * as SchemaTypes from '../../graphql.d';
 
 import { CourseFragmentFragment } from '../Course/fragment.generated';
-export type CoursesQueryVariables = SchemaTypes.Exact<{ [key: string]: never; }>;
+export type AdminCoursesQueryVariables = SchemaTypes.Exact<{ [key: string]: never; }>;
 
 
-export type CoursesQuery = (
+export type AdminCoursesQuery = (
   { __typename?: 'Query' }
-  & { courses: Array<SchemaTypes.Maybe<(
+  & { adminCourses: Array<SchemaTypes.Maybe<(
     { __typename?: 'Course' }
-    & Pick<SchemaTypes.Course, 'courseId'>
     & CourseFragmentFragment
   )>> }
 );
 
-export type CourseQueryVariables = SchemaTypes.Exact<{
+export type AdminCourseQueryVariables = SchemaTypes.Exact<{
   id: SchemaTypes.Scalars['ID'];
 }>;
 
 
-export type CourseQuery = (
+export type AdminCourseQuery = (
   { __typename?: 'Query' }
-  & { course?: SchemaTypes.Maybe<(
+  & { adminCourse?: SchemaTypes.Maybe<(
     { __typename?: 'Course' }
     & CourseFragmentFragment
   )> }
