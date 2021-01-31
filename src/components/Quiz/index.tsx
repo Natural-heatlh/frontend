@@ -11,7 +11,6 @@ import styled from 'styled-components';
 import Carousel from '@brainhubeu/react-carousel';
 import { useMutation } from '@apollo/client';
 import { Button } from 'antd';
-
 import { Test } from '../../graphql';
 import { resetTest } from '../../slices/actions';
 import { Toolbox } from '../Slider';
