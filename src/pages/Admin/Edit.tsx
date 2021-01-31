@@ -8,6 +8,7 @@ import Preloader from '../../components/Preloader';
 import { State } from '../../types';
 import AdminContainer from './Container';
 import query from './query.graphql';
+import { AdminCourseQuery, AdminCourseQueryVariables } from './query.generated';
 
 const Edit = (props: any) => {
   const dispatch = useDispatch();
@@ -15,7 +16,10 @@ const Edit = (props: any) => {
   const course = useSelector((state: State) => state.course);
 
   const { id } = props.match.params;
-  const { data, loading, error } = useQuery(query.Course, {
+  const { data, loading, error } = useQuery<
+    AdminCourseQuery,
+    AdminCourseQueryVariables
+  >(query.AdminCourse, {
     variables: {
       id
     }
@@ -31,21 +35,21 @@ const Edit = (props: any) => {
         id: course.courseId,
         input: {
           ...rest
-        },
+        }
       },
       refetchQueries: [
         {
-          query: query.Courses,
+          query: query.AdminCourses
         }
-      ],
+      ]
     });
   }, [course, updateCourse]);
 
   useEffect(() => {
-    if (data && data.course) {
-      dispatch(setCourse(data?.course));
+    if (data && data?.adminCourse) {
+      dispatch(setCourse(data?.adminCourse));
 
-      form.setFieldsValue({ ...data?.course });
+      form.setFieldsValue({ ...data?.adminCourse });
     }
   }, [data, loading, dispatch, form]);
 

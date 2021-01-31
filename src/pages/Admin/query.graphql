@@ -1,14 +1,13 @@
 #import '../Course/fragment.graphql'
 
-query Courses {
-  courses {
-    courseId
+query AdminCourses {
+  adminCourses {
     ...CourseFragment
   }
 }
 
-query Course($id: ID!) {
-  course(id: $id) {
+query AdminCourse($id: ID!) {
+  adminCourse(id: $id) {
     ...CourseFragment
   }
 }

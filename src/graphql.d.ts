@@ -219,12 +219,19 @@ export type Query = {
   __typename?: 'Query';
   courses: Array<Maybe<Course>>;
   course?: Maybe<Course>;
+  adminCourse?: Maybe<Course>;
+  adminCourses: Array<Maybe<Course>>;
   user?: Maybe<User>;
   currentUser?: Maybe<User>;
 };
 
 
 export type QueryCourseArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryAdminCourseArgs = {
   id: Scalars['ID'];
 };
 
@@ -549,6 +556,8 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   courses?: Resolver<Array<Maybe<ResolversTypes['Course']>>, ParentType, ContextType>;
   course?: Resolver<Maybe<ResolversTypes['Course']>, ParentType, ContextType, RequireFields<QueryCourseArgs, 'id'>>;
+  adminCourse?: Resolver<Maybe<ResolversTypes['Course']>, ParentType, ContextType, RequireFields<QueryAdminCourseArgs, 'id'>>;
+  adminCourses?: Resolver<Array<Maybe<ResolversTypes['Course']>>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
   currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
