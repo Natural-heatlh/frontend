@@ -91,6 +91,7 @@ const CourseContent = ({
       {currentLecture.type === ContentType.TEST && (
         <Quiz
           courseId={course?.courseId}
+          isFree={course?.isFree}
           lecture={currentLecture as Test}
           addProgress={addProgress}
         />
