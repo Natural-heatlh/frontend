@@ -25,11 +25,13 @@ const Theory = ({ lecture, addProgress, isCompleted, next }: Props) => {
       {lecture?.content ? (
         <TheoryContent>{lecture.content}</TheoryContent>
       ) : null}
-      <AudioPlayer
-        addProgress={addProgress}
-        isCompleted={isCompleted}
-        url={lecture?.audio}
-      />
+      {lecture?.audio ? (
+        <AudioPlayer
+          addProgress={addProgress}
+          isCompleted={isCompleted}
+          url={lecture?.audio}
+        />
+      ) : null}
     </>
   );
 };
