@@ -48,6 +48,7 @@ const MainWrapper = styled.div`
   background: url(${MainVector});
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: left center;
   background-color: #fff;
 
   &::after {
