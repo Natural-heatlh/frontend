@@ -24,6 +24,7 @@ const SignUpForm = () => {
 
   const handleSignUp = useCallback(
     (values) => {
+      console.log(values);
       axios
         .post('/auth/signup', {
           ...values
@@ -48,9 +49,7 @@ const SignUpForm = () => {
   );
 
   const onFinish = (values: any) => {
-    const { isPartner, partnerID, ...rest } = values;
-    const newUser = isPartner ? { ...rest, partnerID } : { ...rest };
-    handleSignUp(newUser);
+    handleSignUp(values);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -176,9 +175,8 @@ const SignUpForm = () => {
         name="partnerID"
         rules={[
           {
-            message: 'Пожалуйста введите пароль ID!',
-            min: 8,
-            max: 8,
+            message: 'partner ID должен состоять из 8 цифр!',
+            max: 8
           }
         ]}
       >
