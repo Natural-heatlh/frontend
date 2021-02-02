@@ -1,4 +1,5 @@
-import React, {useCallback, useContext, useEffect, useMemo} from 'react';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
+import { Modal } from 'antd';
 import { useMutation, useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import { useHistory } from 'react-router';
@@ -37,15 +38,15 @@ const CoursePage = (props: any) => {
 
   const userContext = useContext(AuthContext);
 
-  const { data, loading } = useQuery(query.CourseQuery, {
+  const { data, loading, error } = useQuery(query.CourseQuery, {
     variables: {
       id
     }
   });
 
   useEffect(() => {
-    if(data?.course) {
-      if(Number(userContext?.status) + 1 < Number(data?.course?.level)) {
+    if (data?.course) {
+      if (Number(userContext?.status) + 1 < Number(data?.course?.level)) {
         history.replace('/courses');
       }
     }
@@ -62,17 +63,24 @@ const CoursePage = (props: any) => {
     }
   }, [data, id, userContext, loading]);
 
-  const addProgress = useCallback(() => {
+  const addProgress = useCallback(async () => {
     if (!loading && data?.course) {
       const isTestLecture = checkLecture(lectureId, data?.course);
 
       if (id && lectureId && !isTestLecture) {
-        addToProgress({
-          variables: {
-            id: lectureId,
-            courseId: id
-          }
-        });
+        try {
+          await addToProgress({
+            variables: {
+              id: lectureId,
+              courseId: id
+            }
+          });
+        } catch (e) {
+          Modal.error({
+            title: 'Ошибка!',
+            content: e.graphQLErrors[0]?.message
+          });
+        }
       }
     }
   }, [lectureId, id, data, loading, addToProgress]);
@@ -108,7 +116,9 @@ const CoursePage = (props: any) => {
       );
       if (activeLectureIndex === 0 && activeSectionIndex !== 0) {
         const prevSection = data.course?.sections[activeSectionIndex - 1];
-        prev = prevSection.children[prevSection?.children.length - 1 || 0]?.lectureId;
+        prev =
+          prevSection.children[prevSection?.children.length - 1 || 0]
+            ?.lectureId;
       } else if (activeLectureIndex === 0 && activeSectionIndex === 0) {
         prev = data?.course?.sections[0]?.children[0]?.lectureId;
       } else {
@@ -116,7 +126,8 @@ const CoursePage = (props: any) => {
       }
 
       if (activeLectureIndex === activeSection?.children.length - 1) {
-        next = data.course?.sections[activeSectionIndex + 1]?.children[0]?.lectureId;
+        next =
+          data.course?.sections[activeSectionIndex + 1]?.children[0]?.lectureId;
       } else {
         next = activeSection?.children[activeLectureIndex + 1]?.lectureId;
       }
@@ -141,7 +152,17 @@ const CoursePage = (props: any) => {
 
   if (loading) return <Preloader />;
 
-  if(!lectureId && id && data?.course) {
+  if (error) {
+    Modal.error({
+      title: 'Ошибка',
+      content: error.message,
+      onOk: () => {
+        history.replace('/courses');
+      }
+    });
+  }
+
+  if (!lectureId && id && data?.course) {
     const firstLectureId = data?.course?.sections[0]?.children[0]?.lectureId;
     history.replace(`/course/${id}/lecture/${firstLectureId}`);
   }

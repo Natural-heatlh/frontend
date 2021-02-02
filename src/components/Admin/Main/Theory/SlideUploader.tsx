@@ -1,9 +1,25 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Button, Form, message, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { UploadFile } from 'antd/es/upload/interface';
+import { DndProvider, createDndContext } from 'react-dnd';
 import { UploadChangeParam } from 'antd/lib/upload';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { API_URL } from '../../../../helpers/getApiUrl';
+import DraggableUploadListItem from './DraggableListItem';
+
+const RNDContext = createDndContext(HTML5Backend);
+
+const swap = (array: any[], moveIndex: number, hoverIndex: number) => {
+  const temp = array[hoverIndex];
+  array[hoverIndex] = array[moveIndex];
+  array[moveIndex] = temp;
+
+  console.log(array);
+
+  return [...array];
+
+}
 
 type Props = {
   slides: any;
@@ -27,7 +43,14 @@ const SlideUploader = ({ slides }: Props) => {
 
   const handleOnChange = useCallback(
     (info: UploadChangeParam) => {
-      updateSlideList(info.fileList.filter((file) => !!file.status));
+      updateSlideList(info.fileList);
+    },
+    [updateSlideList]
+  );
+
+  const moveRow = useCallback(
+    (fileList, dragIndex, hoverIndex) => {
+      updateSlideList(swap(fileList, dragIndex, hoverIndex));
     },
     [updateSlideList]
   );
@@ -40,23 +63,36 @@ const SlideUploader = ({ slides }: Props) => {
     return e && e.fileList;
   };
 
+  const manager = useRef(RNDContext);
+
   return (
-    <Form.Item
-      valuePropName="fileList"
-      getValueFromEvent={normFile}
-      name="uploadSlides"
-      label="Слайды"
-    >
-      <Upload
-        defaultFileList={slides}
-        fileList={slideList}
-        onChange={handleOnChange}
-        beforeUpload={beforeSlideUpload}
-        action={`${API_URL}/upload-files`}
+    <DndProvider manager={manager.current?.dragDropManager as any}>
+      <Form.Item
+        valuePropName="fileList"
+        getValueFromEvent={normFile}
+        name="uploadSlides"
+        label="Слайды"
       >
-        <Button icon={<UploadOutlined />}>Загрузить слайд</Button>
-      </Upload>
-    </Form.Item>
+        <Upload
+          defaultFileList={slides}
+          fileList={slideList}
+          onChange={handleOnChange}
+          beforeUpload={beforeSlideUpload}
+          action={`${API_URL}/upload-files`}
+          multiple
+          itemRender={(originNode, file, currFileList) => (
+            <DraggableUploadListItem
+              originNode={originNode}
+              file={file}
+              fileList={currFileList as UploadFile[]}
+              moveRow={moveRow}
+            />
+          )}
+        >
+          <Button icon={<UploadOutlined />}>Загрузить слайд</Button>
+        </Upload>
+      </Form.Item>
+    </DndProvider>
   );
 };
 

@@ -1,16 +1,26 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
+import { useDispatch } from 'react-redux';
+import { Modal } from 'antd';
 import CourseList from '../../components/CourseList';
 import PageContainer from '../../components/PageContainer';
 import Preloader from '../../components/Preloader';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { AuthContext } from '../../components/Auth/AuthCheck';
+import { setCourses } from '../../slices/actions';
 import query from './query.graphql';
 
 const Courses = () => {
   usePageTitle('Список курсов');
-  const { data, loading } = useQuery(query.CoursesQuery);
+  const { data, loading, error } = useQuery(query.CoursesQuery);
   const user = useContext(AuthContext);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (data?.courses) {
+      dispatch(setCourses(data?.courses));
+    }
+  }, [data, dispatch]);
 
   const [buyCourse] = useMutation(query.BuyCourse);
   const handleBuyCourse = useCallback(
@@ -29,6 +39,12 @@ const Courses = () => {
   );
 
   if (loading) return <Preloader />;
+  if (error) {
+    Modal.error({
+      title: 'Ошибка',
+      content: error.message
+    });
+  }
 
   return (
     <PageContainer pageTitle="Курсы">

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
+import { Modal } from 'antd';
 import { useMutation, useQuery } from '@apollo/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'antd/es/form/Form';
@@ -30,19 +31,35 @@ const Edit = (props: any) => {
   const handleUpdate = useCallback(async () => {
     const { courseId, ...rest } = course;
 
-    await updateCourse({
-      variables: {
-        id: course.courseId,
-        input: {
-          ...rest
-        }
-      },
-      refetchQueries: [
-        {
-          query: query.AdminCourses
-        }
-      ]
-    });
+    try {
+      const result = await updateCourse({
+        variables: {
+          id: course.courseId,
+          input: {
+            ...rest
+          }
+        },
+        refetchQueries: [
+          {
+            query: query.AdminCourses
+          }
+        ]
+      });
+
+      if (result.data?.updateCourse) {
+        Modal.success({
+          title: 'Вы успешно обновили курс!',
+          content: 'Поздравляем с успешным обновлением курса!.'
+        });
+      }
+    } catch (e) {
+      if (e.graphQLErrors.length > 0) {
+        Modal.error({
+          title: 'Ошибка обновления!',
+          content: e.graphQLErrors[0]?.message
+        });
+      }
+    }
   }, [course, updateCourse]);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Input, Form, Button, Radio } from 'antd';
 import { v4 as uuid } from 'uuid';
 import { RadioChangeEvent } from 'antd/es/radio';
@@ -25,7 +25,8 @@ const TheoryComponent = ({ onSubmit, content, form }: Props) => {
     if (content) {
       form.setFieldsValue({
         ...content,
-        uploadSlides: content?.slides || []
+        uploadSlides:
+          content?.slides?.map((item) => ({ ...item, status: 'done' })) || []
       });
     }
   }, [form, content]);
@@ -64,6 +65,10 @@ const TheoryComponent = ({ onSubmit, content, form }: Props) => {
     },
     [setTheoryVariant]
   );
+
+  const slides = useMemo(() => {
+    return content?.slides?.map((item) => ({ ...item, status: 'done' })) || [];
+  }, [content]);
 
   return (
     <React.Fragment>
@@ -106,7 +111,7 @@ const TheoryComponent = ({ onSubmit, content, form }: Props) => {
             <Input.TextArea rows={5} />
           </Form.Item>
         ) : (
-          <SlideUploader slides={content?.slides || []} />
+          <SlideUploader slides={slides} />
         )}
 
         <Form.Item>

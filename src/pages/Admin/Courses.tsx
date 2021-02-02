@@ -40,27 +40,9 @@ const Courses = () => {
         },
         refetchQueries: [
           {
-            query: query.Courses
+            query: query.AdminCourses
           }
-        ],
-        update: (cache, result) => {
-          const deleteCourse = result.data?.deleteCourse;
-          const dataCourses = cache.readQuery<AdminCoursesQuery>({
-            query: query.Courses
-          });
-
-          if (deleteCourse) {
-            cache.writeQuery({
-              query: query.Courses,
-              data: {
-                ...dataCourses,
-                courses: dataCourses?.adminCourses.filter(
-                  (item: any) => item?.courseId !== deleteCourse?.courseId
-                )
-              }
-            });
-          }
-        }
+        ]
       });
     },
     [deleteOneCourse]
