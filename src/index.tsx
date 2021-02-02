@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Modal } from 'antd';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { onError } from '@apollo/client/link/error';
@@ -74,7 +75,13 @@ const client = new ApolloClient({
         });
       }
 
-      if (networkError) console.log(`[Network error]: ${networkError}`);
+      if (networkError) {
+        Modal.error({
+          title: 'Проблемы с сетью',
+          content: 'Проверьте подключение к интернету!'
+        });
+        console.log(`[Network error]: ${networkError}`);
+      }
     }),
     omitTypenameLink,
     link
