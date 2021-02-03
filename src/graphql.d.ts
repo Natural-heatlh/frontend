@@ -103,6 +103,7 @@ export type Course = {
   isPublished?: Maybe<Scalars['Boolean']>;
   isFree?: Maybe<Scalars['Boolean']>;
   level?: Maybe<Scalars['Int']>;
+  incomeDescription?: Maybe<Scalars['String']>;
 };
 
 export type UserCourse = {
@@ -203,6 +204,7 @@ export type CreateCourseInput = {
   isPublished?: Maybe<Scalars['Boolean']>;
   isFree?: Maybe<Scalars['Boolean']>;
   level?: Maybe<Scalars['Int']>;
+  incomeDescription?: Maybe<Scalars['String']>;
 };
 
 export type UpdateCourseInput = {
@@ -528,6 +530,7 @@ export type CourseResolvers<ContextType = any, ParentType extends ResolversParen
   isPublished?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   isFree?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   level?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  incomeDescription?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

@@ -11,7 +11,9 @@ import {
   toggleIsPublished,
   updateCourseDescription,
   updateCourseImage,
-  updateCourseTitle, updateLevel
+  updateCourseTitle,
+  updateIncomeDescription,
+  updateLevel
 } from '../../../slices/admin/course';
 import Footer from '../Footer';
 import { Course } from '../../../graphql';
@@ -61,13 +63,19 @@ const MainForm = ({ course, form, handleSave }: Props) => {
       if (mode === 'description') {
         dispatch(updateCourseDescription(e.target.value));
       }
+      if (mode === 'incomeDescription') {
+        dispatch(updateIncomeDescription(e.target.value));
+      }
     },
     [dispatch]
   );
 
-  const changeLevel = useCallback((value) => {
-    dispatch(updateLevel(value));
-  }, [dispatch]);
+  const changeLevel = useCallback(
+    (value) => {
+      dispatch(updateLevel(value));
+    },
+    [dispatch]
+  );
 
   const changeImage = useCallback(
     (value) => {
@@ -164,7 +172,11 @@ const MainForm = ({ course, form, handleSave }: Props) => {
             }
           ]}
         >
-          <Select allowClear onChange={changeLevel} placeholder="Пожалуйста, выберите статус курса">
+          <Select
+            allowClear
+            onChange={changeLevel}
+            placeholder="Пожалуйста, выберите статус курса"
+          >
             {statusArray.map((item) => (
               <Option value={item}>{getLevelName(item)}</Option>
             ))}
@@ -179,6 +191,9 @@ const MainForm = ({ course, form, handleSave }: Props) => {
             rows={3}
             onChange={(e) => changeText(e, 'description')}
           />
+        </Form.Item>
+        <Form.Item label="Доход" name="incomeDescription">
+          <Input onChange={(e) => changeText(e, 'incomeDescription')} />
         </Form.Item>
         <Form.Item label="Бесплатный курс" name="isFree">
           <Checkbox

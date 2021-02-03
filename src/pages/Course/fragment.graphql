@@ -6,6 +6,7 @@ fragment CourseFragment on Course {
   isFree
   isPublished
   level
+  incomeDescription
   sections {
     sectionId
     title

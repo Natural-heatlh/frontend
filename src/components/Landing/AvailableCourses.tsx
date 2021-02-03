@@ -39,9 +39,9 @@ const CourseImageWrapper = styled.div`
 `;
 
 type Props = {
-  image: string;
-  title: string;
-  description: string;
+  image?: string | null;
+  title?: string | null;
+  description?: string | null;
 };
 
 const AvailableCourse = ({ image, title, description }: Props) => {
@@ -49,7 +49,7 @@ const AvailableCourse = ({ image, title, description }: Props) => {
     <AvailableCourseWrapper>
       <AppContent>
         <CourseImageWrapper>
-          <img src={image} alt="title" />
+          <img src={image as string} alt="title" />
         </CourseImageWrapper>
         <CourseTitle>{title}</CourseTitle>
         <Description>{description}</Description>
