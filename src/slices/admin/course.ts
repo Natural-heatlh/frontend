@@ -64,6 +64,10 @@ const courseSlice = createSlice({
       state.title = action.payload;
       return state;
     },
+    updateIncomeDescription: (state: State, action) => {
+      state.incomeDescription = action.payload;
+      return state;
+    },
     updateLevel: (state: State, action) => {
       state.level = action.payload;
       return state;
@@ -129,6 +133,7 @@ export const {
   removeSectionChild,
   editSectionChild,
   updateCourseDescription,
+  updateIncomeDescription,
   updateCourseTitle,
   updateCourseImage,
   toggleIsFree,

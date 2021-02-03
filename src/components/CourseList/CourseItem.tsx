@@ -53,9 +53,19 @@ const Overlay = styled(Tooltip)`
 `;
 
 export const CourseContent = styled.div`
-  padding: 30px;
+  padding: 30px 30px 62px 30px;
+  height: calc(100% - 250px);
   display: flex;
+  position: relative;
   flex-direction: column;
+`;
+
+const StyledButton = styled(Button)`
+  position: absolute;
+  left: 50%;
+  width: calc(100% - 60px);
+  transform: translateX(-50%);
+  bottom: 30px;
 `;
 
 export const CourseDescription = styled.p`
@@ -144,11 +154,11 @@ const CourseItem = ({
           <CourseTitle>{title}</CourseTitle>
           <CourseDescription>{description}</CourseDescription>
 
-          <Button
+          <StyledButton
             type="primary"
           >
             <Link onClick={onClick ? (e) => onClick(e, courseId) : undefined} to={buttonLink}>{buttonText}</Link>
-          </Button>
+          </StyledButton>
         </CourseContent>
         {!isAccessible ? (
           <Overlay placement="right" title={tooltipText} />

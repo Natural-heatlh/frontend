@@ -1,0 +1,9 @@
+query LandingCourses {
+  courses {
+    courseId
+    title
+    image
+    description
+    incomeDescription
+  }
+}

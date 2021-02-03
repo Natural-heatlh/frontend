@@ -81,6 +81,7 @@ export const typeDefs = gql`
     isPublished: Boolean
     isFree: Boolean
     level: Int
+    incomeDescription: String
   }
 
   type UserCourse {
@@ -179,11 +180,13 @@ export const typeDefs = gql`
     isPublished: Boolean
     isFree: Boolean
     level: Int
+    incomeDescription: String
   }
 
   input updateCourseInput {
     title: String
     description: String
+    incomeDescription: String
     sections: [SectionInput]
     image: String
     isPublished: Boolean
