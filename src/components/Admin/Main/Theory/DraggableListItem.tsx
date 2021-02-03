@@ -7,16 +7,43 @@ import styled from 'styled-components';
 const type = 'DragableUploadList';
 
 const Item = styled.div<{
-  isOver?: boolean
+  isOver?: boolean;
+  isOverType?: string;
 }>`
-  ${props => props.isOver && `
-    border-bottom: 1px dashed #000;
-  `}
-`
+  ${(props) =>
+    props.isOver &&
+    props.isOverType === 'up' &&
+    `
+    &:before{
+      content: '';
+      display: block;
+      height: 22px;
+      width: 100%;
+      border: 1px dashed #000;
+    }
+    `}
+
+  ${(props) =>
+    props.isOver &&
+    props.isOverType === 'down' &&
+    `
+    &:after{
+      content: '';
+      display: block;
+      height: 22px;
+      width: 100%;
+      border: 1px dashed #000;
+    }`
+}
+`;
 
 type Props = {
   originNode: React.ReactElement;
-  moveRow: (fileList: UploadFile[], dragIndex: number, hoverIndex: number) => void;
+  moveRow: (
+    fileList: UploadFile[],
+    dragIndex: number,
+    hoverIndex: number
+  ) => void;
   file: UploadFile;
   fileList: UploadFile[];
 };
@@ -30,7 +57,7 @@ const DraggableUploadListItem = ({
   const ref = useRef<HTMLDivElement>(null);
 
   const index = fileList.indexOf(file);
-  const [{ isOver }, drop] = useDrop({
+  const [{ isOver, isOverType }, drop] = useDrop({
     accept: type,
     collect: (monitor) => {
       const { index: dragIndex } = monitor.getItem() || {};
@@ -39,8 +66,7 @@ const DraggableUploadListItem = ({
       }
       return {
         isOver: monitor.isOver(),
-        dropClassName:
-          dragIndex < index ? ' drop-over-downward' : ' drop-over-upward'
+        isOverType: dragIndex < index ? 'down' : 'up'
       };
     },
     drop: (item: any) => {
@@ -62,14 +88,20 @@ const DraggableUploadListItem = ({
       {originNode.props.children}
     </Tooltip>
   );
+
   return (
-    <Item
-      ref={ref}
-      isOver={isOver}
-      style={{ cursor: 'move' }}
-    >
-      {file.status === 'error' ? errorNode : originNode}
-    </Item>
+    <React.Fragment>
+      <Item
+        ref={ref}
+        isOver={isOver}
+        isOverType={isOverType}
+        style={{
+          cursor: 'move'
+        }}
+      >
+        {file.status === 'error' ? errorNode : originNode}
+      </Item>
+    </React.Fragment>
   );
 };
 

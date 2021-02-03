@@ -11,11 +11,9 @@ import DraggableUploadListItem from './DraggableListItem';
 const RNDContext = createDndContext(HTML5Backend);
 
 const swap = (array: any[], moveIndex: number, hoverIndex: number) => {
-  const temp = array[hoverIndex];
-  array[hoverIndex] = array[moveIndex];
-  array[moveIndex] = temp;
-
-  console.log(array);
+  const temp = array[moveIndex];
+  array.splice(moveIndex, 1);
+  array.splice(hoverIndex, 0, temp);
 
   return [...array];
 
