@@ -29,6 +29,10 @@ const Courses = () => {
       const currentCourse = data?.courses?.find(
         (item: any) => item.courseId === id
       );
+      if(!currentCourse?.isFree) {
+        event.preventDefault();
+      }
+
 
       if (currentCourse?.isFree) {
         try {
