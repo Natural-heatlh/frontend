@@ -3,8 +3,6 @@ import { NavLink, NavLinkProps } from 'react-router-dom';
 import styled from 'styled-components';
 import { Checkbox } from 'antd';
 import { ReactComponent as PapersIcon } from '../../static/papers.svg';
-import { ReactComponent as PlayIcon } from '../../static/play.svg';
-
 
 interface LinkProps extends NavLinkProps {
   disabled?: boolean;
@@ -105,13 +103,8 @@ const ChildrenItem = ({
               <PapersIcon />
               <AdditionalContent>{item.slides.length} стр.</AdditionalContent>
             </AdditionalItem>
-            <span> | </span>
           </>
         )}
-        <AdditionalItem>
-          <PlayIcon />
-          {/*<AdditionalContent>3 мин.</AdditionalContent>*/}
-        </AdditionalItem>
       </Additional>
     </LinkWrapper>
   );

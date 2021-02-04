@@ -76,12 +76,13 @@ const CourseNavigation = ({
         expandIconPosition="right"
       >
         {sections.length > 0
-          ? sections.map((item) => (
+          ? sections.map((item, i) => (
               <StyledPanel
                 key={item.sectionId}
                 header={
                   <SectionItem
                     id={item.sectionId}
+                    index={i + 1}
                     title={item.title}
                     count={item.children?.length}
                   />

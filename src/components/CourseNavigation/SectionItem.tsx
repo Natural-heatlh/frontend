@@ -22,13 +22,24 @@ type Props = {
   title?: string | null;
   count?: number | string;
   type?: string;
+  index?: number;
 };
 
-const SectionItem = ({ title, count, type }: Props) => {
+const getSectionShortDescription = (count: number) => {
+  if(count === 1) {
+    return 'урок';
+  }
+  if(count > 1 && count <= 4) {
+    return 'урока'
+  }
+  return 'уроков';
+}
+
+const SectionItem = ({ title, count, index }: Props) => {
   return (
     <Wrapper>
-      <Title>{title}</Title>
-      <Additional>{`0/${count} | 23 мин`}</Additional>
+      <Title>Раздел {index}: {title}</Title>
+      <Additional>{`В разделе ${count} ${getSectionShortDescription(Number(count))}`}</Additional>
     </Wrapper>
   );
 };
