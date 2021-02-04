@@ -6,6 +6,7 @@ import UserCourseItem from './CourseItem';
 const Wrapper = styled.div`
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
 `;
 
 type Props = {
@@ -18,7 +19,7 @@ const UserCourseList = ({ courses }: Props) => {
   return (
     <Wrapper>
       {courses?.map((item) => (
-        <UserCourseItem key={item.courseId} {...item} />
+        <UserCourseItem key={item?.courseId} {...item} />
       ))}
     </Wrapper>
   );

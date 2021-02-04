@@ -2,7 +2,13 @@
 
 query CoursesQuery {
   courses {
-    ...CourseFragment
+    courseId
+    title
+    image
+    description
+    isFree
+    isPublished
+    level
   }
 }
 

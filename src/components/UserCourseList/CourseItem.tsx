@@ -106,7 +106,7 @@ export const UserCourseItem = ({
                   : `/course/${courseId}/lecture/${
                       userCourse?.progress && userCourse.progress.length > 0
                         ? userCourse.progress[userCourse.progress.length - 1]
-                        : flattenCourse[0].courseId
+                        : flattenCourse[0]?.courseId || ''
                     }`
               }
             >

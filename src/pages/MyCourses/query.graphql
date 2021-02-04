@@ -1,0 +1,26 @@
+#import '../Course/fragment.graphql'
+
+query UserCourses {
+  userCourses {
+    courseId
+    title
+    description
+    image
+    incomeDescription
+    sections {
+      sectionId
+      children {
+        __typename
+        ... on Video {
+          lectureId
+        }
+        ... on Theory {
+          lectureId
+        }
+        ... on Test {
+          lectureId
+        }
+      }
+    }
+  }
+}

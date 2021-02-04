@@ -16,9 +16,9 @@ import {
   CreateCourseMutationVariables
 } from './query.generated';
 
-const initialState = {
-  courseId: `course-${uuid()}`,
+export const initialState = {
   description: '',
+  courseId: '',
   image: undefined,
   title: '',
   isFree: false,
@@ -35,10 +35,20 @@ const Add = () => {
     dispatch(
       setCourse({
         ...initialState,
+        courseId: `course-${uuid()}`,
         sections: []
       })
     );
-  }, [dispatch]);
+    return () => {
+      form.resetFields();
+      dispatch(
+        setCourse({
+          ...initialState,
+          courseId: ''
+        })
+      );
+    };
+  }, [dispatch, form]);
 
   const [createCourse] = useMutation<
     CreateCourseMutation,

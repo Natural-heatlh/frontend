@@ -10,6 +10,7 @@ import { State } from '../../types';
 import AdminContainer from './Container';
 import query from './query.graphql';
 import { AdminCourseQuery, AdminCourseQueryVariables } from './query.generated';
+import { initialState } from './Add';
 
 const Edit = (props: any) => {
   const dispatch = useDispatch();
@@ -68,6 +69,10 @@ const Edit = (props: any) => {
 
       form.setFieldsValue({ ...data?.adminCourse });
     }
+    return () => {
+      form.resetFields();
+      dispatch(setCourse(initialState));
+    };
   }, [data, loading, dispatch, form]);
 
   if (loading) return <Preloader />;

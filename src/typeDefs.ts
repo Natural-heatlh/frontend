@@ -196,6 +196,7 @@ export const typeDefs = gql`
 
   type Query {
     courses: [Course]!
+    userCourses: [Course]!
     course(id: ID!): Course
     adminCourse(id: ID!): Course
     adminCourses: [Course]!
