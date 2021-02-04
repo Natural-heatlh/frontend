@@ -32,11 +32,17 @@ const Courses = () => {
         }
       } else {
         try {
-          await axios.post('/payment/buy-course', {
-            userId: user?.id,
-            partnerID: 'some_partner_id',
+          const result = await axios.post('/payment/buy-course', {
+            courseId: id,
+            courseName: currentCourse?.title,
+            email: user?.email,
+            partnerID: user?.partnerID,
             price: 100
           });
+
+          if(result?.data?.redirectUrl) {
+            window.location = result?.data?.redirectUrl;
+          }
         } catch (e) {
           console.log(e);
         }
