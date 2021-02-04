@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import { Input, Button } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Input, Button, Modal } from 'antd';
 import { useParams, useHistory } from 'react-router';
 import axios from '../../helpers/axios';
 import { ReactComponent as AuthLogo } from '../../static/authLogo.svg';
@@ -23,37 +23,54 @@ const UpdatePasswordForm = () => {
     token: null
   });
 
-  const handleRedirect = useCallback((res: any) => {
-    if (res.data.redirectUrl) {
-      history.replace(res.data.redirectUrl);
-    }
-  }, [history]);
+  const handleRedirect = useCallback(
+    (res: any) => {
+      if (res.data.redirectUrl) {
+        history.replace(res.data.redirectUrl);
+      }
+    },
+    [history]
+  );
 
   useEffect(() => {
     axios
       .get(`/auth/check-token/${params.token}`)
       .then((res) => {
-        handleRedirect(res);
         updateState({
           userId: res.data.userId,
           token: res.data.token
         });
       })
-      .catch((err) => console.log(err));
-  }, [params, updateState, handleRedirect]);
+      .catch(({ response }) => {
+        if (response?.data?.message) {
+          history.replace('/auth/login');
 
-  const handleUpdate = useCallback((password: string) => {
-    axios
-      .post('/auth/update-password', {
-        ...state,
-        password
-      })
-      .then((res) => {
-        handleRedirect(res);
-      })
-      .catch((err) => console.log(err));
-  }, [handleRedirect, state]);
+          Modal.error({
+            title: 'Ошибка!',
+            content: response?.data?.message,
+            onOk: () => {
+              history.replace('/auth/login');
+            },
+            okText: 'Закрыть'
+          });
+        }
+      });
+  }, [params, updateState, handleRedirect, history]);
 
+  const handleUpdate = useCallback(
+    (password: string) => {
+      axios
+        .post('/auth/update-password', {
+          ...state,
+          password
+        })
+        .then((res) => {
+          handleRedirect(res);
+        })
+        .catch((err) => console.log(err));
+    },
+    [handleRedirect, state]
+  );
 
   if (!params.token) {
     history.replace('/auth/login');

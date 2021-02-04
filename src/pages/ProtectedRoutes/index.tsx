@@ -14,7 +14,8 @@ import query from '../Courses/query.graphql';
 
 const Protected = () => {
   const dispatch = useDispatch();
-  const { data, loading, error } = useQuery(query.CoursesQuery);
+  const { data, loading } = useQuery(query.CoursesQuery);
+
   useEffect(() => {
     if (data?.courses) {
       dispatch(setCourses(data?.courses));

@@ -1,8 +1,7 @@
-import React, { Fragment, useCallback } from 'react';
+import React, { Fragment } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
 import { Redirect, Route } from 'react-router-dom';
-import axios from '../../helpers/axios';
 import PageContainer from '../../components/PageContainer';
 import SignUpForm from '../../components/Auth/SignUpForm';
 import SignInForm from '../../components/Auth/SignInForm';
@@ -31,20 +30,6 @@ const Auth = () => {
   const location = useLocation();
   const pageTitle = getAuthPageTitle(location.pathname);
   const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
-  const history = useHistory();
-
-  const handleReset = useCallback((values) => {
-    axios
-      .post('/auth/reset-password/', {
-        ...values
-      })
-      .then((resp) => {
-        if (resp?.data?.success) {
-          history.replace('/auth/login');
-        }
-      })
-      .catch((err) => console.log(err));
-  }, [history]);
 
   return (
     <PageContainer pageTitle={pageTitle}>
@@ -57,7 +42,7 @@ const Auth = () => {
             <SignUpForm />
           </Route>
           <Route path={RESET_PATH}>
-            <ResetForm reset={handleReset} />
+            <ResetForm />
           </Route>
           <Route path={UPDATE_PASSWORD}>
             <UpdatePasswordForm />
