@@ -3,10 +3,14 @@ import { UploadOutlined } from '@ant-design/icons';
 import React, { useCallback, useState } from 'react';
 import { UploadFile } from 'antd/es/upload/interface';
 import { UploadChangeParam } from 'antd/lib/upload';
-import {API_URL} from '../../../../helpers/getApiUrl';
+import { API_URL } from '../../../../helpers/getApiUrl';
 
-const AudioUploader = () => {
-  const [audioList, updateAudioList] = useState<UploadFile[]>([]);
+type Props = {
+  audioList?: any;
+};
+
+const AudioUploader = ({ audioList }: Props) => {
+  const [fileList, updateAudioList] = useState<UploadFile[]>([]);
   const beforeAudioUpload = useCallback((file) => {
     const isAudio = file.type === 'audio/mpeg';
     if (!isAudio) {
@@ -22,15 +26,29 @@ const AudioUploader = () => {
     [updateAudioList]
   );
 
+  const normFile = (e: any) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+
+    return e && e.fileList;
+  };
+
   return (
-    <Form.Item label="Ссылка на аудио" name="audio">
+    <Form.Item
+      getValueFromEvent={normFile}
+      valuePropName="fileList"
+      label="Аудио"
+      name="audioFiles"
+    >
       <Upload
+        defaultFileList={audioList}
+        fileList={fileList}
         action={`${API_URL}/upload-files`}
         multiple={false}
         listType="text"
         beforeUpload={beforeAudioUpload}
         onChange={handleOnChange}
-        fileList={audioList}
       >
         <Button icon={<UploadOutlined />}>Загрузить аудио</Button>
       </Upload>

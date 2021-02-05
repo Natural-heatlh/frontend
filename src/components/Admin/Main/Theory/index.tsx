@@ -26,14 +26,28 @@ const TheoryComponent = ({ onSubmit, content, form }: Props) => {
       form.setFieldsValue({
         ...content,
         uploadSlides:
-          content?.slides?.map((item) => ({ ...item, status: 'done' })) || []
+          content?.slides?.map((item) => ({ ...item, status: 'done' })) || [],
+        audioFiles: content?.audio?.url
+          ? [
+              {
+                ...content?.audio,
+                status: 'done'
+              }
+            ]
+          : []
       });
     }
   }, [form, content]);
 
   const onFinish = useCallback(() => {
-    const { uploadSlides, audio, ...rest } = form.getFieldsValue();
-    const audioFile = audio?.file?.response?.fileLocation;
+    const { uploadSlides, audioFiles, ...rest } = form.getFieldsValue();
+
+    const audioFile = audioFiles ? {
+      url: audioFiles[0]?.response?.fileLocation || audioFiles[0]?.url,
+      uid: audioFiles[0]?.uid,
+      name: audioFiles[0]?.name
+    } : undefined;
+
     const slides = uploadSlides
       ? uploadSlides
           .filter((item: any) => !!item.status)
@@ -70,6 +84,10 @@ const TheoryComponent = ({ onSubmit, content, form }: Props) => {
     return content?.slides?.map((item) => ({ ...item, status: 'done' })) || [];
   }, [content]);
 
+  const audioList = content?.audio?.url
+    ? [{ ...content?.audio, status: 'done' }]
+    : [];
+
   return (
     <React.Fragment>
       <Form
@@ -90,7 +108,7 @@ const TheoryComponent = ({ onSubmit, content, form }: Props) => {
         >
           <Input />
         </Form.Item>
-        <AudioUploader />
+        <AudioUploader audioList={audioList} />
         <Form.Item label="Тип контента">
           <Radio.Group onChange={handleVariantChange} value={theoryVariant}>
             <Radio value={TheoryVariants.SLIDER}>{TheoryVariants.SLIDER}</Radio>

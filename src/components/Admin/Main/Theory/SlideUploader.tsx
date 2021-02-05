@@ -16,7 +16,6 @@ const swap = (array: any[], moveIndex: number, hoverIndex: number) => {
   array.splice(hoverIndex, 0, temp);
 
   return [...array];
-
 }
 
 type Props = {

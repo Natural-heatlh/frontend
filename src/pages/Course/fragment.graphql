@@ -23,7 +23,11 @@ fragment CourseFragment on Course {
         type
         title
         content
-        audio
+        audio {
+          name
+          uid
+          url
+        }
         slides {
           slideId
           url

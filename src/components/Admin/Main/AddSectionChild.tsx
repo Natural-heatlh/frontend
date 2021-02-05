@@ -25,10 +25,19 @@ const AddSectionChild = ({ activeSection }: Props) => {
   const [selected, setSelected] = useState<SectionChildren>(
     SectionChildren.THEORY
   );
-  const [defaultSelected, setDefault] = useState<SectionChildren>(SectionChildren.THEORY);
+  const [defaultSelected, setDefault] = useState<SectionChildren>(
+    SectionChildren.THEORY
+  );
   const [editableChild, setEditable] = useState<any>(null);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      form.resetFields();
+      setEditable(null);
+    };
+  }, [form, setEditable]);
 
   useEffect(() => {
     if (editableChild) {
@@ -124,6 +133,7 @@ const AddSectionChild = ({ activeSection }: Props) => {
         width="80%"
         onClose={handleDrawerClose}
         visible={drawerIsOpened}
+        destroyOnClose
       >
         {selected === SectionChildren.THEORY && (
           <TheoryComponent

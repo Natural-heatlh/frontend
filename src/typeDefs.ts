@@ -48,13 +48,19 @@ export const typeDefs = gql`
     status: String
   }
 
+  type Audio {
+    name: String
+    url: String
+    uid: String
+  }
+
   type Theory {
     lectureId: String
     title: String
     type: String
     content: String
     slides: [Slide]
-    audio: String
+    audio: Audio
   }
 
   type Video {
@@ -141,6 +147,12 @@ export const typeDefs = gql`
     status: String
   }
 
+  input AudioInput {
+    name: String
+    url: String
+    uid: String
+  }
+
   input SectionChildrenInput {
     lectureId: String
     title: String
@@ -149,7 +161,7 @@ export const typeDefs = gql`
     type: String!
     description: String
     slides: [SlideInput]
-    audio: String
+    audio: AudioInput
     items: [TestItemInput]
   }
 

@@ -2,14 +2,17 @@ import * as SchemaTypes from '../../graphql.d';
 
 export type CourseFragmentFragment = (
   { __typename?: 'Course' }
-  & Pick<SchemaTypes.Course, 'courseId' | 'title' | 'image' | 'description' | 'isFree' | 'isPublished' | 'level'>
+  & Pick<SchemaTypes.Course, 'courseId' | 'title' | 'image' | 'description' | 'isFree' | 'isPublished' | 'level' | 'incomeDescription'>
   & { sections?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
     { __typename?: 'Section' }
     & Pick<SchemaTypes.Section, 'sectionId' | 'title'>
     & { children?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
       { __typename: 'Theory' }
-      & Pick<SchemaTypes.Theory, 'lectureId' | 'type' | 'title' | 'content' | 'audio'>
-      & { slides?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
+      & Pick<SchemaTypes.Theory, 'lectureId' | 'type' | 'title' | 'content'>
+      & { audio?: SchemaTypes.Maybe<(
+        { __typename?: 'Audio' }
+        & Pick<SchemaTypes.Audio, 'name' | 'uid' | 'url'>
+      )>, slides?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
         { __typename?: 'Slide' }
         & Pick<SchemaTypes.Slide, 'slideId' | 'url' | 'uid' | 'name' | 'status'>
       )>>> }

@@ -24,7 +24,6 @@ const SignUpForm = () => {
 
   const handleSignUp = useCallback(
     (values) => {
-      console.log(values);
       axios
         .post('/auth/signup', {
           ...values
