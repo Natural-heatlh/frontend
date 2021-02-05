@@ -126,7 +126,7 @@ const SignUpForm = () => {
           {
             required: true,
             min: 8,
-            message: 'Пожалуйста введите Ваш пароль!'
+            message: 'Пожалуйста введите Ваш пароль. Минимальная длина пароля 8!'
           }
         ]}
         hasFeedback
@@ -167,7 +167,7 @@ const SignUpForm = () => {
           }
         ]}
       >
-        <Input type="number" />
+        <Input />
       </FormItem>
 
       <FormItem
@@ -176,7 +176,7 @@ const SignUpForm = () => {
         rules={[
           {
             message: 'partner ID должен состоять из 8 цифр!',
-            max: 8
+            max: 8,
           }
         ]}
       >
