@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Switch>
-          <Route path={['/admin', '/courses', '/my-courses', '/course', '/profile']}>
+          <Route path={['/admin', '/courses', '/my-courses', '/course', '/profile', '/presentation']}>
             <Protected />
           </Route>
           <Route path="/auth">

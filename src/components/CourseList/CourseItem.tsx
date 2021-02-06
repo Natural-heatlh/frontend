@@ -103,12 +103,12 @@ const getButtonText = (
   courseId?: string
 ) => {
   if (isFree) {
-    return ['Начать курс', `/course/${courseId}`];
+    return ['Начать курс', `/presentation/${courseId}`];
   } else {
     if (isAvailable) {
       return ['Начать курс', `/course/${courseId}`];
     }
-    return ['Купить курс', `/course/preview/${courseId}`];
+    return ['Купить курс', `/presentation/${courseId}`];
   }
 };
 
@@ -157,7 +157,7 @@ const CourseItem = ({
           <StyledButton
             type="primary"
           >
-            <Link onClick={onClick ? (e) => onClick(e, courseId) : undefined} to={buttonLink}>{buttonText}</Link>
+            <Link to={buttonLink}>{buttonText}</Link>
           </StyledButton>
         </CourseContent>
         {!isAccessible ? (

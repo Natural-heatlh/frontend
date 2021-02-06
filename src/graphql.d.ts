@@ -106,6 +106,8 @@ export type Course = {
   title: Scalars['String'];
   image?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
+  longDescription?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['String']>;
   sections?: Maybe<Array<Maybe<Section>>>;
   isPublished?: Maybe<Scalars['Boolean']>;
   isFree?: Maybe<Scalars['Boolean']>;
@@ -212,6 +214,8 @@ export type CreateCourseInput = {
   courseId: Scalars['String'];
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  longDescription?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['String']>;
   sections?: Maybe<Array<Maybe<SectionInput>>>;
   image?: Maybe<Scalars['String']>;
   isPublished?: Maybe<Scalars['Boolean']>;
@@ -223,6 +227,8 @@ export type CreateCourseInput = {
 export type UpdateCourseInput = {
   title?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
+  longDescription?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['String']>;
   incomeDescription?: Maybe<Scalars['String']>;
   sections?: Maybe<Array<Maybe<SectionInput>>>;
   image?: Maybe<Scalars['String']>;
@@ -425,7 +431,7 @@ export type ResolversTypes = {
   VideoInput: VideoInput;
   AnswerInput: AnswerInput;
   CreateCourseInput: CreateCourseInput;
-  updateCourseInput: UpdateCourseInput;
+  UpdateCourseInput: UpdateCourseInput;
   Query: ResolverTypeWrapper<{}>;
   Mutation: ResolverTypeWrapper<{}>;
   CacheControlScope: CacheControlScope;
@@ -464,7 +470,7 @@ export type ResolversParentTypes = {
   VideoInput: VideoInput;
   AnswerInput: AnswerInput;
   CreateCourseInput: CreateCourseInput;
-  updateCourseInput: UpdateCourseInput;
+  UpdateCourseInput: UpdateCourseInput;
   Query: {};
   Mutation: {};
   Upload: Scalars['Upload'];
@@ -552,6 +558,8 @@ export type CourseResolvers<ContextType = any, ParentType extends ResolversParen
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  longDescription?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  price?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   sections?: Resolver<Maybe<Array<Maybe<ResolversTypes['Section']>>>, ParentType, ContextType>;
   isPublished?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   isFree?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;

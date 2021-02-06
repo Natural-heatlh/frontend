@@ -15,7 +15,8 @@ const initialState = {
   sections: [],
   title: '',
   isFree: false,
-  isPublished: false
+  isPublished: false,
+  incomeDescription: '',
 };
 
 const courseSlice = createSlice({
@@ -66,6 +67,14 @@ const courseSlice = createSlice({
     },
     updateIncomeDescription: (state: State, action) => {
       state.incomeDescription = action.payload;
+      return state;
+    },
+    updateLongDescription: (state: State, action) => {
+      state.longDescription = action.payload;
+      return state;
+    },
+    updatePrice: (state: State, action) => {
+      state.price = action.payload;
       return state;
     },
     updateLevel: (state: State, action) => {
@@ -140,7 +149,9 @@ export const {
   toggleIsPublished,
   addSection,
   editSectionTitle,
-  updateLevel
+  updateLevel,
+  updateLongDescription,
+  updatePrice
 } = courseSlice.actions;
 
 export default courseSlice.reducer;
