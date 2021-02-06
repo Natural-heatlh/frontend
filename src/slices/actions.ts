@@ -12,7 +12,9 @@ export {
   addSection,
   editSectionTitle,
   updateLevel,
-  updateIncomeDescription
+  updateIncomeDescription,
+  updateLongDescription,
+  updatePrice
 } from './admin/course';
 export { setCourses } from './admin/courses';
 export { setTest, resetTest } from './test';

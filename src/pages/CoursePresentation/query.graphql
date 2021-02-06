@@ -1,0 +1,29 @@
+query Course($id: ID!) {
+  course(id: $id) {
+    title
+    description
+    image
+    incomeDescription
+    longDescription
+    price
+    sections {
+      sectionId
+      title
+      children {
+        __typename
+        ... on Video {
+          lectureId
+          title
+        }
+        ... on Theory {
+          lectureId
+          title
+        }
+        ... on Test {
+          lectureId
+          title
+        }
+      }
+    }
+  }
+}

@@ -27,13 +27,13 @@ const StyledContainer = styled(Container)`
   font-size: 36px;
 `;
 
-type Props = {
+export type PageHeadProps = {
   children: React.ReactNode;
   withTitleMargin?: boolean;
   color?: string;
 };
 
-const PageHead = ({ children, withTitleMargin, color }: Props) => {
+const PageHead = ({ children, withTitleMargin, color }: PageHeadProps) => {
   return (
     <Wrapper color={color} withTitleMargin={withTitleMargin}>
       <StyledContainer>{children}</StyledContainer>

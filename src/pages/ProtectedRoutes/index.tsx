@@ -10,6 +10,7 @@ import Courses from '../Courses';
 import MyCourses from '../MyCourses';
 import Course from '../Course';
 import Profile from '../Profile';
+import CoursePresentation from '../CoursePresentation';
 import query from '../Courses/query.graphql';
 
 const Protected = () => {
@@ -45,6 +46,11 @@ const Protected = () => {
           exact
         />
         <Route
+          path="/presentation/:id"
+          component={(props: any) => <CoursePresentation {...props} />}
+          exact
+        />
+        <Route
           path="/course/:id/lecture/:lectureId"
           component={(props: any) => (
             <Course key={props.match.params?.lectureId} {...props} />
@@ -54,6 +60,7 @@ const Protected = () => {
       </Switch>
     </AuthCheck>
   );
-};
+
+}
 
 export default Protected;

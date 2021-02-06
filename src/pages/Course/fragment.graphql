@@ -3,6 +3,8 @@ fragment CourseFragment on Course {
   title
   image
   description
+  longDescription
+  price
   isFree
   isPublished
   level

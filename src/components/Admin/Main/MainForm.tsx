@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { EditOutlined, CloseOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { FormInstance } from 'antd/es/form';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import {
   editSectionTitle,
   setCourse,
@@ -13,7 +15,7 @@ import {
   updateCourseImage,
   updateCourseTitle,
   updateIncomeDescription,
-  updateLevel
+  updateLevel, updateLongDescription, updatePrice
 } from '../../../slices/admin/course';
 import Footer from '../Footer';
 import { Course } from '../../../graphql';
@@ -22,6 +24,7 @@ import AddModal from './AddModal';
 import AddSection from './AddSection';
 import AddSectionChild from './AddSectionChild';
 import ImageUploader from './UploadImage';
+
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -65,6 +68,12 @@ const MainForm = ({ course, form, handleSave }: Props) => {
       }
       if (mode === 'incomeDescription') {
         dispatch(updateIncomeDescription(e.target.value));
+      }
+      if (mode === 'longDescription') {
+        dispatch(updateLongDescription(e));
+      }
+      if (mode === 'price') {
+        dispatch(updatePrice(e.target.value));
       }
     },
     [dispatch]
@@ -192,8 +201,14 @@ const MainForm = ({ course, form, handleSave }: Props) => {
             onChange={(e) => changeText(e, 'description')}
           />
         </Form.Item>
+        <Form.Item label="Длинное описание" name="longDescription">
+          <ReactQuill theme="snow" value={form.getFieldsValue()?.longDescription} onChange={(value) => changeText(value, 'longDescription')} />
+        </Form.Item>
         <Form.Item label="Доход" name="incomeDescription">
           <Input onChange={(e) => changeText(e, 'incomeDescription')} />
+        </Form.Item>
+        <Form.Item label="Цена" name="price">
+          <Input onChange={(e) => changeText(e, 'price')} />
         </Form.Item>
         <Form.Item label="Бесплатный курс" name="isFree">
           <Checkbox

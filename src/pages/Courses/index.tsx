@@ -14,43 +14,6 @@ const Courses = () => {
   const { data, loading, error } = useQuery(query.CoursesQuery);
   const user = useContext(AuthContext);
 
-  const [buyCourse] = useMutation(query.BuyCourse);
-  const handleBuyCourse = useCallback(
-    async (event: React.MouseEvent, id: string) => {
-      const currentCourse = data?.courses?.find(
-        (item: any) => item.courseId === id
-      );
-      if(!currentCourse?.isFree) {
-        event.preventDefault();
-      }
-
-      if (currentCourse?.isFree) {
-        try {
-          await buyCourse({ variables: { id } });
-        } catch (e) {
-          console.log(e);
-        }
-      } else {
-        try {
-          const result = await axios.post('/payment/buy-course', {
-            courseId: id,
-            courseName: currentCourse?.title,
-            email: user?.email,
-            partnerID: user?.partnerID,
-            price: 100
-          });
-
-          if(result?.data?.redirectUrl) {
-            window.location = result?.data?.redirectUrl;
-          }
-        } catch (e) {
-          console.log(e);
-        }
-      }
-    },
-    [buyCourse, user, data]
-  );
-
   const availableCourses = user?.courses?.map<string>(
     (item) => item?.courseId as string
   );
@@ -67,7 +30,6 @@ const Courses = () => {
     <PageContainer pageTitle="Курсы">
       {data?.courses && data?.courses.length > 0 ? (
         <CourseList
-          onClick={handleBuyCourse}
           courses={data?.courses}
           availableCourses={availableCourses}
         />

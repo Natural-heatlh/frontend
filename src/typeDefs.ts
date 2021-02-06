@@ -83,6 +83,8 @@ export const typeDefs = gql`
     title: String!
     image: String
     description: String
+    longDescription: String
+    price: String
     sections: [Section]
     isPublished: Boolean
     isFree: Boolean
@@ -187,6 +189,8 @@ export const typeDefs = gql`
     courseId: String!
     title: String!
     description: String
+    longDescription: String
+    price: String
     sections: [SectionInput]
     image: String
     isPublished: Boolean
@@ -195,9 +199,11 @@ export const typeDefs = gql`
     incomeDescription: String
   }
 
-  input updateCourseInput {
+  input UpdateCourseInput {
     title: String
     description: String
+    longDescription: String
+    price: String
     incomeDescription: String
     sections: [SectionInput]
     image: String
@@ -218,7 +224,7 @@ export const typeDefs = gql`
 
   type Mutation {
     createCourse(input: CreateCourseInput): Course
-    updateCourse(id: ID!, input: updateCourseInput): Course
+    updateCourse(id: ID!, input: UpdateCourseInput): Course
     deleteCourse(id: ID!): Course
     buyCourse(id: ID!): User
     addToProgress(id: ID!, courseId: ID!): User
