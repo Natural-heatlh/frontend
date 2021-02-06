@@ -1,12 +1,11 @@
-import React, { useCallback, useContext } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import React, { useContext } from 'react';
+import { useQuery } from '@apollo/client';
 import { Modal } from 'antd';
 import CourseList from '../../components/CourseList';
 import PageContainer from '../../components/PageContainer';
 import Preloader from '../../components/Preloader';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { AuthContext } from '../../components/Auth/AuthCheck';
-import axios from '../../helpers/axios';
 import query from './query.graphql';
 
 const Courses = () => {

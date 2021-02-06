@@ -38,7 +38,7 @@ const CoursePresentation = (props: any) => {
   const { id } = props.match.params;
   const user = useContext(AuthContext);
 
-  const { data, loading, error } = useQuery(query.Course, {
+  const { data, loading } = useQuery(query.Course, {
     variables: {
       id
     }
@@ -62,7 +62,7 @@ const CoursePresentation = (props: any) => {
         console.log(e);
       }
     }
-  }, [user, data]);
+  }, [user, data, id]);
 
   usePageTitle(data?.course?.title);
 
@@ -103,47 +103,3 @@ const CoursePresentation = (props: any) => {
 };
 
 export default CoursePresentation;
-
-
-
-
-
-
-
-
-
-const object = {
-  id: '27b0e879-000f-5000-9000-14474fac7835',
-status: 'succeeded',
-paid: true,
-amount: { value: '100.00', currency: 'RUB' },
-  authorization_details: { rrn: '143068937591', auth_code: '934912' },
-  captured_at: '2021-02-06T17:41:41.588Z',
-created_at: '2021-02-06T17:41:13.657Z',
-description: 'Заказ курса - Business Leader от nh.course@yandex.ru',
-income_amount: { value: '96.50', currency: 'RUB' },
-  metadata: {
-  courseName: 'Business Leader',
-  partnerId: '',
-  courseId: 'course-90f777ec-f333-40f6-989b-8bbb214e6503',
-  email: 'nh.course@yandex.ru'
-  },
-  payment_method: {
-  type: 'bank_card',
-  id: '27b0e879-000f-5000-9000-14474fac7835',
-  saved: false,
-  card: {
-    first6: '555555',
-    last4: '4444',
-    expiry_month: '07',
-    expiry_year: '2029',
-    card_type: 'MasterCard',
-    issuer_country: 'US'
-    },
-  title: 'Bank card *4444'
-  },
-  recipient: { account_id: '782345', gateway_id: '1820329' },
-  refundable: true,
-refunded_amount: { value: '0.00', currency: 'RUB' },
-  test: true
-  }
