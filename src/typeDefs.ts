@@ -108,6 +108,12 @@ export const typeDefs = gql`
     status: Int
   }
 
+  type Certificate {
+    courseId: String
+    name: String
+    url: String
+  }
+
   type User {
     id: ID!
     firstName: String
@@ -117,6 +123,7 @@ export const typeDefs = gql`
     country: String
     partnerID: String
     courses: [UserCourse]
+    certificates: [Certificate]
     status: Int
     phone: String
     role: String

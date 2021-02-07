@@ -34,11 +34,11 @@ const UpdatePasswordForm = () => {
 
   useEffect(() => {
     axios
-      .get(`/auth/check-token/${params.token}`)
+      .get(`/auth/check-token/${params?.token}`)
       .then((res) => {
         updateState({
-          userId: res.data.userId,
-          token: res.data.token
+          userId: res.data?.userId,
+          token: res.data?.token
         });
       })
       .catch(({ response }) => {
@@ -72,7 +72,7 @@ const UpdatePasswordForm = () => {
     [handleRedirect, state]
   );
 
-  if (!params.token) {
+  if (!params?.token) {
     history.replace('/auth/login');
   }
 

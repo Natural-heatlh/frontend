@@ -45,6 +45,7 @@ type Props = {
   isFree?: boolean | null;
   handleReset: () => void;
   handleContinue: () => void;
+  getCertificate?: () => void;
   results: TestResult;
 };
 
@@ -53,6 +54,7 @@ const FinishModal = ({
   handleReset,
   results,
   handleContinue,
+  getCertificate,
   isFree
 }: Props) => {
   const sum = Number(results.wrong) + Number(results.correct);
@@ -120,8 +122,12 @@ const FinishModal = ({
                     Вы успешно прошли курс обучения.
                   </Description>
 
-                  <StyledButton onClick={handleContinue} type="primary">
+                  <StyledButton style={{ marginBottom: "20px" }} onClick={handleContinue} type="primary">
                     Продолжить обучение
+                  </StyledButton>
+
+                  <StyledButton onClick={getCertificate} type="primary">
+                    Получить сертификат
                   </StyledButton>
                 </Fragment>
               </Fragment>

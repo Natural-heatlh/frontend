@@ -1,6 +1,7 @@
 import React, {
   Fragment,
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useState
@@ -13,6 +14,8 @@ import { useMutation } from '@apollo/client';
 import { Button } from 'antd';
 import { Test } from '../../graphql';
 import { resetTest } from '../../slices/actions';
+import axios from '../../helpers/axios';
+import { AuthContext } from '../Auth/AuthCheck';
 import { Toolbox } from '../Slider';
 import authQuery from '../Auth/query.graphql';
 import QuizItem from './QuizItem';
@@ -41,6 +44,7 @@ export type Item = {
 };
 
 const Quiz = ({ lecture, courseId, addProgress, isFree }: Props) => {
+  const user = useContext(AuthContext);
   const [isModalVisible, setVisible] = useState(false);
   const [results, setResults] = useState({
     correct: 0,
@@ -103,6 +107,21 @@ const Quiz = ({ lecture, courseId, addProgress, isFree }: Props) => {
       });
   }, [checkTestResult, test, courseId, lecture, addProgress]);
 
+  const getCertificate = useCallback(async () => {
+    try {
+      const result = await axios.post('/generate-certificate', {
+        courseId,
+        email: user?.email
+      });
+
+      if (result.data?.certificate) {
+        window.location = result.data.certificate;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }, [courseId, user]);
+
   const handleCancel = useCallback(() => {
     setIndex(0);
     setVisible(false);
@@ -152,6 +171,7 @@ const Quiz = ({ lecture, courseId, addProgress, isFree }: Props) => {
         isVisible={isModalVisible}
         handleReset={handleReset}
         handleContinue={handleContinue}
+        getCertificate={getCertificate}
         results={results}
         isFree={isFree}
       />

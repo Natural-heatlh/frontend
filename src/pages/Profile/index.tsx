@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import PageContainer from '../../components/PageContainer';
 import OwnDataForm from './OwnData';
 import UpdatePasswordForm from './UpdatePassword';
+import Certificates from './Certificates';
 
 const { TabPane } = Tabs;
 
@@ -21,7 +22,7 @@ const Profile = () => (
         <UpdatePasswordForm />
       </TabPane>
       <TabPane tab="Сертификаты" key="3">
-        Сертификаты
+        <Certificates />
       </TabPane>
     </Tabs>
   </StyledPageContainer>

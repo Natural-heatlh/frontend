@@ -8,7 +8,10 @@ export type CurrentUserQuery = (
   & { currentUser?: SchemaTypes.Maybe<(
     { __typename?: 'User' }
     & Pick<SchemaTypes.User, 'id' | 'email' | 'firstName' | 'lastName' | 'country' | 'city' | 'phone' | 'partnerID' | 'role' | 'status'>
-    & { courses?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
+    & { certificates?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
+      { __typename?: 'Certificate' }
+      & Pick<SchemaTypes.Certificate, 'courseId' | 'name' | 'url'>
+    )>>>, courses?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
       { __typename?: 'UserCourse' }
       & Pick<SchemaTypes.UserCourse, 'courseId' | 'progress' | 'isCompleted'>
     )>>> }

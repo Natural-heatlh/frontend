@@ -1,9 +1,4 @@
-import React, {
-  Fragment,
-  useCallback,
-  useMemo,
-  useState
-} from 'react';
+import React, { Fragment, useCallback, useMemo, useState } from 'react';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { LinkProps, NavLink } from 'react-router-dom';
@@ -60,13 +55,21 @@ const MenuItem = styled(Menu.Item)`
   }
 `;
 
-const Link = styled(NavLink)`
+const Link = styled(NavLink)<{ isPublished?: boolean | null }>`
   color: #fff !important;
 
   &:hover {
     background: none;
     color: rgba(0, 125, 117, 1) !important;
   }
+
+  ${props => !props.isPublished && `
+    color: rgba(255, 255, 255, 0.3) !important;
+
+    &:hover {
+      color: rgba(255, 255, 255, 0.3) !important;
+    }
+  `}
 `;
 
 type Props = {
@@ -87,8 +90,14 @@ const Navigation = ({ courses }: Props) => {
     () => (
       <StyledMenu onClick={() => changeVisible(false)}>
         {courses?.map((item) => (
-          <MenuItem key={item.courseId}>
-            <Link to={`/course/${item.courseId}`}>{item.title}</Link>
+          <MenuItem key={item.courseId} >
+            <Link
+              isPublished={item?.isPublished}
+              onClick={!item.isPublished ? (e) => e.preventDefault() : undefined}
+              to={`/presentation/${item.courseId}`}
+            >
+              {item.title}
+            </Link>
           </MenuItem>
         ))}
       </StyledMenu>

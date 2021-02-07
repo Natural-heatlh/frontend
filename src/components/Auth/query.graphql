@@ -10,6 +10,11 @@ query CurrentUser {
     partnerID
     role
     status
+    certificates {
+      courseId
+      name
+      url
+    }
     courses {
       courseId
       progress

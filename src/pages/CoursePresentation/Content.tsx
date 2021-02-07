@@ -41,17 +41,16 @@ type Props = {
 };
 
 const Content = ({ longDescription, sections }: Props) => {
-  console.log(sections);
   return (
     <Wrapper>
-      <ContentLeft>{parser(longDescription)}</ContentLeft>
+      <ContentLeft>{longDescription ? parser(longDescription) : ''}</ContentLeft>
       <ContentRight>
         {sections ? (
           <Collapse defaultActiveKey={sections[0]?.sectionId} accordion ghost>
             {sections.map((item, index) => (
               <StyledPanel key={item.sectionId} header={<SectionName>Раздел {index+1}: {item.title}</SectionName>}>
                 {item.children?.map((child, index) => (
-                  <LectureName>{index + 1}. {child?.title}</LectureName>
+                  <LectureName key={child?.lectureId}>{index + 1}. {child?.title}</LectureName>
                 ))}
               </StyledPanel>
             ))}

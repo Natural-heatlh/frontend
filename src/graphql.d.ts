@@ -132,6 +132,13 @@ export type UserDataInput = {
   status?: Maybe<Scalars['Int']>;
 };
 
+export type Certificate = {
+  __typename?: 'Certificate';
+  courseId?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+};
+
 export type User = {
   __typename?: 'User';
   id: Scalars['ID'];
@@ -142,6 +149,7 @@ export type User = {
   country?: Maybe<Scalars['String']>;
   partnerID?: Maybe<Scalars['String']>;
   courses?: Maybe<Array<Maybe<UserCourse>>>;
+  certificates?: Maybe<Array<Maybe<Certificate>>>;
   status?: Maybe<Scalars['Int']>;
   phone?: Maybe<Scalars['String']>;
   role?: Maybe<Scalars['String']>;
@@ -420,6 +428,7 @@ export type ResolversTypes = {
   Course: ResolverTypeWrapper<Course>;
   UserCourse: ResolverTypeWrapper<UserCourse>;
   UserDataInput: UserDataInput;
+  Certificate: ResolverTypeWrapper<Certificate>;
   User: ResolverTypeWrapper<User>;
   SectionInput: SectionInput;
   TestItemInput: TestItemInput;
@@ -459,6 +468,7 @@ export type ResolversParentTypes = {
   Course: Course;
   UserCourse: UserCourse;
   UserDataInput: UserDataInput;
+  Certificate: Certificate;
   User: User;
   SectionInput: SectionInput;
   TestItemInput: TestItemInput;
@@ -575,6 +585,13 @@ export type UserCourseResolvers<ContextType = any, ParentType extends ResolversP
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type CertificateResolvers<ContextType = any, ParentType extends ResolversParentTypes['Certificate'] = ResolversParentTypes['Certificate']> = {
+  courseId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -584,6 +601,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   partnerID?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   courses?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserCourse']>>>, ParentType, ContextType>;
+  certificates?: Resolver<Maybe<Array<Maybe<ResolversTypes['Certificate']>>>, ParentType, ContextType>;
   status?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   phone?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   role?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -628,6 +646,7 @@ export type Resolvers<ContextType = any> = {
   Section?: SectionResolvers<ContextType>;
   Course?: CourseResolvers<ContextType>;
   UserCourse?: UserCourseResolvers<ContextType>;
+  Certificate?: CertificateResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
