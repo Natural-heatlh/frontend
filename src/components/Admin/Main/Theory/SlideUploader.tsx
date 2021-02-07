@@ -85,6 +85,7 @@ const SlideUploader = ({ slides }: Props) => {
               moveRow={moveRow}
             />
           )}
+          withCredentials
         >
           <Button icon={<UploadOutlined />}>Загрузить слайд</Button>
         </Upload>

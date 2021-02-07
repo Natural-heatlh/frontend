@@ -49,6 +49,7 @@ const AudioUploader = ({ audioList }: Props) => {
         listType="text"
         beforeUpload={beforeAudioUpload}
         onChange={handleOnChange}
+        withCredentials
       >
         <Button icon={<UploadOutlined />}>Загрузить аудио</Button>
       </Upload>

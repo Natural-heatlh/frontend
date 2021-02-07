@@ -77,6 +77,7 @@ const ImageUploader = ({ onChange, imageUrl }: Props) => {
           multiple={false}
           listType="picture-card"
           onPreview={handlePreview}
+          withCredentials
         >
           {!isImageExist && <UploadOutlined />}
         </Upload>
