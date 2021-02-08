@@ -63,9 +63,12 @@ const link = createHttpLink({
 const client = new ApolloClient({
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError, response }) => {
+      let isAuthError = false;
+
       if (graphQLErrors) {
         graphQLErrors.forEach(({ message, locations, path, extensions }) => {
           if (extensions?.code === 'UNAUTHENTICATED') {
+            isAuthError = true;
             store.dispatch(setIsAuth(false));
 
             console.log(
@@ -75,7 +78,7 @@ const client = new ApolloClient({
         });
       }
 
-      if (networkError) {
+      if (networkError && !isAuthError) {
         Modal.error({
           title: 'Проблемы с сетью',
           content: 'Проверьте подключение к интернету!'
