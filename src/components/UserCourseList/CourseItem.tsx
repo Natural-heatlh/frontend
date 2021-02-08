@@ -102,11 +102,11 @@ export const UserCourseItem = ({
             <Link
               to={
                 percent === 0
-                  ? `/course/${courseId}/lecture/${flattenCourse[0].id}`
+                  ? `/course/${courseId}/lecture/${flattenCourse[0]?.lectureId}`
                   : `/course/${courseId}/lecture/${
                       userCourse?.progress && userCourse.progress.length > 0
                         ? userCourse.progress[userCourse.progress.length - 1]
-                        : flattenCourse[0]?.courseId || ''
+                        : flattenCourse[0]?.lectureId || ''
                     }`
               }
             >

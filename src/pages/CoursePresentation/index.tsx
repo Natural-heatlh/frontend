@@ -89,13 +89,22 @@ const CoursePresentation = (props: any) => {
 
       <Footer>
         <BuySectionWrapper />
+
         <BuySectionWrapper>
-          <p>
-            Стоимость обучения: <span>{data?.course?.price}$</span>
-          </p>
-          <Button onClick={handleBuyCourse} type="primary">
-            Купить
-          </Button>
+          {!data?.course?.isFree ? (
+            <>
+              <p>
+                Стоимость обучения: <span>{data?.course?.price}$</span>
+              </p>
+              <Button onClick={handleBuyCourse} type="primary">
+                Купить
+              </Button>
+            </>
+          ) : (
+            <Button onClick={handleBuyCourse} type="primary">
+              Начать курс
+            </Button>
+          )}
         </BuySectionWrapper>
       </Footer>
     </PageContainer>

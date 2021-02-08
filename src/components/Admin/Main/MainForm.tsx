@@ -15,7 +15,9 @@ import {
   updateCourseImage,
   updateCourseTitle,
   updateIncomeDescription,
-  updateLevel, updateLongDescription, updatePrice
+  updateLevel,
+  updateLongDescription,
+  updatePrice
 } from '../../../slices/admin/course';
 import Footer from '../Footer';
 import { Course } from '../../../graphql';
@@ -24,7 +26,6 @@ import AddModal from './AddModal';
 import AddSection from './AddSection';
 import AddSectionChild from './AddSectionChild';
 import ImageUploader from './UploadImage';
-
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -201,8 +202,16 @@ const MainForm = ({ course, form, handleSave }: Props) => {
             onChange={(e) => changeText(e, 'description')}
           />
         </Form.Item>
-        <Form.Item label="Длинное описание" name="longDescription">
-          <ReactQuill theme="snow" value={form.getFieldsValue()?.longDescription} onChange={(value) => changeText(value, 'longDescription')} />
+        <Form.Item
+          label="Длинное описание"
+          name="longDescription"
+          initialValue={form.getFieldsValue()?.longDescription || ''}
+        >
+          <ReactQuill
+            theme="snow"
+            value={form.getFieldsValue()?.longDescription || ''}
+            onChange={(value) => changeText(value, 'longDescription')}
+          />
         </Form.Item>
         <Form.Item label="Доход" name="incomeDescription">
           <Input onChange={(e) => changeText(e, 'incomeDescription')} />

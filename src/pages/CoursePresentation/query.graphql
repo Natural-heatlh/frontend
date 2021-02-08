@@ -6,6 +6,8 @@ query Course($id: ID!) {
     incomeDescription
     longDescription
     price
+    isFree
+    isPublished
     sections {
       sectionId
       title

@@ -18,6 +18,7 @@ import {
 
 export const initialState = {
   description: '',
+  longDescription: '',
   courseId: '',
   image: undefined,
   title: '',
