@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Button, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { Course } from '../../graphql';
+import { ReactComponent as CoinIcon } from '../../static/coins.svg';
 import { AuthContext } from '../Auth/AuthCheck';
 
 export const CourseHead = styled.div`
@@ -53,7 +54,8 @@ const Overlay = styled(Tooltip)`
 `;
 
 export const CourseContent = styled.div`
-  padding: 30px 30px 62px 30px;
+  position: relative;
+  padding: 30px 30px 100px 30px;
   height: calc(100% - 250px);
   display: flex;
   position: relative;
@@ -71,6 +73,22 @@ const StyledButton = styled(Button)`
 export const CourseDescription = styled.p`
   font-size: 16px;
   line-height: 24px;
+`;
+
+const IncomeDescription = styled.span`
+  position: absolute;
+  left: 30px;
+  bottom: 85px;
+  font-size: 12px;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: #8c8c8c;
+`;
+
+const StyledCoinIcon = styled(CoinIcon)`
+  margin-right: 8px;
 `;
 
 const checkCourseAvailable = (
@@ -122,7 +140,7 @@ const CourseItem = ({
   title,
   description,
   isAvailable,
-  onClick,
+  incomeDescription,
   image,
   isFree,
   isPublished,
@@ -154,9 +172,12 @@ const CourseItem = ({
           <CourseTitle>{title}</CourseTitle>
           <CourseDescription>{description}</CourseDescription>
 
-          <StyledButton
-            type="primary"
-          >
+          <IncomeDescription>
+            <StyledCoinIcon />
+            {incomeDescription}
+          </IncomeDescription>
+
+          <StyledButton type="primary">
             <Link to={buttonLink}>{buttonText}</Link>
           </StyledButton>
         </CourseContent>

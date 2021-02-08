@@ -43,7 +43,7 @@ const Header = () => {
     <HeaderWrapper>
       <StyledContend>
         <HeaderLeft>
-          <Logo to="/">
+          <Logo to="/courses">
             <LogoImg />
           </Logo>
           {isLoggedIn && courses && courses.length > 0 ? (

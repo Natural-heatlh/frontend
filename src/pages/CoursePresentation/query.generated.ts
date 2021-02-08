@@ -9,7 +9,7 @@ export type CourseQuery = (
   { __typename?: 'Query' }
   & { course?: SchemaTypes.Maybe<(
     { __typename?: 'Course' }
-    & Pick<SchemaTypes.Course, 'title' | 'description' | 'image' | 'incomeDescription' | 'longDescription' | 'price'>
+    & Pick<SchemaTypes.Course, 'courseId' | 'title' | 'description' | 'image' | 'incomeDescription' | 'longDescription' | 'price' | 'isFree' | 'isPublished'>
     & { sections?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
       { __typename?: 'Section' }
       & Pick<SchemaTypes.Section, 'sectionId' | 'title'>

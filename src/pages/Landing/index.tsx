@@ -9,10 +9,9 @@ import AvailableCourse from '../../components/Landing/AvailableCourses';
 import Container from '../../components/Container';
 import Main from '../../components/Landing/Main';
 import Preloader from '../../components/Preloader';
+import { Course } from '../../graphql';
 import { CoursesQueryQuery } from '../Courses/query.generated';
 import query from './query.graphql';
-
-
 
 const CourseList = styled.div`
   display: flex;
@@ -110,12 +109,13 @@ const Landing = () => {
         <Container>
           <h3>Для вас доступны {data?.courses?.length || 0} онлайн курсов:</h3>
           <CourseList>
-            {data?.courses?.map((item) =>
+            {data?.courses?.map((item: Course | null) =>
               item ? (
                 <AvailableCourse
                   key={item?.courseId}
                   image={item?.image}
                   title={item?.title}
+                  income={item?.incomeDescription}
                   description={item?.description}
                 />
               ) : null
