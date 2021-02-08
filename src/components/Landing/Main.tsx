@@ -51,6 +51,17 @@ const MainWrapper = styled.div`
   background-position: left center;
   background-color: #fff;
 
+  @media (max-width: 1400px) {
+    background-position: center center;
+  }
+
+  @media (max-width: 768px) {
+    background-position: left bottom;
+    background: #ffffff;
+    min-height: auto;
+    padding-bottom: 20px;
+  }
+
   &::after {
     content: '';
     position: absolute;
@@ -62,12 +73,25 @@ const MainWrapper = styled.div`
     background-position: center right;
     background-size: contain;
     background-repeat: no-repeat;
+
+    @media (max-width: 1200px) {
+      width: calc(100% - 450px);
+    }
+
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 `;
 
 const MainLeft = styled.div`
   max-width: 400px;
   width: 100%;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    width: 100%;
+  }
 `;
 
 const MainHeader = styled.div`
@@ -83,8 +107,8 @@ const Title = styled.h1`
   line-height: 89px;
   font-family: Pattaya;
   margin-bottom: 15px;
-  >span {
-    color: #007D75;
+  > span {
+    color: #007d75;
   }
 `;
 
@@ -120,6 +144,10 @@ const Advantages = styled.div`
     line-height: 31px;
     font-weight: bold;
     margin-bottom: 50px;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -161,9 +189,11 @@ const Main = () => {
       <Container>
         <MainHeader>
           <MainLeft>
-            <Title><span>А</span>кадемия</Title>
+            <Title>
+              <span>А</span>кадемия
+            </Title>
             <Welcome>
-              Добро пожаловать на обучающий портал Natural Health Академия!
+              Добро пожаловать на обучающий портал Natural&nbsp;Health&nbsp;Академия!
             </Welcome>
             <p>
               Здесь вы получите знания и навыки необходимые для успешного
@@ -173,10 +203,7 @@ const Main = () => {
               к обучению".
             </p>
             <StyledButton type="primary">
-              <Link to="/courses/">
-                Перейти к обучению
-              </Link>
-
+              <Link to="/courses/">Перейти к обучению</Link>
             </StyledButton>
           </MainLeft>
         </MainHeader>

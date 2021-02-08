@@ -5,6 +5,16 @@ const AvailableCourseWrapper = styled.div`
   padding: 12px;
   box-sizing: border-box;
   max-width: calc(100% / 3);
+
+  @media(max-width: 992px) {
+    max-width: calc(100% / 2);
+  }
+
+  @media(max-width: 768px) {
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+  }
 `;
 
 const AppContent = styled.div`
