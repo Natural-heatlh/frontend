@@ -89,6 +89,12 @@ const SoundIconWrapper = styled.div<{ muted?: boolean }>`
   `}
 `;
 
+const AudioWrapper = styled.div`
+  padding-top: 30px;
+  padding-bottom: 30px;
+    border-bottom: 1px solid #DEDFE0;
+`;
+
 const Timer = styled.span`
   color: #262626;
   padding-left: 16px;
@@ -171,7 +177,7 @@ const AudioPlayer = ({ url, addProgress, isCompleted }: Props) => {
   };
 
   return (
-    <div>
+    <AudioWrapper>
       <ReactPlayer
         url={url as string}
         width="400px"
@@ -217,7 +223,7 @@ const AudioPlayer = ({ url, addProgress, isCompleted }: Props) => {
           />
         </VolumeWrapper>
       </PlayerWrapper>
-    </div>
+    </AudioWrapper>
   );
 };
 

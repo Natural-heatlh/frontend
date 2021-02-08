@@ -99,7 +99,7 @@ const CourseContent = ({
       {currentLecture.type === ContentType.VIDEO && (
         <Video addProgress={addProgress} lecture={currentLecture as VideoType} />
       )}
-      <AboutCourse description={course?.description} />
+      <AboutCourse description={course?.longDescription} />
       {modalMessage ? (
         <Modal
           visible={!!modalMessage}

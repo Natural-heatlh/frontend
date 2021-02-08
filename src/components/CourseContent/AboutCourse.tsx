@@ -1,42 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
+import parser from 'html-react-parser';
 
-const Table = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-left: 13%;
-  padding-right: 13%;
-`;
 
-const TableHead = styled.div`
-  font-size: 24px;
-  line-height: 31px;
-  padding: 30px;
-  font-weight: bold;
-`;
+const CourseDescriptionWrapper = styled.div`
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 50px;
 
-const Tr = styled.div`
-  display: flex;
-  border-bottom: 1px solid #dedfe0;
-
-  &:last-child {
-    border-botton: none;
+  h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
   }
-`;
 
-const Td = styled.div`
-  padding: 30px;
-  font-size: 16px;
-  line-height: 24px;
-`;
-
-const FirstCell = styled(Td)`
-  max-width: 200px;
-  width: 100%;
-`;
-
-const SecondCell = styled(Td)`
-  width: calc(100% - 200px);
+  h3 {
+    font-size: 18px;
+    line-height: 24px;
+  }
 `;
 
 type Props = {
@@ -45,13 +26,11 @@ type Props = {
 
 const AboutCourse = ({ description }: Props) => {
   return (
-    <Table>
-      <TableHead>Об этом курсе</TableHead>
-      <Tr>
-        <FirstCell>Описание</FirstCell>
-        <SecondCell>{description}</SecondCell>
-      </Tr>
-    </Table>
+    <CourseDescriptionWrapper>
+      <h2>Об этом курсе</h2>
+
+      {description ? parser(description) : ''}
+    </CourseDescriptionWrapper>
   );
 };
 

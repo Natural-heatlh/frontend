@@ -82,8 +82,6 @@ const courseSlice = createSlice({
       return state;
     },
     changeLectureOrder: (state: State, action) => {
-      console.log('active Section', action.payload.sectionId);
-
       const children =
         state?.sections?.find(
           (item) => item?.sectionId === action.payload?.sectionId
