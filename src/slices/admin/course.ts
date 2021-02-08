@@ -16,7 +16,7 @@ const initialState = {
   title: '',
   isFree: false,
   isPublished: false,
-  incomeDescription: '',
+  incomeDescription: ''
 };
 
 const courseSlice = createSlice({
@@ -79,6 +79,28 @@ const courseSlice = createSlice({
     },
     updateLevel: (state: State, action) => {
       state.level = action.payload;
+      return state;
+    },
+    changeLectureOrder: (state: State, action) => {
+      console.log('active Section', action.payload.sectionId);
+
+      const children =
+        state?.sections?.find(
+          (item) => item?.sectionId === action.payload?.sectionId
+        )?.children || [];
+
+      const temp = children[action.payload.currentIndex];
+      children.splice(action.payload.currentIndex, 1);
+      children.splice(action.payload.destinationIndex, 0, temp);
+
+      // TODO Fix any type
+      state.sections =
+        state.sections?.map<any>((item) => {
+          return item?.sectionId === action.payload?.sectionId
+            ? { ...item, children: [...children] }
+            : item;
+        }) || [];
+
       return state;
     },
     setCourse: setCourseReducer,
@@ -151,7 +173,8 @@ export const {
   editSectionTitle,
   updateLevel,
   updateLongDescription,
-  updatePrice
+  updatePrice,
+  changeLectureOrder
 } = courseSlice.actions;
 
 export default courseSlice.reducer;
