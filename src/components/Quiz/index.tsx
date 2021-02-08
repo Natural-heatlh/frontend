@@ -11,7 +11,7 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import Carousel from '@brainhubeu/react-carousel';
 import { useMutation } from '@apollo/client';
-import { Button } from 'antd';
+import { Button, Image } from 'antd';
 import { Test } from '../../graphql';
 import { resetTest } from '../../slices/actions';
 import axios from '../../helpers/axios';
@@ -29,6 +29,10 @@ const StyledCarousel = styled(Carousel)`
 
 const StyledButton = styled(Button)`
   margin-right: 20px;
+`;
+
+const HiddenImage = styled(Image)`
+  display: none;
 `;
 
 type Props = {
@@ -50,6 +54,12 @@ const Quiz = ({ lecture, courseId, addProgress, isFree }: Props) => {
     correct: 0,
     wrong: 0,
     isCompleted: false
+  });
+
+  const [certificate, setCertificate] = useState({
+    url: '',
+    visible: false,
+    isFetching: false
   });
 
   const history = useHistory();
@@ -108,6 +118,11 @@ const Quiz = ({ lecture, courseId, addProgress, isFree }: Props) => {
   }, [checkTestResult, test, courseId, lecture, addProgress]);
 
   const getCertificate = useCallback(async () => {
+    setCertificate((current) => ({
+      ...current,
+      isFetching: true
+    }));
+
     try {
       const result = await axios.post('/generate-certificate', {
         courseId,
@@ -115,7 +130,12 @@ const Quiz = ({ lecture, courseId, addProgress, isFree }: Props) => {
       });
 
       if (result.data?.certificate) {
-        window.location = result.data.certificate;
+        setCertificate({
+          url: result.data.certificate,
+          visible: true,
+          isFetching: false
+        });
+        // window.location = result.data.certificate;
       }
     } catch (e) {
       console.log(e);
@@ -169,11 +189,26 @@ const Quiz = ({ lecture, courseId, addProgress, isFree }: Props) => {
       </div>
       <FinishModal
         isVisible={isModalVisible}
+        isFetching={certificate?.isFetching}
         handleReset={handleReset}
         handleContinue={handleContinue}
         getCertificate={getCertificate}
         results={results}
         isFree={isFree}
+      />
+      <HiddenImage
+        src={certificate.url}
+        preview={{
+          visible: certificate?.visible,
+          onVisibleChange: (visible) => {
+            setCertificate((current) => ({
+              ...current,
+              url: '',
+              visible,
+              isFetching: false
+            }));
+          }
+        }}
       />
     </Fragment>
   );

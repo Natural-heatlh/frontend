@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { Image } from 'antd';
 import { ReloadOutlined } from '@ant-design/icons';
 import axios from '../../helpers/axios';
 import { AuthContext } from '../../components/Auth/AuthCheck';
@@ -10,7 +11,7 @@ const Wrapper = styled.div`
   justify-content: flex-start;
 `;
 
-const CertificateLink = styled.a`
+const CertificateLink = styled.div`
   display: block;
   max-width: 300px;
   width: 300px;
@@ -18,9 +19,10 @@ const CertificateLink = styled.a`
   overflow: hidden;
   border-radius: 10px;
   margin-right: 20px;
+  cursor: pointer;
 `;
 
-const Certificate = styled.img`
+const Certificate = styled(Image)`
   width: 100%;
 `;
 
@@ -85,7 +87,7 @@ const Certificates = () => {
     <Wrapper>
       {certificates?.map((item) =>
         item?.url ? (
-          <CertificateLink href={item.url} target="_blank">
+          <CertificateLink>
             <Certificate src={item.url} />
           </CertificateLink>
         ) : (

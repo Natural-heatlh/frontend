@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react';
 import { Modal, Button } from 'antd';
+import { motion } from 'framer-motion';
+import { ReloadOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import SuccessImg from '../../static/modals/success.png';
 import FailImg from '../../static/modals/fail.png';
@@ -38,6 +40,17 @@ const Description = styled.p`
 
 const StyledButton = styled(Button)`
   width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+const FetchWrap = styled(motion.div)`
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
 `;
 
 type Props = {
@@ -47,6 +60,7 @@ type Props = {
   handleContinue: () => void;
   getCertificate?: () => void;
   results: TestResult;
+  isFetching?: boolean;
 };
 
 const FinishModal = ({
@@ -55,7 +69,8 @@ const FinishModal = ({
   results,
   handleContinue,
   getCertificate,
-  isFree
+  isFree,
+  isFetching
 }: Props) => {
   const sum = Number(results.wrong) + Number(results.correct);
 
@@ -96,7 +111,9 @@ const FinishModal = ({
                   <img src={FailImg} alt="Повторите попытку" />
                 </ImageWrapper>
 
-                <Title>Вы набрали {results.correct} из {sum} вопросов</Title>
+                <Title>
+                  Вы набрали {results.correct} из {sum} вопросов
+                </Title>
                 <Description>
                   К сожалению, этого недостаточно, чтобы перейти к следующему
                   курсу. <br /> <br /> Вы можете повторить попытку или вернуться
@@ -118,16 +135,26 @@ const FinishModal = ({
                     <img src={SuccessImg} alt="Поздравляем!" />
                   </ImageWrapper>
                   <Title>Поздравляем!</Title>
-                  <Description>
-                    Вы успешно прошли курс обучения.
-                  </Description>
+                  <Description>Вы успешно прошли курс обучения.</Description>
 
-                  <StyledButton style={{ marginBottom: "20px" }} onClick={handleContinue} type="primary">
+                  <StyledButton
+                    style={{ marginBottom: '20px' }}
+                    onClick={handleContinue}
+                    type="primary"
+                  >
                     Продолжить обучение
                   </StyledButton>
 
                   <StyledButton onClick={getCertificate} type="primary">
                     Получить сертификат
+                    {isFetching ? (
+                      <FetchWrap
+                        animate={{ rotate: 360 }}
+                        transition={{ repeat: Infinity }}
+                      >
+                        <ReloadOutlined style={{ fontSize: '18px' }} />
+                      </FetchWrap>
+                    ) : null}
                   </StyledButton>
                 </Fragment>
               </Fragment>
@@ -137,7 +164,9 @@ const FinishModal = ({
                   <img src={FailImg} alt="Повторите попытку!" />
                 </ImageWrapper>
 
-                <Title>Вы набрали {results.correct} из {sum} вопросов</Title>
+                <Title>
+                  Вы набрали {results.correct} из {sum} вопросов
+                </Title>
                 <Description>
                   К сожалению, этого недостаточно, чтобы перейти к следующему
                   курсу. <br /> <br /> Вы можете повторить попытку или вернуться

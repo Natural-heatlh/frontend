@@ -12,6 +12,7 @@ import Course from '../Course';
 import Profile from '../Profile';
 import CoursePresentation from '../CoursePresentation';
 import query from '../Courses/query.graphql';
+import NotFound from '../NotFound';
 
 const Protected = () => {
   const dispatch = useDispatch();
@@ -31,10 +32,10 @@ const Protected = () => {
         <Route path="/admin">
           <Admin />
         </Route>
-        <Route path="/courses">
+        <Route path="/courses" exact>
           <Courses />
         </Route>
-        <Route path="/my-courses">
+        <Route path="/my-courses" exact>
           <MyCourses />
         </Route>
         <Route key="profile" path="/profile">
@@ -57,10 +58,10 @@ const Protected = () => {
           )}
           exact
         />
+        <Route component={NotFound} />
       </Switch>
     </AuthCheck>
   );
-
-}
+};
 
 export default Protected;

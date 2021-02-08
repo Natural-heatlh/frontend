@@ -101,7 +101,7 @@ const SignInForm = () => {
       >
         <Input.Password placeholder="Пароль" />
       </FormItem>
-      <Link to="/auth/reset/">Забыли пароль?</Link>
+      <Link to="/auth/reset">Забыли пароль?</Link>
 
       <SubmitFormItem>
         <Button style={{ width: '100%' }} type="primary" htmlType="submit">

@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Button } from 'antd';
 import { Link } from 'react-router-dom';
+import { Course, SectionChildren, UserCourse } from '../../graphql';
+import { AuthContext } from '../Auth/AuthCheck';
 import {
   CourseContent,
   CourseDescription,
@@ -11,10 +13,12 @@ import {
   WithPadding,
   Wrapper
 } from '../CourseList/CourseItem';
-import { Course, SectionChildren, UserCourse } from '../../graphql';
-import { AuthContext } from '../Auth/AuthCheck';
 
 export const ProgressBar = styled.div`
+  position: absolute;
+  left: 30px;
+  bottom: 50px;
+  width: calc(100% - 60px);
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
@@ -41,6 +45,12 @@ const ProgressBarText = styled.span`
   font-size: 12px;
   line-height: 24px;
   color: #999999;
+`;
+
+const StyledButton = styled(Button)`
+  position: absolute;
+  bottom: 20px;
+  width: calc(100% - 60px);
 `;
 
 const getProgressInPercent = (
@@ -98,7 +108,7 @@ export const UserCourseItem = ({
             </Bar>
             <ProgressBarText>Завершено на {percent}%</ProgressBarText>
           </ProgressBar>
-          <Button type="primary">
+          <StyledButton type="primary">
             <Link
               to={
                 percent === 0
@@ -112,7 +122,7 @@ export const UserCourseItem = ({
             >
               {percent === 0 ? 'Начать курс' : 'Продолжить курс'}
             </Link>
-          </Button>
+          </StyledButton>
         </CourseContent>
       </Wrapper>
     </WithPadding>
