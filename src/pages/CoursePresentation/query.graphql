@@ -1,5 +1,6 @@
 query Course($id: ID!) {
   course(id: $id) {
+    courseId
     title
     description
     image
