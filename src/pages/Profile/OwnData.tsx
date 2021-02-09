@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Modal } from 'antd';
 import styled from 'styled-components';
 import { useMutation, useQuery } from '@apollo/client';
 import { FormItem, SubmitFormItem } from '../../components/Forms/Additional';
@@ -30,11 +30,18 @@ const OwnDataForm = () => {
   const onFinish = useCallback(
     async (values: any) => {
       try {
-        await updateUserData({
+        const result = await updateUserData({
           variables: {
             input: { ...values }
           }
         });
+
+        if (result?.data?.updateUserData) {
+          Modal.success({
+            title: 'Сохранено!',
+            content: 'Вы успешно обновили свои данные!'
+          });
+        }
       } catch (e) {
         const errors = getUserInputError(e);
         const data = getValidationErrors(values, errors);

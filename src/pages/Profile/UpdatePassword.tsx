@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Modal } from 'antd';
 import styled from 'styled-components';
 import { useMutation } from '@apollo/client';
 import { FormItem, SubmitFormItem } from '../../components/Forms/Additional';
@@ -20,12 +20,19 @@ const UpdatePasswordForm = () => {
   const onFinish = async (values: any) => {
     const { password, currentPassword } = values;
     try {
-      await updateUserPassword({
+      const result = await updateUserPassword({
         variables: {
           currentPassword,
           password
         }
       });
+
+      if (result?.data?.updateUserPassword) {
+        Modal.success({
+          title: 'Сохранено!',
+          content: 'Вы успешно обновили свой пароль!'
+        });
+      }
     } catch (e) {
       const errors = getUserInputError(e);
       const data = getValidationErrors(values, errors);
