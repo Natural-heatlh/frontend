@@ -66,7 +66,6 @@ const CoursePresentation = (props: any) => {
       };
 
       const [isAccessible, message] = checkCourseAvailable(options);
-      console.log(message);
 
       if (!isAccessible) {
         Modal.warning({

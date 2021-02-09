@@ -33,7 +33,7 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
   reducer: rootReducer,
-  devTools: true
+  devTools: process.env.NODE_ENV !== 'production'
 });
 
 const omitTypename = (key: string, value: string) => {
