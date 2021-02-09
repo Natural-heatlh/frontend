@@ -9,6 +9,7 @@ import { AuthContext } from '../../components/Auth/AuthCheck';
 const Wrapper = styled.div`
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
 `;
 
 const CertificateLink = styled.div`
@@ -19,6 +20,7 @@ const CertificateLink = styled.div`
   overflow: hidden;
   border-radius: 10px;
   margin-right: 20px;
+  margin-bottom: 20px;
   cursor: pointer;
 `;
 
@@ -35,6 +37,8 @@ const CertificateWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 20px;
+  margin-bottom: 20px;
   cursor: pointer;
   color: #fff;
 `;
