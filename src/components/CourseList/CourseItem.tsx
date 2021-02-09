@@ -2,9 +2,14 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Button, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
-import { Course } from '../../graphql';
+import { Course, UserCourse } from '../../graphql';
 import { ReactComponent as CoinIcon } from '../../static/coins.svg';
 import { AuthContext } from '../Auth/AuthCheck';
+import {
+  checkCourseAvailable,
+  CheckProps,
+  getAvailableOfPrev
+} from '../../utils/checkCourseAvailable';
 
 export const CourseHead = styled.div`
   height: 250px;
@@ -91,29 +96,6 @@ const StyledCoinIcon = styled(CoinIcon)`
   margin-right: 8px;
 `;
 
-const checkCourseAvailable = (
-  isPublished: boolean,
-  userStatus: number,
-  courseStatus: number
-) => {
-  if (!isPublished) {
-    return [false, 'Курс ещё не опубликован'];
-  }
-
-  if (Number(userStatus) === 0 && Number(courseStatus) !== 0) {
-    return [
-      false,
-      'Для перехода к данному курсу Вам необходимо стать партнером!'
-    ];
-  }
-
-  if (Number(courseStatus) > Number(userStatus) + 1) {
-    return [false, 'Пройдите предыдущие курсы для перехода'];
-  }
-
-  return [true, 'Для перехода к курсу нажмите купить'];
-};
-
 const getButtonText = (
   isPublished?: boolean | null,
   isFree?: boolean | null,
@@ -154,11 +136,17 @@ const CourseItem = ({
     courseId
   );
 
-  const [isAccessible, tooltipText] = checkCourseAvailable(
-    isPublished as boolean,
-    userContext?.status as number,
-    level as number
-  );
+  const options: CheckProps = {
+    isPublished: isPublished as boolean,
+    userStatus: userContext?.status as number,
+    courseStatus: level as number,
+    isAvailableOfPrev: getAvailableOfPrev(
+      userContext?.courses as UserCourse[],
+      level as number
+    )
+  };
+
+  const [isAccessible, tooltipText] = checkCourseAvailable(options);
 
   return (
     <WithPadding>

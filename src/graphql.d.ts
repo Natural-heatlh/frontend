@@ -119,6 +119,7 @@ export type UserCourse = {
   __typename?: 'UserCourse';
   courseId: Scalars['ID'];
   progress?: Maybe<Array<Maybe<Scalars['String']>>>;
+  level?: Maybe<Scalars['Int']>;
   isCompleted?: Maybe<Scalars['Boolean']>;
 };
 
@@ -276,7 +277,6 @@ export type Mutation = {
   createCourse?: Maybe<Course>;
   updateCourse?: Maybe<Course>;
   deleteCourse?: Maybe<Course>;
-  buyCourse?: Maybe<User>;
   addToProgress?: Maybe<User>;
   checkTestResult?: Maybe<TestResult>;
   updateUserData?: Maybe<User>;
@@ -296,11 +296,6 @@ export type MutationUpdateCourseArgs = {
 
 
 export type MutationDeleteCourseArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationBuyCourseArgs = {
   id: Scalars['ID'];
 };
 
@@ -581,6 +576,7 @@ export type CourseResolvers<ContextType = any, ParentType extends ResolversParen
 export type UserCourseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserCourse'] = ResolversParentTypes['UserCourse']> = {
   courseId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   progress?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
+  level?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   isCompleted?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -622,7 +618,6 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createCourse?: Resolver<Maybe<ResolversTypes['Course']>, ParentType, ContextType, RequireFields<MutationCreateCourseArgs, never>>;
   updateCourse?: Resolver<Maybe<ResolversTypes['Course']>, ParentType, ContextType, RequireFields<MutationUpdateCourseArgs, 'id'>>;
   deleteCourse?: Resolver<Maybe<ResolversTypes['Course']>, ParentType, ContextType, RequireFields<MutationDeleteCourseArgs, 'id'>>;
-  buyCourse?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationBuyCourseArgs, 'id'>>;
   addToProgress?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationAddToProgressArgs, 'id' | 'courseId'>>;
   checkTestResult?: Resolver<Maybe<ResolversTypes['TestResult']>, ParentType, ContextType, RequireFields<MutationCheckTestResultArgs, never>>;
   updateUserData?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpdateUserDataArgs, never>>;

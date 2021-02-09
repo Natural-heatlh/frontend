@@ -1,5 +1,5 @@
-query Course($id: ID!) {
-  course(id: $id) {
+query PresentationCourse($id: ID!) {
+  presentationCourse(id: $id) {
     courseId
     title
     description
@@ -9,6 +9,7 @@ query Course($id: ID!) {
     price
     isFree
     isPublished
+    level
     sections {
       sectionId
       title

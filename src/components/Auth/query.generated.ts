@@ -13,7 +13,7 @@ export type CurrentUserQuery = (
       & Pick<SchemaTypes.Certificate, 'courseId' | 'name' | 'url'>
     )>>>, courses?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
       { __typename?: 'UserCourse' }
-      & Pick<SchemaTypes.UserCourse, 'courseId' | 'progress' | 'isCompleted'>
+      & Pick<SchemaTypes.UserCourse, 'courseId' | 'level' | 'progress' | 'isCompleted'>
     )>>> }
   )> }
 );

@@ -17,6 +17,7 @@ query CurrentUser {
     }
     courses {
       courseId
+      level
       progress
       isCompleted
     }

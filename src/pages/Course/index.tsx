@@ -86,7 +86,7 @@ const CoursePage = (props: any) => {
   }, [lectureId, id, data, loading, addToProgress]);
 
   const activeSectionKey = useMemo(() => {
-    if (!loading && data.course) {
+    if (!loading && data?.course) {
       const activeSection = data.course?.sections?.find((item: Section) =>
         item?.children?.find((child) => child?.lectureId === lectureId)
       );
@@ -167,7 +167,7 @@ const CoursePage = (props: any) => {
     history.replace(`/course/${id}/lecture/${firstLectureId}`);
   }
 
-  return (
+  return data?.course ? (
     <StyledPageContainer pageTitle={data.course?.title} withTitleMargin={false}>
       <CourseWrapper>
         <CourseContent
@@ -189,7 +189,7 @@ const CoursePage = (props: any) => {
         />
       </CourseWrapper>
     </StyledPageContainer>
-  );
+  ) : null;
 };
 
 export default CoursePage;

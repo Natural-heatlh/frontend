@@ -1,11 +1,23 @@
-import React, { Fragment, useCallback, useMemo, useState } from 'react';
+import React, {
+  Fragment,
+  useCallback,
+  useContext,
+  useMemo,
+  useState
+} from 'react';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { LinkProps, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as KnowledgeIcon } from '../../static/knowledge.svg';
 import { ReactComponent as GroupIcon } from '../../static/group.svg';
-import { Course } from '../../graphql';
+import { Course, UserCourse } from '../../graphql';
+import {
+  checkCourseAvailable,
+  CheckProps,
+  getAvailableOfPrev
+} from '../../utils/checkCourseAvailable';
+import { AuthContext } from '../Auth/AuthCheck';
 
 const LinkText = styled.span`
   margin-left: 8px;
@@ -63,7 +75,9 @@ const Link = styled(NavLink)<{ isPublished?: boolean | null }>`
     color: rgba(0, 125, 117, 1) !important;
   }
 
-  ${props => !props.isPublished && `
+  ${(props) =>
+    !props.isPublished &&
+    `
     color: rgba(255, 255, 255, 0.3) !important;
 
     &:hover {
@@ -78,6 +92,7 @@ type Props = {
 
 const Navigation = ({ courses }: Props) => {
   const [visible, changeVisible] = useState(false);
+  const user = useContext(AuthContext);
 
   const handleVisibleChange = useCallback(
     (flag) => {
@@ -89,20 +104,34 @@ const Navigation = ({ courses }: Props) => {
   const coursesItems = useMemo(
     () => (
       <StyledMenu onClick={() => changeVisible(false)}>
-        {courses?.map((item) => (
-          <MenuItem key={item.courseId} >
-            <Link
-              isPublished={item?.isPublished}
-              onClick={!item.isPublished ? (e) => e.preventDefault() : undefined}
-              to={`/presentation/${item.courseId}`}
-            >
-              {item.title}
-            </Link>
-          </MenuItem>
-        ))}
+        {courses?.map((item) => {
+          const options: CheckProps = {
+            isPublished: item?.isPublished as boolean,
+            userStatus: user?.status as number,
+            courseStatus: item?.level as number,
+            isAvailableOfPrev: getAvailableOfPrev(
+              user?.courses as UserCourse[],
+              item?.level as number
+            )
+          };
+
+          const [isAccessible] = checkCourseAvailable(options);
+
+          return (
+            <MenuItem key={item.courseId}>
+              <Link
+                isPublished={isAccessible}
+                onClick={!isAccessible ? (e) => e.preventDefault() : undefined}
+                to={`/presentation/${item.courseId}`}
+              >
+                {item.title}
+              </Link>
+            </MenuItem>
+          );
+        })}
       </StyledMenu>
     ),
-    [courses]
+    [courses, user]
   );
 
   return (

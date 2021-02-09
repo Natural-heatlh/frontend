@@ -19,7 +19,7 @@ const Video = ({ lecture, addProgress }: Props) => {
       if (addProgress) {
         addProgress();
       }
-    }, 1000 * 60 * 2);
+    }, 1000 * 60 * 0.5);
 
     return () => {
       clearTimeout(timer);

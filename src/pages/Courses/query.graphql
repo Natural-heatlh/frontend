@@ -12,15 +12,3 @@ query CoursesQuery {
     incomeDescription
   }
 }
-
-mutation BuyCourse($id: ID!) {
-  buyCourse(id: $id) {
-    email
-    id
-    courses {
-      courseId
-      progress
-      isCompleted
-    }
-  }
-}

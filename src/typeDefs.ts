@@ -95,6 +95,7 @@ export const typeDefs = gql`
   type UserCourse {
     courseId: ID!
     progress: [String]
+    level: Int
     isCompleted: Boolean
   }
 
@@ -223,6 +224,7 @@ export const typeDefs = gql`
     courses: [Course]!
     userCourses: [Course]!
     course(id: ID!): Course
+    presentationCourse(id: ID!): Course
     adminCourse(id: ID!): Course
     adminCourses: [Course]!
     user(id: ID!): User
@@ -233,7 +235,6 @@ export const typeDefs = gql`
     createCourse(input: CreateCourseInput): Course
     updateCourse(id: ID!, input: UpdateCourseInput): Course
     deleteCourse(id: ID!): Course
-    buyCourse(id: ID!): User
     addToProgress(id: ID!, courseId: ID!): User
     checkTestResult(input: TestResultInput): TestResult
     updateUserData(input: UserDataInput): User
