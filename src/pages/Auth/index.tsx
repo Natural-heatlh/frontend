@@ -7,11 +7,13 @@ import SignUpForm from '../../components/Auth/SignUpForm';
 import SignInForm from '../../components/Auth/SignInForm';
 import ResetForm from '../../components/Auth/ResetForm';
 import UpdatePasswordForm from '../../components/Auth/UpdatePasswordForm';
+import Confirm from './Confirm';
 
 const LOGIN_PATH = '/auth/login';
 const SIGN_UP_PATH = '/auth/signup';
 const RESET_PATH = '/auth/reset';
 const UPDATE_PASSWORD = '/auth/update-password/:token?';
+const CONFIRM_REGISTRATION = '/auth/confirm/:token?';
 
 const getAuthPageTitle = (path: string) => {
   if (path === LOGIN_PATH) {
@@ -22,6 +24,9 @@ const getAuthPageTitle = (path: string) => {
   }
   if (path === RESET_PATH) {
     return 'Восстановить пароль';
+  }
+  if (path === CONFIRM_REGISTRATION) {
+    return 'Подтвердить';
   }
   return '';
 };
@@ -46,6 +51,9 @@ const Auth = () => {
           </Route>
           <Route path={UPDATE_PASSWORD}>
             <UpdatePasswordForm />
+          </Route>
+          <Route path={CONFIRM_REGISTRATION}>
+            <Confirm />
           </Route>
         </Fragment>
       ) : (
