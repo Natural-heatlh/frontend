@@ -12,11 +12,11 @@ export const getAvailableOfPrev = (courses: UserCourse[], level: number) => {
     case 0:
       return true;
     case 2:
-      return !!courses.find(
+      return !!courses?.find(
         (item) => item.isCompleted && item.level === level - 2
       );
     default:
-      return !!courses.find(
+      return !!courses?.find(
         (item) => item.isCompleted && item.level === level - 1
       );
   }
