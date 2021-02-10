@@ -43,7 +43,7 @@ export const checkCourseAvailable = ({
     return [false, 'Пройдите предыдущие курсы для перехода'];
   }
 
-  if (Number(courseStatus) > Number(userStatus) + 1) {
+  if (Number(courseStatus) > Number(userStatus)) {
     return [false, 'Вашего статуса недостаточно для прохождения этого курса!'];
   }
 

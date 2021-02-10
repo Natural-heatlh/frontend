@@ -47,7 +47,7 @@ const CoursePresentation = (props: any) => {
   const history = useHistory();
   const user = useContext(AuthContext);
 
-  const { data, loading } = useQuery(query.PresentationCourse, {
+  const { data, loading, error } = useQuery(query.PresentationCourse, {
     variables: {
       id
     }
@@ -109,7 +109,13 @@ const CoursePresentation = (props: any) => {
   }, [data, user]);
 
   if (loading) return <Preloader />;
-
+  if (error) {
+    Modal.error({
+      title: 'Ошибка',
+      content: error?.message,
+      onOk: () => history.replace('/courses'),
+    });
+  }
   return (
     <PageContainer
       pageTitle={data?.presentationCourse?.title}
