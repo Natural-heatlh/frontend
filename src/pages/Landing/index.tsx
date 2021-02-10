@@ -2,35 +2,35 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import ReactPlayer from 'react-player';
-import { useQuery } from '@apollo/client';
+// import { useQuery } from '@apollo/client';
 import { Button } from 'antd';
 import Header from '../../components/Header';
-import AvailableCourse from '../../components/Landing/AvailableCourses';
+// import AvailableCourse from '../../components/Landing/AvailableCourses';
 import Container from '../../components/Container';
 import Main from '../../components/Landing/Main';
-import Preloader from '../../components/Preloader';
-import { Course } from '../../graphql';
-import { CoursesQueryQuery } from '../Courses/query.generated';
-import query from './query.graphql';
+// import Preloader from '../../components/Preloader';
+// import { Course } from '../../graphql';
+// import { CoursesQueryQuery } from '../Courses/query.generated';
+// import query from './query.graphql';
 
-const CourseList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  min-width: 0;
-`;
-
-const Courses = styled.div`
-  background: #e5e5e5;
-  padding-top: 100px;
-
-  h3 {
-    font-size: 24px;
-    font-weight: 700px;
-    line-height: 31px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-`;
+// const CourseList = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   min-width: 0;
+// `;
+//
+// const Courses = styled.div`
+//   background: #e5e5e5;
+//   padding-top: 100px;
+//
+//   h3 {
+//     font-size: 24px;
+//     font-weight: 700px;
+//     line-height: 31px;
+//     margin-bottom: 20px;
+//     text-align: center;
+//   }
+// `;
 
 const VideoContainer = styled(Container)`
   display: flex;
@@ -92,37 +92,37 @@ const ActionSectionDescription = styled.p`
 `;
 
 const Landing = () => {
-  const { data, loading, error } = useQuery<CoursesQueryQuery>(
-    query.LandingCourses
-  );
-
-  if (loading) return <Preloader />;
-  if (error) {
-    console.log(error);
-  }
+  // const { data, loading, error } = useQuery<CoursesQueryQuery>(
+  //   query.LandingCourses
+  // );
+  //
+  // if (loading) return <Preloader />;
+  // if (error) {
+  //   console.log(error);
+  // }
 
   return (
     <React.Fragment>
       <Header />
       <Main />
-      <Courses>
-        <Container>
-          <h3>Для вас доступны {data?.courses?.length || 0} онлайн курсов:</h3>
-          <CourseList>
-            {data?.courses?.map((item: Course | null) =>
-              item ? (
-                <AvailableCourse
-                  key={item?.courseId}
-                  image={item?.image}
-                  title={item?.title}
-                  income={item?.incomeDescription}
-                  description={item?.description}
-                />
-              ) : null
-            )}
-          </CourseList>
-        </Container>
-      </Courses>
+      {/*<Courses>*/}
+      {/*  <Container>*/}
+      {/*    <h3>Для вас доступны {data?.courses?.length || 0} онлайн курсов:</h3>*/}
+      {/*    <CourseList>*/}
+      {/*      {data?.courses?.map((item: Course | null) =>*/}
+      {/*        item ? (*/}
+      {/*          <AvailableCourse*/}
+      {/*            key={item?.courseId}*/}
+      {/*            image={item?.image}*/}
+      {/*            title={item?.title}*/}
+      {/*            income={item?.incomeDescription}*/}
+      {/*            description={item?.description}*/}
+      {/*          />*/}
+      {/*        ) : null*/}
+      {/*      )}*/}
+      {/*    </CourseList>*/}
+      {/*  </Container>*/}
+      {/*</Courses>*/}
       <VideoSection>
         <VideoContainer>
           <PlayerWrapper>
