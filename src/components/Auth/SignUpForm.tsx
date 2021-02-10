@@ -182,6 +182,13 @@ const SignUpForm = () => {
         <Input type="number" />
       </FormItem>
 
+      <FormItem
+        label="Команда"
+        name="team"
+      >
+        <Input />
+      </FormItem>
+
       <SubmitFormItem>
         <Button style={{ width: '100%' }} type="primary" htmlType="submit">
           Зарегистрироваться
