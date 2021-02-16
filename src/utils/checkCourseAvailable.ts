@@ -32,18 +32,23 @@ export const checkCourseAvailable = ({
     return [false, 'Курс ещё не опубликован'];
   }
 
-  if (Number(userStatus) === 0 && Number(courseStatus) !== 0) {
-    return [
-      false,
-      'Для перехода к данному курсу Вам необходимо стать партнером!'
-    ];
-  }
+  // if (Number(userStatus) === 0 && Number(courseStatus) !== 0) {
+  //   return [
+  //     false,
+  //     'Для перехода к данному курсу Вам необходимо стать партнером!'
+  //   ];
+  // }
 
   if (!isAvailableOfPrev) {
     return [false, 'Пройдите предыдущие курсы для перехода'];
   }
 
-  if (Number(courseStatus) > Number(userStatus)) {
+  // fix it after course
+  if (
+    Number(courseStatus) !== 0 &&
+    Number(courseStatus) !== 2 &&
+    Number(courseStatus) > Number(userStatus)
+  ) {
     return [false, 'Вашего статуса недостаточно для прохождения этого курса!'];
   }
 

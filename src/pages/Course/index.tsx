@@ -46,7 +46,13 @@ const CoursePage = (props: any) => {
 
   useEffect(() => {
     if (data?.course) {
-      if (Number(userContext?.status) + 1 < Number(data?.course?.level)) {
+
+      // fix after finish concurs
+      if (
+        Number(data?.course?.level) !== 0 &&
+        Number(data?.course?.level) !== 2 &&
+        Number(userContext?.status) < Number(data?.course?.level)
+      ) {
         history.replace('/courses');
       }
     }
