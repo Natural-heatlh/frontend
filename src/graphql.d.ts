@@ -246,11 +246,26 @@ export type UpdateCourseInput = {
   level?: Maybe<Scalars['Int']>;
 };
 
+export type UserCourseInput = {
+  courseId: Scalars['ID'];
+  progress?: Maybe<Array<Maybe<Scalars['String']>>>;
+  level?: Maybe<Scalars['Int']>;
+  isCompleted?: Maybe<Scalars['Boolean']>;
+};
+
+export type AddCoursesInput = {
+  courses: Array<Maybe<UserCourseInput>>;
+  removableCourses: Array<Maybe<Scalars['String']>>;
+  email?: Maybe<Scalars['String']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   courses: Array<Maybe<Course>>;
+  users: Array<Maybe<User>>;
   userCourses: Array<Maybe<Course>>;
   course?: Maybe<Course>;
+  presentationCourse?: Maybe<Course>;
   adminCourse?: Maybe<Course>;
   adminCourses: Array<Maybe<Course>>;
   user?: Maybe<User>;
@@ -259,6 +274,11 @@ export type Query = {
 
 
 export type QueryCourseArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryPresentationCourseArgs = {
   id: Scalars['ID'];
 };
 
@@ -278,6 +298,7 @@ export type Mutation = {
   updateCourse?: Maybe<Course>;
   deleteCourse?: Maybe<Course>;
   addToProgress?: Maybe<User>;
+  updateUserCourses?: Maybe<User>;
   checkTestResult?: Maybe<TestResult>;
   updateUserData?: Maybe<User>;
   updateUserPassword?: Maybe<User>;
@@ -303,6 +324,11 @@ export type MutationDeleteCourseArgs = {
 export type MutationAddToProgressArgs = {
   id: Scalars['ID'];
   courseId: Scalars['ID'];
+};
+
+
+export type MutationUpdateUserCoursesArgs = {
+  input?: Maybe<AddCoursesInput>;
 };
 
 
@@ -436,6 +462,8 @@ export type ResolversTypes = {
   AnswerInput: AnswerInput;
   CreateCourseInput: CreateCourseInput;
   UpdateCourseInput: UpdateCourseInput;
+  UserCourseInput: UserCourseInput;
+  AddCoursesInput: AddCoursesInput;
   Query: ResolverTypeWrapper<{}>;
   Mutation: ResolverTypeWrapper<{}>;
   CacheControlScope: CacheControlScope;
@@ -476,6 +504,8 @@ export type ResolversParentTypes = {
   AnswerInput: AnswerInput;
   CreateCourseInput: CreateCourseInput;
   UpdateCourseInput: UpdateCourseInput;
+  UserCourseInput: UserCourseInput;
+  AddCoursesInput: AddCoursesInput;
   Query: {};
   Mutation: {};
   Upload: Scalars['Upload'];
@@ -606,8 +636,10 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   courses?: Resolver<Array<Maybe<ResolversTypes['Course']>>, ParentType, ContextType>;
+  users?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType>;
   userCourses?: Resolver<Array<Maybe<ResolversTypes['Course']>>, ParentType, ContextType>;
   course?: Resolver<Maybe<ResolversTypes['Course']>, ParentType, ContextType, RequireFields<QueryCourseArgs, 'id'>>;
+  presentationCourse?: Resolver<Maybe<ResolversTypes['Course']>, ParentType, ContextType, RequireFields<QueryPresentationCourseArgs, 'id'>>;
   adminCourse?: Resolver<Maybe<ResolversTypes['Course']>, ParentType, ContextType, RequireFields<QueryAdminCourseArgs, 'id'>>;
   adminCourses?: Resolver<Array<Maybe<ResolversTypes['Course']>>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
@@ -619,6 +651,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateCourse?: Resolver<Maybe<ResolversTypes['Course']>, ParentType, ContextType, RequireFields<MutationUpdateCourseArgs, 'id'>>;
   deleteCourse?: Resolver<Maybe<ResolversTypes['Course']>, ParentType, ContextType, RequireFields<MutationDeleteCourseArgs, 'id'>>;
   addToProgress?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationAddToProgressArgs, 'id' | 'courseId'>>;
+  updateUserCourses?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpdateUserCoursesArgs, never>>;
   checkTestResult?: Resolver<Maybe<ResolversTypes['TestResult']>, ParentType, ContextType, RequireFields<MutationCheckTestResultArgs, never>>;
   updateUserData?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpdateUserDataArgs, never>>;
   updateUserPassword?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpdateUserPasswordArgs, never>>;

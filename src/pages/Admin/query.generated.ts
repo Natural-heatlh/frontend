@@ -25,6 +25,21 @@ export type AdminCourseQuery = (
   )> }
 );
 
+export type UsersQueryVariables = SchemaTypes.Exact<{ [key: string]: never; }>;
+
+
+export type UsersQuery = (
+  { __typename?: 'Query' }
+  & { users: Array<SchemaTypes.Maybe<(
+    { __typename?: 'User' }
+    & Pick<SchemaTypes.User, 'firstName' | 'lastName' | 'partnerID' | 'email'>
+    & { courses?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
+      { __typename?: 'UserCourse' }
+      & Pick<SchemaTypes.UserCourse, 'courseId' | 'level' | 'progress' | 'isCompleted'>
+    )>>> }
+  )>> }
+);
+
 export type DeleteCourseMutationVariables = SchemaTypes.Exact<{
   id: SchemaTypes.Scalars['ID'];
 }>;
@@ -62,5 +77,22 @@ export type CreateCourseMutation = (
   & { createCourse?: SchemaTypes.Maybe<(
     { __typename?: 'Course' }
     & CourseFragmentFragment
+  )> }
+);
+
+export type AddUserCoursesMutationVariables = SchemaTypes.Exact<{
+  input?: SchemaTypes.Maybe<SchemaTypes.AddCoursesInput>;
+}>;
+
+
+export type AddUserCoursesMutation = (
+  { __typename?: 'Mutation' }
+  & { updateUserCourses?: SchemaTypes.Maybe<(
+    { __typename?: 'User' }
+    & Pick<SchemaTypes.User, 'email'>
+    & { courses?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
+      { __typename?: 'UserCourse' }
+      & Pick<SchemaTypes.UserCourse, 'courseId' | 'level' | 'progress' | 'isCompleted'>
+    )>>> }
   )> }
 );

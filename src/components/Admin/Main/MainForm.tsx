@@ -30,7 +30,7 @@ import ImageUploader from './UploadImage';
 const { TabPane } = Tabs;
 const { Option } = Select;
 
-const statusArray = [0, 2, 3, 4, 5, 6, 7, 8, 9];
+export const statusArray = [0, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const TabTitleWrapper = styled.span`
   display: flex;

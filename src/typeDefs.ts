@@ -220,8 +220,22 @@ export const typeDefs = gql`
     level: Int
   }
 
+  input UserCourseInput {
+    courseId: ID!
+    progress: [String]
+    level: Int
+    isCompleted: Boolean
+  }
+
+  input AddCoursesInput {
+    courses: [UserCourseInput]!
+    removableCourses: [String]!
+    email: String
+  }
+
   type Query {
     courses: [Course]!
+    users: [User]!
     userCourses: [Course]!
     course(id: ID!): Course
     presentationCourse(id: ID!): Course
@@ -236,6 +250,7 @@ export const typeDefs = gql`
     updateCourse(id: ID!, input: UpdateCourseInput): Course
     deleteCourse(id: ID!): Course
     addToProgress(id: ID!, courseId: ID!): User
+    updateUserCourses(input: AddCoursesInput): User
     checkTestResult(input: TestResultInput): TestResult
     updateUserData(input: UserDataInput): User
     updateUserPassword(currentPassword: String, password: String): User

@@ -6,6 +6,7 @@ import { AuthContext } from '../../components/Auth/AuthCheck';
 import Courses from './Courses';
 import Edit from './Edit';
 import Add from './Add';
+import Users from './Users';
 
 const Admin = () => {
   const user = useContext(AuthContext);
@@ -25,6 +26,7 @@ const Admin = () => {
         <Route path="/admin/courses" component={Courses} exact />
         <Route path="/admin/courses/:id" component={Edit} exact />
         <Route path="/admin/add-course" component={Add} exact />
+        <Route path="/admin/users" component={Users} exact />
       </Switch>
     </React.Fragment>
   );

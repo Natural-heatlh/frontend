@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Button, List } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import { setCourses } from '../../slices/actions';
@@ -11,8 +11,6 @@ import query from './query.graphql';
 import {
   AdminCoursesQuery,
   AdminCoursesQueryVariables,
-  DeleteCourseMutation,
-  DeleteCourseMutationVariables
 } from './query.generated';
 
 const Courses = () => {
@@ -27,26 +25,26 @@ const Courses = () => {
     dispatch(setCourses(data?.adminCourses as Course[]));
   }, [data, dispatch]);
 
-  const [deleteOneCourse] = useMutation<
-    DeleteCourseMutation,
-    DeleteCourseMutationVariables
-  >(query.DeleteCourse);
+  // const [deleteOneCourse] = useMutation<
+  //   DeleteCourseMutation,
+  //   DeleteCourseMutationVariables
+  // >(query.DeleteCourse);
 
-  const handleRemove = useCallback(
-    async (id: string) => {
-      await deleteOneCourse({
-        variables: {
-          id
-        },
-        refetchQueries: [
-          {
-            query: query.AdminCourses
-          }
-        ]
-      });
-    },
-    [deleteOneCourse]
-  );
+  // const handleRemove = useCallback(
+  //   async (id: string) => {
+  //     await deleteOneCourse({
+  //       variables: {
+  //         id
+  //       },
+  //       refetchQueries: [
+  //         {
+  //           query: query.AdminCourses
+  //         }
+  //       ]
+  //     });
+  //   },
+  //   [deleteOneCourse]
+  // );
 
   if (loading) return <Preloader />;
 
@@ -72,12 +70,7 @@ const Courses = () => {
               actions={[
                 <Link to={`${location.pathname}/${item?.courseId}`}>
                   Редактировать
-                </Link>,
-                <span
-                  onClick={() => item?.courseId && handleRemove(item.courseId)}
-                >
-                  Удалить
-                </span>
+                </Link>
               ]}
             >
               <List.Item.Meta

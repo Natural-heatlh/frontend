@@ -12,6 +12,21 @@ query AdminCourse($id: ID!) {
   }
 }
 
+query Users {
+  users {
+    firstName
+    lastName
+    partnerID
+    email
+    courses {
+      courseId
+      level
+      progress
+      isCompleted
+    }
+  }
+}
+
 mutation DeleteCourse($id: ID!) {
   deleteCourse(id: $id) {
     courseId
@@ -27,5 +42,17 @@ mutation UpdateCourse($id: ID!, $input: UpdateCourseInput) {
 mutation CreateCourse($input: CreateCourseInput) {
   createCourse(input: $input) {
     ...CourseFragment
+  }
+}
+
+mutation AddUserCourses($input: AddCoursesInput) {
+  updateUserCourses(input: $input) {
+    email
+    courses {
+      courseId
+      level
+      progress
+      isCompleted
+    }
   }
 }

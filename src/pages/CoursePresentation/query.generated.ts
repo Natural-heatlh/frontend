@@ -1,15 +1,15 @@
 import * as SchemaTypes from '../../graphql.d';
 
-export type CourseQueryVariables = SchemaTypes.Exact<{
+export type PresentationCourseQueryVariables = SchemaTypes.Exact<{
   id: SchemaTypes.Scalars['ID'];
 }>;
 
 
-export type CourseQuery = (
+export type PresentationCourseQuery = (
   { __typename?: 'Query' }
-  & { course?: SchemaTypes.Maybe<(
+  & { presentationCourse?: SchemaTypes.Maybe<(
     { __typename?: 'Course' }
-    & Pick<SchemaTypes.Course, 'courseId' | 'title' | 'description' | 'image' | 'incomeDescription' | 'longDescription' | 'price' | 'isFree' | 'isPublished'>
+    & Pick<SchemaTypes.Course, 'courseId' | 'title' | 'description' | 'image' | 'incomeDescription' | 'longDescription' | 'price' | 'isFree' | 'isPublished' | 'level'>
     & { sections?: SchemaTypes.Maybe<Array<SchemaTypes.Maybe<(
       { __typename?: 'Section' }
       & Pick<SchemaTypes.Section, 'sectionId' | 'title'>
