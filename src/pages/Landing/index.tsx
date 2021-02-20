@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import ReactPlayer from 'react-player';
 import { useQuery } from '@apollo/client';
 import { Button } from 'antd';
+import { useDispatch } from 'react-redux';
 import Header from '../../components/Header';
 import AvailableCourse from '../../components/Landing/AvailableCourses';
 import Container from '../../components/Container';
@@ -11,6 +12,10 @@ import Main from '../../components/Landing/Main';
 import Preloader from '../../components/Preloader';
 import { Course } from '../../graphql';
 import { CoursesQueryQuery } from '../Courses/query.generated';
+import authQuery from '../../components/Auth/query.graphql';
+import { AuthContext } from '../../components/Auth/AuthCheck';
+import { setIsAuth } from '../../slices/auth';
+import { setCourses } from '../../slices/actions';
 import query from './query.graphql';
 
 const CourseList = styled.div`
@@ -96,6 +101,26 @@ const Landing = () => {
     query.LandingCourses
   );
 
+  const { data: userData } = useQuery(authQuery.CurrentUser, {
+    fetchPolicy: 'network-only'
+  });
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (data?.courses) {
+      dispatch(setCourses(data?.courses as Course[]));
+    }
+  }, [dispatch, data]);
+
+  useEffect(() => {
+    if (userData?.currentUser) {
+      dispatch(setIsAuth(true));
+    } else {
+      dispatch(setIsAuth(false));
+    }
+  }, [dispatch, userData]);
+
   if (loading) return <Preloader />;
   if (error) {
     console.log(error);
@@ -103,65 +128,69 @@ const Landing = () => {
 
   return (
     <React.Fragment>
-      <Header />
-      <Main />
-      <Courses>
-        <Container>
-          <h3>Для вас доступны {data?.courses?.length || 0} онлайн курсов:</h3>
-          <CourseList>
-            {data?.courses?.map((item: Course | null) =>
-              item ? (
-                <AvailableCourse
-                  key={item?.courseId}
-                  image={item?.image}
-                  title={item?.title}
-                  income={item?.incomeDescription}
-                  description={item?.description}
-                />
-              ) : null
-            )}
-          </CourseList>
-        </Container>
-      </Courses>
-      <VideoSection>
-        <VideoContainer>
-          <PlayerWrapper>
-            <StyledPlayer
-              url="https://www.youtube.com/watch?v=VGiTppRObRg"
-              width="100%"
-              height="100%"
-              config={{
-                youtube: {
-                  playerVars: {
-                    rel: 0,
-                    controls: 1
+      <AuthContext.Provider value={userData?.currentUser}>
+        <Header />
+        <Main />
+        <Courses>
+          <Container>
+            <h3>
+              Для вас доступны {data?.courses?.length || 0} онлайн курсов:
+            </h3>
+            <CourseList>
+              {data?.courses?.map((item: Course | null) =>
+                item ? (
+                  <AvailableCourse
+                    key={item?.courseId}
+                    image={item?.image}
+                    title={item?.title}
+                    income={item?.incomeDescription}
+                    description={item?.description}
+                  />
+                ) : null
+              )}
+            </CourseList>
+          </Container>
+        </Courses>
+        <VideoSection>
+          <VideoContainer>
+            <PlayerWrapper>
+              <StyledPlayer
+                url="https://www.youtube.com/watch?v=VGiTppRObRg"
+                width="100%"
+                height="100%"
+                config={{
+                  youtube: {
+                    playerVars: {
+                      rel: 0,
+                      controls: 1
+                    }
                   }
-                }
-              }}
-            />
-          </PlayerWrapper>
-        </VideoContainer>
-      </VideoSection>
+                }}
+              />
+            </PlayerWrapper>
+          </VideoContainer>
+        </VideoSection>
 
-      <ActionSection>
-        <ActionContainer>
-          <ActionSectionTitle>
-            Все, что вам нужно, чтобы добиться успеха
-          </ActionSectionTitle>
-          <ActionSectionDescription>
-            Natural Health Академия — это не только уникальная познавательная
-            платформа, но и путеводитель в мир успешного бизнеса! Вся полезная
-            информация, дополненная интерактивом, поможет приобрести все
-            необходимые навыки и углубить свои познания в предпринимательском
-            деле. С Natural Health вы станете сильным лидером с регулярным
-            доходом и возможностью постоянно совершенствоваться и двигаться
-            вперед!
-          </ActionSectionDescription>
-          <Button style={{ maxWidth: '300px', width: '100%' }} type="primary">
-            <Link to="/auth/login">Перейти к обучению</Link>
-          </Button>
-        </ActionContainer>
-      </ActionSection>
+        <ActionSection>
+          <ActionContainer>
+            <ActionSectionTitle>
+              Все, что вам нужно, чтобы добиться успеха
+            </ActionSectionTitle>
+            <ActionSectionDescription>
+              Natural Health Академия — это не только уникальная познавательная
+              платформа, но и путеводитель в мир успешного бизнеса! Вся полезная
+              информация, дополненная интерактивом, поможет приобрести все
+              необходимые навыки и углубить свои познания в предпринимательском
+              деле. С Natural Health вы станете сильным лидером с регулярным
+              доходом и возможностью постоянно совершенствоваться и двигаться
+              вперед!
+            </ActionSectionDescription>
+            <Button style={{ maxWidth: '300px', width: '100%' }} type="primary">
+              <Link to="/auth/login">Перейти к обучению</Link>
+            </Button>
+          </ActionContainer>
+        </ActionSection>
+      </AuthContext.Provider>
     </React.Fragment>
   );
 };

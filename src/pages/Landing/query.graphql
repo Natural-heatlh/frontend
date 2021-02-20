@@ -4,6 +4,9 @@ query LandingCourses {
     title
     image
     description
+    isFree
+    isPublished
+    level
     incomeDescription
   }
 }
