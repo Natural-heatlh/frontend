@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Table, Input, Button, Space, Tag, Drawer, Modal } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { useMutation, useQuery } from '@apollo/client';
@@ -20,13 +20,30 @@ const Users = () => {
 
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const searchRef = useRef(null);
+  const [coursesCount, setCoursesCount] = useState(0);
 
   const [state, setState] = useState<SearchState>({
     text: '',
     column: ''
   });
-
   console.log(state);
+
+  useEffect(() => {
+    if (data && data?.users) {
+      let counter = 0;
+
+      data?.users?.forEach((item: User) => {
+        if (item?.courses && item?.courses?.length > 0) {
+          item?.courses?.forEach((course) => {
+            if (course?.level && course?.level > 0) {
+              counter++;
+            }
+          });
+        }
+      });
+      setCoursesCount(counter);
+    }
+  }, [setCoursesCount, data]);
 
   const handleAddCoursesToUser = useCallback(
     async (
@@ -231,6 +248,13 @@ const Users = () => {
   return (
     <React.Fragment>
       <AdminContainer>
+        $
+        {coursesCount && coursesCount > 0 ? (
+          <span>
+            Куплено: {coursesCount} курсов. {coursesCount} * 30$ =
+            {coursesCount * 30}$
+          </span>
+        ) : null}
         <Table columns={columns as any} dataSource={data?.users} />
       </AdminContainer>
       <Drawer
